@@ -34,5 +34,6 @@ const Container = styled.div`
 const TeamName = styled.p`
   font-family: 'locus_sangsang';
   font-size: 16px;
+  font-weight: 400;
 `;
 const GithubLogo = styled(GithubIcon)``;
