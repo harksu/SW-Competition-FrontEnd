@@ -21,9 +21,9 @@ function Header() {
 
 export default Header;
 
-const HeaderWrapper = styled.header`
+const HeaderWrapper = styled.div`
   width: 100%;
-  height: 100px;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
