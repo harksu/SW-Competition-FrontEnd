@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
         padding : 0;
         body,html{    
             box-sizing: border-box;    
-            overflow-x: hidden;
+            overflow: hidden;
             }
         font-family: 'NanumSquare';
     }
