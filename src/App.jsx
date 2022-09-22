@@ -1,11 +1,11 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/GlobalStyles';
-import theme from './styles/theme';
+import Theme from './styles/theme';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={Theme}>
       <GlobalStyle />
     </ThemeProvider>
   );
