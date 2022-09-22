@@ -5,6 +5,7 @@ import GlobalStyle from './styles/GlobalStyles';
 import Theme from './styles/theme';
 import Footer from './components/Footer';
 
+
 function App() {
   return (
     <ThemeProvider theme={Theme}>
