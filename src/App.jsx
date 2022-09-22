@@ -4,7 +4,7 @@ import Header from './components/Header';
 import GlobalStyle from './styles/GlobalStyles';
 import Theme from './styles/theme';
 import Footer from './components/Footer';
-
+import DetailPage from './pages/DetailPage';
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
       <GlobalStyle />
       <Header />
       <Footer />
+      <DetailPage />
     </ThemeProvider>
   );
 }
