@@ -23,7 +23,7 @@ export default Header;
 
 const HeaderWrapper = styled.header`
   width: 100%;
-  height: 50px;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,7 +37,8 @@ const ItemBox = styled.div`
 const Title = styled.p`
   text-align: center;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 35px;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const UserSelect = styled.div`
@@ -47,24 +48,17 @@ const UserSelect = styled.div`
   width: 100%;
 `;
 
-// const LoginBtn = styled.p`
-//   display: ${(props) => props && 'none'};
-//   color: ${theme.colors.white};
-//   font-size: 10px;
-//   margin-right: 70px;
-// `;
-// const RegisterBtn = styled.p`
-//   color: ${theme.colors.white};
-//   font-size: 10px;
-// `;
-
 const SelectBtn = styled.button`
   border: none;
   background: none;
-  font-size: 10px;
+  font-size: 18px;
   width: 50%;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.white};
+  &:nth-child(2) {
+    margin-left: 8%;
+  }
   &:nth-child(1) {
     display: ${(props) => !props && 'none'};
-    margin-right: 70px;
   }
 `;
