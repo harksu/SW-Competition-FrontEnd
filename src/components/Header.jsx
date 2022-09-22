@@ -36,7 +36,7 @@ const ItemBox = styled.div`
 
 const Title = styled.p`
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 35px;
   color: ${({ theme }) => theme.colors.white};
 `;
@@ -51,9 +51,9 @@ const UserSelect = styled.div`
 const SelectBtn = styled.button`
   border: none;
   background: none;
-  font-size: 18px;
+  font-size: 16px;
   width: 50%;
-  font-weight: 600;
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.white};
   &:nth-child(2) {
     margin-left: 8%;

@@ -8,7 +8,6 @@ const GlobalStyle = createGlobalStyle`
         body,html{    
             box-sizing: border-box;    
             overflow-x: hidden;
-      
             }
         font-family: 'NanumSquare';
     }
