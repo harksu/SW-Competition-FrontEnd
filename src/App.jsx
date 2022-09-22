@@ -1,9 +1,10 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import Header from './components/Header';
+import Header from './Components/Header';
 import GlobalStyle from './styles/GlobalStyles';
 import Theme from './styles/theme';
-import Footer from './components/Footer';
+import Footer from './Components/Footer';
+import LoginPage from './Pages/LoginPage';
 import DetailPage from './pages/DetailPage';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <GlobalStyle />
       <Header />
       <Footer />
+      <LoginPage />
       <DetailPage />
     </ThemeProvider>
   );
