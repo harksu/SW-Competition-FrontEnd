@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import ContentList from '../components/MainPage/ContentList';
+
 function MainPage() {
   return (
     <MainBg>
@@ -19,7 +21,7 @@ function MainPage() {
               <p>답변</p>
             </Header2ndContent>
           </ListHeader>
-          <ListContents />
+          <ContentList />
         </ListContainer>
         <WriteButton>작성하기</WriteButton>
         <ListPagesButton />
@@ -34,9 +36,9 @@ const MainBg = styled.div`
 `;
 
 const MainTitle = styled.p`
-  font-size: 36px;
+  font-size: 35px;
   font-weight: 500;
-  margin: 50px 0 15px 53px;
+  margin: 45px 0 15px 53px;
 `;
 
 const MainContainer = styled.div`
@@ -50,7 +52,7 @@ const MainContainer = styled.div`
 
 const ListContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 85%;
   border-radius: 10px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
 `;
@@ -81,18 +83,11 @@ const Header2ndContent = styled.div`
   text-align: center;
 
   p {
-    padding: 12px;
+    padding-top: 13px;
     font-weight: 500;
     font-size: 20px;
   }
 `;
-
-const ListContents = styled.div`
-  /* width: 100%; */
-  /* height: 80%; */
-  background-color: pink;
-`;
-
 const ListPagesButton = styled.div`
   width: 350px;
   height: 40px;
@@ -103,7 +98,7 @@ const ListPagesButton = styled.div`
 const WriteButton = styled.button`
   width: 138px;
   height: 43px;
-  margin: 1.5% 0 0 80%;
+  margin: 1% 0 0 80%;
   border: 0.3px solid #b5b5b5;
   border-radius: 5px;
   background-color: transparent;
