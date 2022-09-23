@@ -4,17 +4,25 @@ import backgroundImage from '../assests/logo.png';
 
 function LoginPage() {
   // eslint-disable-next-line no-unused-vars
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
   return (
     <div>
       <Container>
         <SignHeader> 로그인</SignHeader>
         <InputContainer>
           <InputFormBox>
-            <InputForm text="아이디" isValid={isValid} />
+            <InputForm
+              text="아이디"
+              isValid={isValid}
+              placeText="예) MJUyogoyogu"
+            />
           </InputFormBox>{' '}
           <InputFormBox>
-            <InputForm text="비밀번호" isValid={isValid} />
+            <InputForm
+              text="비밀번호"
+              isValid={isValid}
+              placeText="예) MJU12345678"
+            />
           </InputFormBox>{' '}
           <QuestionText>아직 회원이 아니신가요?</QuestionText>
           <LoginButton>
@@ -27,24 +35,28 @@ function LoginPage() {
 }
 
 export default LoginPage;
-function InputForm({ text, isValid }) {
+export function InputForm({ text, isValid, placeText }) {
   return (
     <>
       <Text>{text}</Text>
-      <InputBox />
+      <InputBox placeholder={placeText} />
       {isValid ? (
-        <AlertText>존재하지 않는 {text}입니다</AlertText>
+        <EmptyBlock />
       ) : (
-        <AlertText>유효한 아이디 입니다</AlertText>
+        <AlertText>존재하지 않는 {text}입니다</AlertText>
       )}
     </>
   );
 }
 
+const EmptyBlock = styled.div`
+  height: 31px; //입력값 없을 때 스타일 깨지는거 방지용
+`;
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%; //피그마 기준 계산값입니다
+  width: 58%; //피그마 기준 계산값입니다
   height: 70vh; //피그마 기준 계산값입니다
   background-color: ${({ theme }) => theme.colors.white};
   margin: 69px auto 55px auto;
@@ -76,7 +88,6 @@ export const InputContainer = styled.div`
   align-items: center;
   width: 65%;
   height: 78%;
-  // background-color: ${({ theme }) => theme.colors.pink};
 `;
 
 export const Text = styled.p`
@@ -88,7 +99,6 @@ export const Text = styled.p`
 export const AlertText = styled(Text)`
   font-size: 23px;
   color: ${({ theme }) => theme.colors.blue};
-  margin-left: 13px;
 `;
 
 const QuestionText = styled(AlertText)`
@@ -98,15 +108,27 @@ const QuestionText = styled(AlertText)`
   margin-top: 40px;
   margin-bottom: 12px;
 `;
-export const InputBox = styled.input`
+const InputBox = styled.input`
+  border: 0 solid black;
   width: 100%;
   height: 42%;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  background-color: white;
   border-radius: 10px;
+  ::placeholder {
+    font-size: 23px;
+    font-weight: 700;
+    color: #b5b5b5;
+  }
+  font-size: 23px;
+  font-weight: 700;
+  color: #b5b5b5;
+  padding-left: 19px;
+  box-sizing: border-box;
 `;
-const LoginButton = styled.div`
+export const LoginButton = styled.div`
   display: flex;
-  width: 44%;
+  width: 43%;
   height: 12%;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
@@ -115,14 +137,17 @@ const LoginButton = styled.div`
   background-color: #b5b5b5;
   margin-bottom: 33px;
   cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
 `;
-const ButtonText = styled(Text)`
+export const ButtonText = styled(Text)`
   color: #ffffff;
-  font-weight: 400px;
+  font-weight: 400;
   font-size: 28px;
+  line-height: 32px;
 `;
 
-const InputFormBox = styled.div`
+export const InputFormBox = styled.div`
   margin-top: 27px;
   width: 73%;
   height: 28%;
