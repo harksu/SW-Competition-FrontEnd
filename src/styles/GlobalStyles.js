@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import '../App.css';
 
 const GlobalStyle = createGlobalStyle`
     *{
@@ -7,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
         padding : 0;
         body,html{    
             box-sizing: border-box;    
-            overflow: hidden;
+            overflow-x: hidden;
             }
         font-family: 'NanumSquare';
     }
