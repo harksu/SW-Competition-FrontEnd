@@ -28,7 +28,18 @@ const LogoContainer = styled.div`
   margin-top: 25%;
 `;
 
-const LogoStyle = styled(Logo)``;
+const LogoStyle = styled(Logo)`
+  animation: mjulogo 10s linear infinite;
+
+  @keyframes mjulogo {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 const LoadingTitle = styled.p`
   margin-top: 42px;
