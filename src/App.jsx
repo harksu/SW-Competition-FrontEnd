@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import Header from './Components/Header';
+import Header from './components/Header';
 import GlobalStyle from './styles/GlobalStyles';
 import Theme from './styles/theme';
-import Footer from './Components/Footer';
+import Footer from './components/Footer';
 import LoginPage from './Pages/LoginPage';
 import DetailPage from './Pages/DetailPage';
 
