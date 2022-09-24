@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import Header from './components/Header';
 import GlobalStyle from './styles/GlobalStyles';
 import Theme from './styles/theme';
@@ -14,7 +14,7 @@ function App() {
   return (
     <ThemeProvider theme={Theme}>
       <GlobalStyle />
-      <>
+      <AllWrap>
         <Header />
         <Footer />
         <Routes>
@@ -24,9 +24,14 @@ function App() {
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/main" element={<MainPage />} />
         </Routes>
-      </>
+      </AllWrap>
     </ThemeProvider>
   );
 }
+
+const AllWrap = styled.div`
+  position: relative;
+  min-height: 100%;
+`;
 
 export default App;

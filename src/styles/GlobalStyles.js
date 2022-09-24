@@ -7,6 +7,7 @@ const GlobalStyle = createGlobalStyle`
         body,html{    
             box-sizing: border-box;    
             overflow-x: hidden;
+            height: 100%;
             }
         font-family: 'NanumSquare';
     }
