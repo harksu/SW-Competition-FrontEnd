@@ -7,17 +7,22 @@ import Theme from './styles/theme';
 import Footer from './components/Footer';
 import LoginPage from './Pages/LoginPage';
 import DetailPage from './Pages/DetailPage';
+import LoadingPage from './Pages/LoadingPage';
 
 function App() {
   return (
     <ThemeProvider theme={Theme}>
       <GlobalStyle />
-      <Header />
-      <Footer />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/detail" element={<DetailPage />} />
-      </Routes>
+      <>
+        <Header />
+        <Footer />
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/detail" element={<DetailPage />} />
+          {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
+          <Route path="/loading" element={<LoadingPage />} />
+        </Routes>
+      </>
     </ThemeProvider>
   );
 }
