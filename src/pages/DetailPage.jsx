@@ -1,10 +1,18 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-confusing-arrow */
+/* eslint-disable implicit-arrow-linebreak */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
 import { ReactComponent as Heart } from '../assests/Heart.svg';
+import { ReactComponent as AnsweredIcon } from '../assests/Answered.svg';
 
 function DetailPage() {
   const [isYongin] = useState(true);
+  const [isAnswered] = useState(false);
+  const [isSelf] = useState(false);
+  const [isCouncil] = useState(true);
+
   return (
     <Container>
       <BacktoList>
@@ -27,13 +35,32 @@ function DetailPage() {
         </BoardInfo>
         <QuestionText>내용</QuestionText>
         <QuestionBox>질문</QuestionBox>
-        <AnswerText>답변</AnswerText>
-        <AnswerBox>
-          <WaitAnswer>
-            <div>의견이 전달되었습니다.</div>
-            <div>답변을 조금만 기다려주세요.</div>
-          </WaitAnswer>
+        <QuestionButtonSpace>
+          {isSelf && !isCouncil && <QuestionButton>수정하기</QuestionButton>}
+        </QuestionButtonSpace>
+        <AnswerText Answered={isAnswered}>
+          <AnswerContainer>
+            답변
+            {isAnswered && <AnsweredIconStyled />}
+          </AnswerContainer>
+        </AnswerText>
+        <AnswerBox Answered={isAnswered}>
+          {isAnswered ? (
+            <AnswerComp>안녕하세요. 자연캠퍼스 총학생회 ALT입니다.</AnswerComp>
+          ) : (
+            <WaitAnswer>
+              <div>의견이 전달되었습니다.</div>
+              <div>답변을 조금만 기다려주세요.</div>
+            </WaitAnswer>
+          )}
         </AnswerBox>
+        <AnswerButtonSpace>
+          {isCouncil && (
+            <AnswerButton>
+              {isAnswered ? '답변 수정하기' : '답변 작성하기'}
+            </AnswerButton>
+          )}
+        </AnswerButtonSpace>
       </BoardContainer>
     </Container>
   );
@@ -45,6 +72,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
 `;
 const BacktoList = styled.div`
   padding: 10px;
@@ -61,11 +89,11 @@ const ArrowStyled = styled(Arrow)`
 const BoardContainer = styled.div`
   justify-self: center;
   width: 85%;
-  height: 70%;
-  margin-top: 0.5%;
+  height: 100%;
+
   display: grid;
-  grid-template-columns: 1fr 5fr;
-  grid-template-rows: 12fr 8fr 42fr 8fr 30fr;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 12fr 8fr 42fr 8fr 30fr 8fr;
 `;
 const Title = styled.div`
   grid-column: 2/3;
@@ -89,7 +117,7 @@ const BoardInfo = styled.div`
 const UserDate = styled.div`
   display: flex;
   align-items: center;
-  width: 25%;
+  width: 20%;
   justify-content: space-between;
 `;
 const User = styled.div``;
@@ -126,25 +154,86 @@ const QuestionBox = styled.div`
   overflow-y: scroll;
 `;
 
-const AnswerText = styled.div`
-  grid-column: 1/2;
-  grid-row: -2/-1;
-  text-align: end;
-  padding-right: 20px;
-  font-weight: 600;
-`;
-const AnswerBox = styled.div`
+const QuestionButtonSpace = styled.div`
   grid-column: 2/3;
-  grid-row: -2/-1;
-  border: 2px solid #ededed;
+  grid-row: 4/5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const QuestionButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  white-space: pre-wrap;
+  border: 1px solid #b5b5b5;
+  font-weight: 400;
+  font-size: 15px;
+  width: 15%;
+  height: 46%;
+  background-color: white;
+  border-radius: 5px;
 `;
-const WaitAnswer = styled.p`
+const AnswerText = styled.div`
+  grid-column: 1/2;
+  grid-row: -3/-2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-right: ${(props) => !props.Answered && '20px'};
+  font-weight: 600;
+`;
+const AnswerContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const AnsweredIconStyled = styled(AnsweredIcon)`
+  height: 28px;
+`;
+
+const AnswerBox = styled.div`
+  grid-column: 2/3;
+  grid-row: -3/-2;
+  border: 2px solid #ededed;
+
+  ${(props) =>
+    props.Answered
+      ? `  
+      padding: 20px 20px;
+      font-size: 10px;
+  `
+      : `
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  `}
+`;
+
+const AnswerComp = styled.p``;
+
+const WaitAnswer = styled.div`
   font-size: 15px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.blue};
   text-align: center;
+`;
+
+const AnswerButtonSpace = styled.div`
+  grid-row: -2/-1;
+  grid-column: 2/3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+const AnswerButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #b5b5b5;
+  font-weight: 400;
+  font-size: 15px;
+  width: 15%;
+  height: 46%;
+  background-color: white;
+  border-radius: 5px;
 `;

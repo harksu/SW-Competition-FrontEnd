@@ -10,9 +10,11 @@ function App() {
   return (
     <ThemeProvider theme={Theme}>
       <GlobalStyle />
+
       <Header />
-      <Footer />
       <DetailPage />
+
+      <Footer />
     </ThemeProvider>
   );
 }
