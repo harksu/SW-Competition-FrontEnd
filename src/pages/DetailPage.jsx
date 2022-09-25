@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
 import { ReactComponent as Heart } from '../assests/Heart.svg';
 import { ReactComponent as AnsweredIcon } from '../assests/Answered.svg';
+import { ReactComponent as FullHeart } from '../assests/FullHeart.svg';
 
 function DetailPage() {
   const [isYongin] = useState(true);
@@ -24,6 +25,7 @@ function DetailPage() {
   /* 답변이 작성중인지 알기 위한 state */
   const [answerText, setAnswerText] = useState('');
   /* 답변 입력값 state */
+  const [isGood, setIsGood] = useState(false);
 
   function handleAnswer(e) {
     setAnswerText(e.target.value);
@@ -55,7 +57,11 @@ function DetailPage() {
             <Date>2022.07.21</Date>
           </UserDate>
           <Recommand>
-            <HeartStyled />
+            {isGood ? (
+              <FullHeartStyled onClick={() => setIsGood((prev) => !prev)} />
+            ) : (
+              <HeartStyled onClick={() => setIsGood((prev) => !prev)} />
+            )}
             <RecommandCount>500</RecommandCount>
           </Recommand>
         </BoardInfo>
@@ -192,6 +198,10 @@ const RecommandCount = styled.p`
   align-self: center;
   color: #424242;
   font-weight: 300;
+`;
+
+const FullHeartStyled = styled(FullHeart)`
+  height: 50%;
 `;
 const HeartStyled = styled(Heart)`
   height: 50%;
