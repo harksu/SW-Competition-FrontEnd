@@ -6,31 +6,29 @@ function LoginPage() {
   // eslint-disable-next-line no-unused-vars
   const [isValid, setIsValid] = useState(false);
   return (
-    <div>
-      <Container>
-        <SignHeader> 로그인</SignHeader>
-        <InputContainer>
-          <InputFormBox>
-            <InputForm
-              text="아이디"
-              isValid={isValid}
-              placeText="예) MJUyogoyogu"
-            />
-          </InputFormBox>{' '}
-          <InputFormBox>
-            <InputForm
-              text="비밀번호"
-              isValid={isValid}
-              placeText="예) MJU12345678"
-            />
-          </InputFormBox>{' '}
-          <QuestionText>아직 회원이 아니신가요?</QuestionText>
-          <LoginButton>
-            <ButtonText>로그인하기</ButtonText>
-          </LoginButton>
-        </InputContainer>
-      </Container>
-    </div>
+    <Container>
+      <SignHeader> 로그인</SignHeader>
+      <InputContainer>
+        <InputFormBox id>
+          <InputForm
+            text="아이디"
+            isValid={isValid}
+            placeText="예) MJUyogoyogu"
+          />
+        </InputFormBox>{' '}
+        <InputFormBox pw>
+          <InputForm
+            text="비밀번호"
+            isValid={isValid}
+            placeText="예) MJU12345678"
+          />
+        </InputFormBox>{' '}
+        <QuestionText>아직 회원이 아니신가요?</QuestionText>
+        <LoginButton>
+          <ButtonText>로그인하기</ButtonText>
+        </LoginButton>
+      </InputContainer>
+    </Container>
   );
 }
 
@@ -56,8 +54,8 @@ const EmptyBlock = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 58%; //피그마 기준 계산값입니다
-  height: 70vh; //피그마 기준 계산값입니다
+  width: 58%; //피그마 기준 계산값입니다 58% -> 840px 수정? 이거 확실하게 수정 한번 해야 될 듯
+  // height: 720px; //피그마 기준 계산값입니다 70% -> 720px 수정 +++ 오버레이 수정
   background-color: ${({ theme }) => theme.colors.white};
   margin: 69px auto 55px auto;
   border-radius: 20px 20px 0px 0px;
@@ -65,6 +63,7 @@ export const Container = styled.div`
   background-image: url(${backgroundImage});
   background-repeat: no-repeat;
   background-position: bottom;
+  //background-color: pink;
 `;
 
 export const SignHeader = styled.div`
@@ -84,10 +83,12 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 26px auto 33px auto;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 65%;
-  height: 78%;
+  height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
+  //background-color: pink;
+  margin-bottom: 33px;
 `;
 
 export const Text = styled.p`
@@ -111,9 +112,9 @@ const QuestionText = styled(AlertText)`
 const InputBox = styled.input`
   border: 0 solid black;
   width: 100%;
-  height: 42%;
+  height: 62px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  background-color: white;
+  //background-color: pink;
   border-radius: 10px;
   ::placeholder {
     font-size: 23px;
@@ -125,17 +126,18 @@ const InputBox = styled.input`
   color: #b5b5b5;
   padding-left: 19px;
   box-sizing: border-box;
+  margin-bottom: 19px;
+  margin-top: 14px;
 `;
 export const LoginButton = styled.div`
   display: flex;
   width: 43%;
-  height: 12%;
+  height: 60px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   justify-content: center;
   align-items: center;
   background-color: #b5b5b5;
-  margin-bottom: 33px;
   cursor: pointer;
   margin-left: auto;
   margin-right: auto;
@@ -148,9 +150,9 @@ export const ButtonText = styled(Text)`
 `;
 
 export const InputFormBox = styled.div`
-  margin-top: 27px;
+  margin-top: ${(props) => (props.pw ? '70px' : '27px')};
   width: 73%;
-  height: 28%;
+  // height: 28%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
