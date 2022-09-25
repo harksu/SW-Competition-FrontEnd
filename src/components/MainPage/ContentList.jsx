@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
+import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
 import ListDemoData from './ListDemoData';
 
 function ContentList() {
@@ -9,17 +10,24 @@ function ContentList() {
     <ListContainer>
       <Contents>
         {ListDemoData.map((data) => (
-          <ContentContainer key={data.order}>
-            <ContentNum>{data.order}</ContentNum>
-            <ContentTitle>{data.title}</ContentTitle>
-            <ContentWriter>{data.userName}</ContentWriter>
+          <ContentContainer key={data.boardId}>
+            <ContentNum>{data.boardId}</ContentNum>
+            <TitleBox>
+              <ContentTag>
+                {data.tag === 'none' ? '' : `[${data.tag}]`}
+              </ContentTag>
+              <ContentTitle>&nbsp;{data.title}</ContentTitle>
+            </TitleBox>
+            <ContentWriter>{data.writer_name}</ContentWriter>
             <ContentSympathy>
               <SympathyContainer>
                 <HeartBtnStyle />
-                {data.sympathy}
+                {data.likesCount}
               </SympathyContainer>
-              <ContentAnswer>{data.answer}</ContentAnswer>
             </ContentSympathy>
+            <ContentAnswer>
+              {data.isReplied ? <BlueCheckStyle /> : ''}
+            </ContentAnswer>
           </ContentContainer>
         ))}
       </Contents>
@@ -57,8 +65,19 @@ const ContentNum = styled.div`
   font-size: 25px;
 `;
 
+const TitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+`;
+
+const ContentTag = styled.div`
+  font-weight: 700;
+  font-size: 25px;
+`;
+
 const ContentTitle = styled.div`
-  padding-top: 20px;
+  /* padding-top: 20px; */
   border-right: 2px solid #ededed;
   font-size: 25px;
 `;
@@ -85,6 +104,8 @@ const HeartBtnStyle = styled(HeartBtn)`
   margin-right: 14px;
   cursor: pointer;
 `;
+
+const BlueCheckStyle = styled(blueCheck)``;
 
 const ContentAnswer = styled.div`
   padding-top: 18px;
