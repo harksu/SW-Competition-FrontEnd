@@ -1,32 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// import ContentList from '../components/MainPage/ContentList';
+import ContentList from '../components/MainPage/ContentList';
 
 function MainPage() {
   return (
-    // <MainBg>
-    //   <MainTitle>명지 의견 나눔함</MainTitle>
-    //   <MainContainer>
-    //     <ListContainer>
-    //       <ListHeader>
-    //         <Header1stContent>
-    //           <p>최신순&nbsp;</p>|<p>&nbsp;인기순</p>
-    //         </Header1stContent>
-    //         <Header2ndContent>
-    //           <p>순번</p>
-    //           <p>제목</p>
-    //           <p>작성자</p>
-    //           <p>공감</p>
-    //           <p>답변</p>
-    //         </Header2ndContent>
-    //       </ListHeader>
-    //       <ContentList />
-    //     </ListContainer>
-    //     <WriteButton>작성하기</WriteButton>
-    //     <ListPagesButton />
-    //   </MainContainer>
-    // </MainBg>
     <MainWrap>
       <MainTitle>명지 의견 나눔함</MainTitle>
       <MainContainer>
@@ -43,6 +21,7 @@ function MainPage() {
               <p>답변</p>
             </Header2ndContent>
           </ListHeader>
+          <ContentList />
         </ListContainer>
         <WriteButton>작성하기</WriteButton>
         <ListPagesButton />
@@ -104,7 +83,7 @@ const Header2ndContent = styled.div`
   text-align: center;
 
   p {
-    padding: 21px 0 21px 0;
+    padding: 21px 0;
     font-weight: 500;
     font-size: 25px;
   }
