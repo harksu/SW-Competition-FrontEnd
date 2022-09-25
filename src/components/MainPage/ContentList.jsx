@@ -70,6 +70,7 @@ const TitleBox = styled.div`
   align-items: center;
   margin-left: 20px;
   border-right: 2px solid #ededed;
+  cursor: pointer;
 `;
 
 const ContentTag = styled.div`
