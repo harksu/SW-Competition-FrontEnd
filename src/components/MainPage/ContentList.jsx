@@ -69,6 +69,7 @@ const TitleBox = styled.div`
   display: flex;
   align-items: center;
   margin-left: 20px;
+  border-right: 2px solid #ededed;
 `;
 
 const ContentTag = styled.div`
@@ -77,8 +78,6 @@ const ContentTag = styled.div`
 `;
 
 const ContentTitle = styled.div`
-  /* padding-top: 20px; */
-  border-right: 2px solid #ededed;
   font-size: 25px;
 `;
 
