@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Header() {
   const [isLogin] = useState(false);
+  const locationNow = useLocation();
+
+  if (locationNow.pathname === '/loading') return null;
   return (
     <HeaderWrapper>
       <ItemBox> </ItemBox>
