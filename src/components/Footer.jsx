@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import { ReactComponent as GithubIcon } from '../assests/githubIcon.svg';
 
 function Footer() {
+  const locationNow = useLocation();
+
+  if (locationNow.pathname === '/loading') return null;
   return (
     <FooterWrapper>
       <Container>
