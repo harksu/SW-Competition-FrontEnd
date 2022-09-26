@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import {
   Container,
   SignHeader,
@@ -11,53 +12,132 @@ import {
 } from './LoginPage';
 
 function SignUpPage() {
+  const [sendData, setSendData] = useState({
+    email: '',
+    name: '',
+    nickname: '',
+    password: '',
+    username: '',
+    emailAuthKey: '',
+  });
+
   return (
-    <Container>
+    <SignUpContainer>
       <SignHeader>회원가입</SignHeader>
       <InputContainer>
         <InputFormBox>
           <UserInfoText>이름</UserInfoText>
-          <UserInputBox />
+          <UserInputBox
+            placeholder="예) 김명지"
+            value={sendData.name}
+            onChange={(e) => {
+              setSendData({ ...sendData, name: e.target.value });
+            }}
+          />
         </InputFormBox>
-        <UserInfoInputFormBox>
-          <InputFormBox>
-            <UserInfoText>아이디</UserInfoText>
-            <UserInputBox />
-          </InputFormBox>
-          <InputFormBox>
-            <UserInfoText>비밀번호</UserInfoText>
-            <UserInputBox />
-          </InputFormBox>
-        </UserInfoInputFormBox>
-
-        <EmailInputFormBox>
-          <EmailInputBox>
-            <UserInfoText>이메일</UserInfoText>
-            <UserInputBox />
-          </EmailInputBox>
-          <EmailButton>
-            <EmailButtonText>인증번호 받기 </EmailButtonText>
-          </EmailButton>
-        </EmailInputFormBox>
-        <EmailInputFormBox>
-          <EmailInputBox>
-            <UserInfoText>이메일 인증번호</UserInfoText>
-            <UserInputBox />
-          </EmailInputBox>
-          <EmailButton>
-            <EmailButtonText>인증번호 받기 </EmailButtonText>
-          </EmailButton>
-        </EmailInputFormBox>
+        <UserInfoInputContainer
+          exid="예) MJUyogoyogu"
+          expw="예) MJU12345678"
+          data={sendData}
+          event={setSendData}
+        />
+        <EmailInfoInputContainer
+          type="email"
+          email="이메일"
+          alertText="인증번호 받기"
+          exemail="예) MJU@mju.ac.kr"
+          data={sendData}
+          event={setSendData}
+        />
+        <EmailInfoInputContainer
+          type="confirm"
+          email="이메일 인증번호"
+          alertText="인증번호 확인"
+          exemail="예) MJU12345667"
+          data={sendData}
+          event={setSendData}
+        />
         <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
-        <LoginButton>
+        <LoginButton onClick={() => console.log(sendData)}>
           <ButtonText>회원가입하기</ButtonText>
         </LoginButton>
       </InputContainer>
-    </Container>
+    </SignUpContainer>
+  );
+}
+
+function UserInfoInputContainer({ exid, expw, data, event }) {
+  return (
+    <UserInfoInputFormBox>
+      <InputFormBox>
+        <UserInfoText>아이디</UserInfoText>
+        <UserInputBox
+          placeholder={exid}
+          value={data.username || ''}
+          onChange={(e) => {
+            event({
+              ...data,
+              username: e.target.value,
+              nickname: e.target.value,
+            });
+          }}
+        />
+      </InputFormBox>
+      <InputFormBox>
+        <UserInfoText>비밀번호</UserInfoText>
+        <UserInputBox
+          placeholder={expw}
+          type="password"
+          value={data.password || ''}
+          onChange={(e) => {
+            event({ ...data, password: e.target.value });
+          }}
+        />
+      </InputFormBox>
+    </UserInfoInputFormBox>
+  );
+}
+function EmailInfoInputContainer({
+  email,
+  alertText,
+  exemail,
+  data,
+  event,
+  type,
+}) {
+  return (
+    <EmailInputFormBox>
+      <EmailInputBox>
+        <UserInfoText>{email}</UserInfoText>
+        {type === 'confirm' ? (
+          <UserInputBox
+            placeholder={exemail}
+            value={data.email || ''}
+            onChange={(e) => {
+              event({ ...data, email: e.target.value });
+            }}
+          />
+        ) : (
+          <UserInputBox
+            placeholder={exemail}
+            value={data.emailAuthKey || ''}
+            onChange={(e) => {
+              event({ ...data, emailAuthKey: e.target.value });
+            }}
+          />
+        )}
+      </EmailInputBox>
+      <EmailButton>
+        <EmailButtonText>{alertText} </EmailButtonText>
+      </EmailButton>
+    </EmailInputFormBox>
   );
 }
 
 export default SignUpPage;
+const SignUpContainer = styled(Container)`
+  margin: 42px auto 12px auto;
+`;
 const AlertEmailText = styled(AlertText)`
   line-height: 24px;
   font-weight: 700;
@@ -70,7 +150,7 @@ const AlertEmailText = styled(AlertText)`
 
 const InputContainer = styled.div`
   //background-color: blue;
-  margin: 2px 95px 54px 65px;
+  margin: 2px 95px 0px 65px; //이것 때문에 버튼 밑에 붙음
   // width: 100%;
   // 65,26,95,54
 `;
