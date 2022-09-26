@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './components/Header';
 import GlobalStyle from './styles/GlobalStyles';
@@ -24,6 +26,14 @@ function App() {
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/main" element={<MainPage />} />
         </Routes>
+        <ToastContainerStyled
+          limit={1}
+          position="bottom-center"
+          closeButton={false}
+          hideProgressBar
+          transition={Slide}
+          autoClose={4000}
+        />
       </AllWrap>
     </ThemeProvider>
   );
@@ -32,6 +42,23 @@ function App() {
 const AllWrap = styled.div`
   position: relative;
   min-height: 100%;
+`;
+const ToastContainerStyled = styled(ToastContainer)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-weight: 700;
+  font-size: 25px;
+  .Toastify__toast {
+    width: 392px;
+    height: 100px;
+    border-radius: 20px;
+    background-color: rgba(1, 134, 209, 0.6);
+    opacity: 0.9;
+    color: black;
+  }
 `;
 
 export default App;
