@@ -1,10 +1,39 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import backgroundImage from '../assests/logo.png';
 
 function LoginPage() {
   // eslint-disable-next-line no-unused-vars
   const [isValid, setIsValid] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    password: '',
+    username: '',
+  });
+  const option = {
+    loginUrl: 'http://13.125.85.216:8080/api/sign-in?',
+  };
+
+  const login = () => {
+    console.log(userInfo);
+    axios({
+      method: 'post',
+      url: option.loginUrl,
+      data: {
+        ...userInfo,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+
+        if (response.status === 200) {
+          console.log(response);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Container>
       <SignHeader> 로그인</SignHeader>
@@ -14,6 +43,8 @@ function LoginPage() {
             text="아이디"
             isValid={isValid}
             placeText="예) MJUyogoyogu"
+            data={userInfo}
+            event={setUserInfo}
           />
         </InputFormBox>{' '}
         <InputFormBox pw>
@@ -21,10 +52,12 @@ function LoginPage() {
             text="비밀번호"
             isValid={isValid}
             placeText="예) MJU12345678"
+            data={userInfo}
+            event={setUserInfo}
           />
         </InputFormBox>{' '}
         <QuestionText>아직 회원이 아니신가요?</QuestionText>
-        <LoginButton>
+        <LoginButton onClick={login}>
           <ButtonText>로그인하기</ButtonText>
         </LoginButton>
       </InputContainer>
@@ -33,11 +66,34 @@ function LoginPage() {
 }
 
 export default LoginPage;
-function InputForm({ text, isValid, placeText }) {
+function InputForm({ text, isValid, placeText, data, event }) {
   return (
     <>
       <Text>{text}</Text>
-      <InputBox placeholder={placeText} />
+      {text === '아이디' ? (
+        <InputBox
+          placeholder={placeText}
+          value={data.username || ''}
+          onChange={(e) => {
+            event({
+              ...data,
+              username: e.target.value,
+            });
+          }}
+        />
+      ) : (
+        <InputBox
+          placeholder={placeText}
+          value={data.password || ''}
+          onChange={(e) => {
+            event({
+              ...data,
+              password: e.target.value,
+            });
+          }}
+        />
+      )}
+
       {isValid ? (
         <EmptyBlock />
       ) : (

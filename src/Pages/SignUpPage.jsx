@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+// 리팩터링은 나중에 하겠습니다.
 import {
   Container,
   SignHeader,
@@ -27,6 +28,7 @@ function SignUpPage() {
   const option = {
     getAuthUrl: 'http://13.125.85.216:8080/api/sign-up/email?',
     getCheckUrl: 'http://13.125.85.216:8080/api/sign-up/email/check?',
+    signUpUrl: 'http://13.125.85.216:8080/api/sign-up',
   };
 
   const getAuth = () => {
@@ -48,16 +50,44 @@ function SignUpPage() {
       params: {
         code: checkvalue,
       },
-    }).then((response) => {
-      console.log(response);
-      if (response.status === 200) {
-        setIsChecked(true);
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setIsChecked(true);
+          alert(isChecked);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsChecked(false);
         alert(isChecked);
-      } else {
-        alert(isChecked);
-      }
-    });
-    //
+      });
+  };
+
+  const SignUp = () => {
+    console.log(sendData);
+    if (isChecked) {
+      axios({
+        method: 'post',
+        url: option.signUpUrl,
+        data: {
+          ...sendData,
+        },
+      })
+        .then((response) => {
+          console.log(response);
+
+          if (response.status === 200) {
+            console.log(response);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      alert('인증번호 ㄲ ');
+    }
   };
 
   return (
@@ -98,8 +128,11 @@ function SignUpPage() {
           event={setSendData}
           getevent={getCheck}
         />
-        <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
-        <LoginButton>
+        {!isChecked && (
+          <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
+        )}
+        {/* 이거 나중에 유효할 때 블럭 값 채워주도록 수정  */}
+        <LoginButton onClick={SignUp}>
           <ButtonText>회원가입하기</ButtonText>
         </LoginButton>
       </InputContainer>
