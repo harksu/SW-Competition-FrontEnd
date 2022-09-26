@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Route, Routes } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import Header from './components/Header';
@@ -10,6 +11,7 @@ import DetailPage from './Pages/DetailPage';
 import LoadingPage from './Pages/LoadingPage';
 
 function App() {
+  axios.defaults.baseURL = 'http://13.125.85.216:8080';
   return (
     <ThemeProvider theme={Theme}>
       <GlobalStyle />

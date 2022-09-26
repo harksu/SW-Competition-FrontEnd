@@ -5,30 +5,32 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable indent */
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
 import { ReactComponent as Heart } from '../assests/Heart.svg';
 import { ReactComponent as AnsweredIcon } from '../assests/Answered.svg';
 import { ReactComponent as FullHeart } from '../assests/FullHeart.svg';
+import { TestLogin, getBoardInfo } from '../api/Detail';
 
 function DetailPage() {
-  const [isYongin] = useState(true);
-  /* 자연캠 인캠 텍스트 달기 위한 state */
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
-  const [isSelf] = useState(true);
-  /* 작성자 본인인지 알기 위한 state */
-  const [isCouncil] = useState(false);
-  /* 학생회인지 알기 위한 state */
   const [answerWriting, setAnswerWriting] = useState(false);
   /* 답변이 작성중인지 알기 위한 state */
   const [answerText, setAnswerText] = useState('');
   /* 답변 입력값 state */
   const [isGood, setIsGood] = useState(false);
 
+  const [boardInfo, setBoardInfo] = useState();
+  useEffect(async () => {
+    await TestLogin();
+    getBoardInfo(2, setBoardInfo);
+  }, []);
+
   function handleAnswer(e) {
     setAnswerText(e.target.value);
+    console.log(boardInfo);
   }
   function handleAnswerBtn() {
     if (answerWriting) {
@@ -37,8 +39,12 @@ function DetailPage() {
       setIsAnswered(true);
       setAnswerWriting(false);
     } else {
+      /* 학생회인지 아닌지 판단 */
       setAnswerWriting(true);
     }
+  }
+  function handleQuestionBtn() {
+    console.log('글 작성 페이지로 이동');
   }
 
   return (
@@ -48,13 +54,20 @@ function DetailPage() {
         <BackText>목록으로 돌아가기</BackText>
       </BacktoList>
       <BoardContainer>
-        <Title>
-          [{isYongin ? '자연캠' : '인문캠'}]학교 학식 정확히 언제 나오나요?
-        </Title>
+        {boardInfo && (
+          <Title>
+            [{boardInfo.tag}]{boardInfo.title}
+          </Title>
+        )}
         <BoardInfo>
           <UserDate>
-            <User>작성자: 최**</User>
-            <Date>2022.07.21</Date>
+            {boardInfo && <User>{boardInfo.writerName}</User>}
+            {boardInfo && (
+              <Date>
+                {boardInfo.createdAt[0]}.{boardInfo.createdAt[1]}.
+                {boardInfo.createdAt[2]}
+              </Date>
+            )}
           </UserDate>
           <Recommand>
             {isGood ? (
@@ -62,36 +75,15 @@ function DetailPage() {
             ) : (
               <HeartStyled onClick={() => setIsGood((prev) => !prev)} />
             )}
-            <RecommandCount>500</RecommandCount>
+            {boardInfo && (
+              <RecommandCount>{boardInfo.likesCount}</RecommandCount>
+            )}
           </Recommand>
         </BoardInfo>
         <QuestionText>내용</QuestionText>
-        <QuestionBox>
-          The standard Lorem Ipsum passage, used since the 1500s "Lorem ipsum
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-          velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-          occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-          mollit anim id est laborum." Section 1.10.32 of "de Finibus Bonorum et
-          Malorum", written by Cicero in 45 BC "Sed ut perspiciatis unde omnis
-          iste natus error sit voluptatem accusantium doloremque laudantium,
-          totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et
-          quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
-          voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-          consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-          Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-          consectetur, adipisci velit, sed quia non numquam eius modi tempora
-          incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut
-          enim ad minima veniam, quis nostrum exercitationem ullam corporis
-          suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis
-          autem vel eum iure reprehenderit qui in ea voluptate velit esse quam
-          nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo
-          voluptas nulla pariatur?"
-        </QuestionBox>
+        {boardInfo && <QuestionBox>{boardInfo.content}</QuestionBox>}
         <QuestionButtonSpace>
-          {isSelf && !isCouncil && <QuestionButton>수정하기</QuestionButton>}
+          <QuestionButton onClick={handleQuestionBtn}>수정하기</QuestionButton>
         </QuestionButtonSpace>
         <AnswerText Answered={isAnswered}>
           <AnswerContainer>
@@ -115,15 +107,13 @@ function DetailPage() {
         )}
 
         <AnswerButtonSpace>
-          {isCouncil && (
-            <AnswerButton onClick={handleAnswerBtn} value={answerText}>
-              {answerWriting
-                ? '저장하기'
-                : isAnswered
-                ? '답변 수정하기'
-                : '답변 작성하기'}
-            </AnswerButton>
-          )}
+          <AnswerButton onClick={handleAnswerBtn} value={answerText}>
+            {answerWriting
+              ? '저장하기'
+              : isAnswered
+              ? '답변 수정하기'
+              : '답변 작성하기'}
+          </AnswerButton>
         </AnswerButtonSpace>
       </BoardContainer>
     </Container>
