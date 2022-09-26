@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import {
   Container,
@@ -20,6 +21,21 @@ function SignUpPage() {
     username: '',
     emailAuthKey: '',
   });
+
+  const option = {
+    url: 'http://13.125.85.216:8080/api/sign-up/email?',
+  };
+
+  const getAuth = () => {
+    const emailvalue = sendData.email;
+    axios({
+      method: 'post',
+      url: option.url,
+      params: {
+        email: emailvalue,
+      },
+    }).then(console.log(emailvalue));
+  };
 
   return (
     <SignUpContainer>
@@ -48,6 +64,7 @@ function SignUpPage() {
           exemail="예) MJU@mju.ac.kr"
           data={sendData}
           event={setSendData}
+          getevent={getAuth}
         />
         <EmailInfoInputContainer
           type="confirm"
@@ -58,7 +75,7 @@ function SignUpPage() {
           event={setSendData}
         />
         <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
-        <LoginButton onClick={() => console.log(sendData)}>
+        <LoginButton onClick={getAuth}>
           <ButtonText>회원가입하기</ButtonText>
         </LoginButton>
       </InputContainer>
@@ -104,18 +121,20 @@ function EmailInfoInputContainer({
   data,
   event,
   type,
+  getevent,
 }) {
   return (
     <EmailInputFormBox>
       <EmailInputBox>
         <UserInfoText>{email}</UserInfoText>
-        {type === 'confirm' ? (
+        {type === 'email' ? (
           <UserInputBox
             placeholder={exemail}
             value={data.email || ''}
             onChange={(e) => {
               event({ ...data, email: e.target.value });
             }}
+            onClick={getevent}
           />
         ) : (
           <UserInputBox
