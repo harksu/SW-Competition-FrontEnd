@@ -22,19 +22,42 @@ function SignUpPage() {
     emailAuthKey: '',
   });
 
+  const [isChecked, setIsChecked] = useState(false);
+
   const option = {
-    url: 'http://13.125.85.216:8080/api/sign-up/email?',
+    getAuthUrl: 'http://13.125.85.216:8080/api/sign-up/email?',
+    getCheckUrl: 'http://13.125.85.216:8080/api/sign-up/email/check?',
   };
 
   const getAuth = () => {
     const emailvalue = sendData.email;
     axios({
       method: 'post',
-      url: option.url,
+      url: option.getAuthUrl,
       params: {
         email: emailvalue,
       },
     }).then(console.log(emailvalue));
+  };
+
+  const getCheck = () => {
+    const checkvalue = sendData.emailAuthKey;
+    axios({
+      method: 'post',
+      url: option.getCheckUrl,
+      params: {
+        code: checkvalue,
+      },
+    }).then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        setIsChecked(true);
+        alert(isChecked);
+      } else {
+        alert(isChecked);
+      }
+    });
+    //
   };
 
   return (
@@ -73,9 +96,10 @@ function SignUpPage() {
           exemail="예) MJU12345667"
           data={sendData}
           event={setSendData}
+          getevent={getCheck}
         />
         <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
-        <LoginButton onClick={getAuth}>
+        <LoginButton>
           <ButtonText>회원가입하기</ButtonText>
         </LoginButton>
       </InputContainer>
@@ -134,7 +158,6 @@ function EmailInfoInputContainer({
             onChange={(e) => {
               event({ ...data, email: e.target.value });
             }}
-            onClick={getevent}
           />
         ) : (
           <UserInputBox
@@ -146,9 +169,15 @@ function EmailInfoInputContainer({
           />
         )}
       </EmailInputBox>
-      <EmailButton>
-        <EmailButtonText>{alertText} </EmailButtonText>
-      </EmailButton>
+      {type === 'email' ? (
+        <EmailButton onClick={getevent}>
+          <EmailButtonText>{alertText}</EmailButtonText>
+        </EmailButton>
+      ) : (
+        <EmailButton onClick={getevent}>
+          <EmailButtonText>{alertText}</EmailButtonText>
+        </EmailButton>
+      )}
     </EmailInputFormBox>
   );
 }
