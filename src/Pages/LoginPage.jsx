@@ -33,7 +33,7 @@ function LoginPage() {
 }
 
 export default LoginPage;
-export function InputForm({ text, isValid, placeText }) {
+function InputForm({ text, isValid, placeText }) {
   return (
     <>
       <Text>{text}</Text>
@@ -55,7 +55,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 58%; //피그마 기준 계산값입니다 58% -> 840px 수정? 이거 확실하게 수정 한번 해야 될 듯
-  // height: 720px; //피그마 기준 계산값입니다 70% -> 720px 수정 +++ 오버레이 수정
+  height: 720px; //피그마 기준 계산값입니다 70% -> 720px 수정 +++ 오버레이 수정
   background-color: ${({ theme }) => theme.colors.white};
   margin: 69px auto 55px auto;
   border-radius: 20px 20px 0px 0px;
@@ -86,7 +86,7 @@ export const InputContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 65%;
-  height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
+  //height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
   //background-color: pink;
   margin-bottom: 33px;
 `;
@@ -109,7 +109,7 @@ const QuestionText = styled(AlertText)`
   margin-top: 40px;
   margin-bottom: 12px;
 `;
-const InputBox = styled.input`
+export const InputBox = styled.input`
   border: 0 solid black;
   width: 100%;
   height: 62px;
