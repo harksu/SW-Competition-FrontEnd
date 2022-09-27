@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assests/logo.png';
 
 function LoginPage() {
-  // eslint-disable-next-line no-unused-vars
-  const [isValid, setIsValid] = useState(false);
+  const [idValid, setIdValid] = useState(true);
+  const [pwValid, setPwValid] = useState(true);
   const [userInfo, setUserInfo] = useState({
     password: '',
     username: '',
@@ -15,27 +15,49 @@ function LoginPage() {
     loginUrl: 'http://13.125.85.216:8080/api/sign-in?',
   };
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/main'); // 이거 다녀와서 수행
+  const goMain = () => {
+    navigate('/main');
+  };
+  const goSignUP = () => {
+    navigate('/signup');
   };
 
   const login = () => {
-    console.log(userInfo);
-    axios({
-      method: 'post',
-      url: option.loginUrl,
-      data: {
-        ...userInfo,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        window.alert(`${userInfo.username}님 환영합니다!`);
-        handleClick();
+    const { username, password } = userInfo;
+    if (username && password) {
+      axios({
+        method: 'post',
+        url: option.loginUrl,
+        data: {
+          ...userInfo,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+          setIdValid(true);
+          setPwValid(true);
+          window.alert(`${userInfo.username}님 환영합니다!`);
+          goMain();
+        })
+        .catch((error) => {
+          console.log(error);
+          if (
+            error.response.data.result.msg === '존재하지 않는 아이디입니다.'
+          ) {
+            window.alert('아이디 입력오류');
+            setIdValid(false);
+          }
+          if (
+            error.response.data.result.msg === '존재하지 않는 비밀번호입니다.'
+          ) {
+            window.alert('비밀번호 입력오류');
+            setIdValid(true); // 애초에 아이디가 틀렸다면, 비밀번호 에러 메시지까지 오지도 못함
+            setPwValid(false);
+          }
+        });
+    } else {
+      alert('아이디와 비밀번호를 모두 입력해주세요');
+    }
   };
   return (
     <Container>
@@ -44,7 +66,7 @@ function LoginPage() {
         <InputFormBox id>
           <InputForm
             text="아이디"
-            isValid={isValid}
+            isValid={idValid}
             placeText="예) MJUyogoyogu"
             data={userInfo}
             event={setUserInfo}
@@ -53,13 +75,13 @@ function LoginPage() {
         <InputFormBox pw>
           <InputForm
             text="비밀번호"
-            isValid={isValid}
+            isValid={pwValid}
             placeText="예) MJU12345678"
             data={userInfo}
             event={setUserInfo}
           />
         </InputFormBox>{' '}
-        <QuestionText>아직 회원이 아니신가요?</QuestionText>
+        <QuestionText onClick={goSignUP}>아직 회원이 아니신가요?</QuestionText>
         <LoginButton onClick={login}>
           <ButtonText>로그인하기</ButtonText>
         </LoginButton>
@@ -167,6 +189,10 @@ const QuestionText = styled(AlertText)`
   font-size: 22px;
   margin-top: 40px;
   margin-bottom: 12px;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme }) => theme.colors.blue};
+  }
 `;
 export const InputBox = styled.input`
   border: 0 solid black;
@@ -206,6 +232,9 @@ export const ButtonText = styled(Text)`
   font-weight: 400;
   font-size: 28px;
   line-height: 32px;
+  &:hover {
+    color: ${({ theme }) => theme.colors.blue};
+  }
 `;
 
 export const InputFormBox = styled.div`
