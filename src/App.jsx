@@ -11,6 +11,7 @@ import LoginPage from './Pages/LoginPage';
 import DetailPage from './Pages/DetailPage';
 import LoadingPage from './Pages/LoadingPage';
 import MainPage from './Pages/MainPage';
+import SignUpPage from './Pages/SignUpPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/detail" element={<DetailPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
           {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/main" element={<MainPage />} />
