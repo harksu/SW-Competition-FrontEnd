@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { authToken } from '../Atoms/atom';
 import backgroundImage from '../assests/logo.png';
 
 function LoginPage() {
@@ -11,6 +13,7 @@ function LoginPage() {
     password: '',
     username: '',
   });
+  const setAuthToken = useSetRecoilState(authToken);
   const option = {
     loginUrl: 'http://13.125.85.216:8080/api/sign-in?',
   };
@@ -34,6 +37,7 @@ function LoginPage() {
       })
         .then((response) => {
           console.log(response);
+          setAuthToken(response.data.result.data.accessToken);
           setIdValid(true);
           setPwValid(true);
           window.alert(`${userInfo.username}님 환영합니다!`);

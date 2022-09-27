@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-// 리팩터링,정규식 표현,유효할 때 블럭 채우는거,스타일링
+// 리팩터링,스타일링 ++console은 나중에 리팩터링 끝나면 다 지우겠습니다.
 import {
   Container,
   SignHeader,
@@ -24,22 +25,40 @@ function SignUpPage() {
   });
 
   const [isChecked, setIsChecked] = useState(false);
+  const [regExprees, setRegExpress] = useState({
+    nameRegExpress: false,
+    pwRegExpress: false,
+    emailRegExpress: false,
+  });
 
   const option = {
     getAuthUrl: 'http://13.125.85.216:8080/api/sign-up/email?',
     getCheckUrl: 'http://13.125.85.216:8080/api/sign-up/email/check?',
     signUpUrl: 'http://13.125.85.216:8080/api/sign-up',
   };
+  const nameRegEx = /^[가-힣]{2,8}$/;
+  const pwRegEx = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
+  // eslint-disable-next-line prefer-regex-literals
+  const emailRegEx = new RegExp('[a-z0-9]+@mju.ac.kr');
+
+  const navigate = useNavigate();
+  const gologin = () => {
+    navigate('/');
+  };
 
   const getAuth = () => {
     const emailvalue = sendData.email;
-    axios({
-      method: 'post',
-      url: option.getAuthUrl,
-      params: {
-        email: emailvalue,
-      },
-    }).then(console.log(emailvalue));
+    if (regExprees.emailRegExpress) {
+      axios({
+        method: 'post',
+        url: option.getAuthUrl,
+        params: {
+          email: emailvalue,
+        },
+      }).then(console.log(emailvalue));
+    } else {
+      window.alert('이메일 형식은 @mju.ac.kr입니다');
+    }
   };
 
   const getCheck = () => {
@@ -61,13 +80,15 @@ function SignUpPage() {
       .catch((error) => {
         console.log(error);
         setIsChecked(false);
-        alert(error);
+        alert('인증번호를 다시 확인해주세요');
       });
   };
 
   const SignUp = () => {
     console.log(sendData); // 이거 나중에 삭제
-    if (isChecked) {
+    const { nameRegExpress, pwRegExpress, emailRegExpress } = regExprees;
+    const isValid = nameRegExpress && pwRegExpress && emailRegExpress;
+    if (isChecked && isValid) {
       axios({
         method: 'post',
         url: option.signUpUrl,
@@ -76,14 +97,14 @@ function SignUpPage() {
         },
       })
         .then((response) => {
-          if (response.status === 200) {
-            // 근데 이게 반응이 뜬다는게 결국엔 성공했을 때 아닌건가 ?
-            console.log(response);
-          }
+          console.log(response);
+          gologin();
         })
         .catch((error) => {
           console.log(error);
         });
+    } else if (!isValid) {
+      alert('입력 형식이 올바르지 않습니다.');
     } else {
       alert('인증번호 확인이 완료되지 않았습니다.');
     }
@@ -99,7 +120,15 @@ function SignUpPage() {
             placeholder="예) 김명지"
             value={sendData.name}
             onChange={(e) => {
+              const { value } = e.target;
               setSendData({ ...sendData, name: e.target.value });
+              console.log(value.match(nameRegEx));
+              if (value.match(nameRegEx)) {
+                setRegExpress({ ...regExprees, nameRegExpress: true });
+              } else {
+                setRegExpress({ ...regExprees, nameRegExpress: false });
+              }
+              // console.log(regExprees);
             }}
           />
         </InputFormBox>
@@ -108,6 +137,9 @@ function SignUpPage() {
           expw="예) MJU12345678"
           data={sendData}
           event={setSendData}
+          reg={pwRegEx}
+          regEvent={setRegExpress}
+          regstate={regExprees}
         />
         <EmailInfoInputContainer
           type="email"
@@ -117,6 +149,9 @@ function SignUpPage() {
           data={sendData}
           event={setSendData}
           getevent={getAuth}
+          reg={emailRegEx}
+          regEvent={setRegExpress}
+          regstate={regExprees}
         />
         <EmailInfoInputContainer
           type="confirm"
@@ -128,11 +163,10 @@ function SignUpPage() {
           getevent={getCheck}
         />
         {isChecked ? (
-          <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
-        ) : (
           <EmptyBlock />
+        ) : (
+          <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
         )}
-        {/* 이거 나중에 유효할 때 블럭 값 채워주도록 수정  */}
         <LoginButton onClick={SignUp}>
           <ButtonText>회원가입하기</ButtonText>
         </LoginButton>
@@ -141,7 +175,15 @@ function SignUpPage() {
   );
 }
 
-function UserInfoInputContainer({ exid, expw, data, event }) {
+function UserInfoInputContainer({
+  exid,
+  expw,
+  data,
+  event,
+  reg,
+  regEvent,
+  regstate,
+}) {
   return (
     <UserInfoInputFormBox>
       <InputFormBox>
@@ -165,7 +207,15 @@ function UserInfoInputContainer({ exid, expw, data, event }) {
           type="password"
           value={data.password || ''}
           onChange={(e) => {
+            const { value } = e.target;
             event({ ...data, password: e.target.value });
+            console.log(value.match(reg));
+            if (value.match(reg)) {
+              regEvent({ ...regstate, pwRegExpress: true });
+            } else {
+              regEvent({ ...regstate, pwRegExpress: false });
+            }
+            console.log(regstate);
           }}
         />
       </InputFormBox>
@@ -180,6 +230,9 @@ function EmailInfoInputContainer({
   event,
   type,
   getevent,
+  reg,
+  regstate,
+  regEvent,
 }) {
   return (
     <EmailInputFormBox>
@@ -190,7 +243,15 @@ function EmailInfoInputContainer({
             placeholder={exemail}
             value={data.email || ''}
             onChange={(e) => {
+              const { value } = e.target;
               event({ ...data, email: e.target.value });
+              console.log(reg.test(value));
+              if (reg.test(value)) {
+                regEvent({ ...regstate, emailRegExpress: true });
+              } else {
+                regEvent({ ...regstate, emailRegExpress: false });
+              }
+              console.log(regstate);
             }}
           />
         ) : (
@@ -216,7 +277,7 @@ function EmailInfoInputContainer({
   );
 }
 
-export default SignUpPage;
+export default React.memo(SignUpPage);
 const SignUpContainer = styled(Container)`
   margin: 42px auto 12px auto;
 `;
