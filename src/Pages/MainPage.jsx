@@ -1,7 +1,9 @@
 import React from 'react';
+// import axios from 'axios';
 import styled from 'styled-components';
 
 import ContentList from '../components/MainPage/ContentList';
+import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
   return (
@@ -24,7 +26,11 @@ function MainPage() {
           <ContentList />
         </ListContainer>
         <WriteButton>작성하기</WriteButton>
-        <ListPagesButton />
+        <ListPagesButton>
+          <PageMovingBtn />
+          <PageBtnContainer />
+          <PageMovingBtn rightbtn="true" />
+        </ListPagesButton>
       </MainContainer>
     </MainWrap>
   );
@@ -90,11 +96,20 @@ const Header2ndContent = styled.div`
 `;
 
 const ListPagesButton = styled.div`
+  display: flex;
+  justify-content: space-between;
   width: 350px;
   height: 40px;
   border: 1px solid #adadad;
   border-radius: 5px;
 `;
+
+const PageMovingBtn = styled(pageMovingBtn)`
+  transform: ${(props) => props.rightbtn && 'rotate(180deg)'};
+  cursor: pointer;
+`;
+
+const PageBtnContainer = styled.div``;
 
 const WriteButton = styled.button`
   width: 152px;

@@ -39,6 +39,46 @@ const ListDemoData = [
     isReplied: false,
     tag: '인문캠',
   },
+  {
+    boardId: 6,
+    title: '학식 메뉴 건의합니다.',
+    writer_name: '김수정6',
+    likesCount: 12,
+    isReplied: false,
+    tag: '총학생회',
+  },
+  {
+    boardId: 7,
+    title: '대운동장 사용 시간 문의하고 싶어요.',
+    writer_name: '김수정7',
+    likesCount: 500,
+    isReplied: true,
+    tag: 'none',
+  },
+  {
+    boardId: 8,
+    title: '캠퍼스 간 교차수강 가능한가요?',
+    writer_name: '김수정8',
+    likesCount: 721,
+    isReplied: false,
+    tag: 'none',
+  },
+  {
+    boardId: 9,
+    title: '셔틀버스 시간표 관련 문의드립니다.',
+    writer_name: '김수정9',
+    likesCount: 3,
+    isReplied: false,
+    tag: 'none',
+  },
+  {
+    boardId: 10,
+    title: '도서관 열람실 자리 늘려주세요!',
+    writer_name: '김수정10',
+    likesCount: 17,
+    isReplied: false,
+    tag: '인문캠',
+  },
 ];
 
 export default ListDemoData;
