@@ -2,13 +2,23 @@
 /* eslint-disable operator-linebreak  */
 /* eslint-disable  */
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const user = {
   username: 'test',
   password: 'password12345!',
 };
 
-export async function TestLogin() {
+export async function getBoardInfo(
+  boardId,
+  setBoard,
+  setIsLoading,
+  setIsAnswered,
+  setLikeCount,
+  setIsLike,
+  setIsMine,
+  setIsCouncil,
+) {
   try {
     await axios.post('/api/sign-in', user).then((res) => {
       const token = res.data.result.data.accessToken;
@@ -18,21 +28,27 @@ export async function TestLogin() {
   } catch (e) {
     console.log(e);
   }
-}
-
-export async function getBoardInfo(boardId, setBoard) {
   try {
     await axios(`/api/boards/${boardId}`).then((res) => {
-      setBoard(res.data.result.data.boards);
+      const boardData = res.data.result.data;
+      setBoard(() => boardData);
+      if (boardData.reply) setIsAnswered(true);
+      if (boardData.isPermittedToReplyOrEdit) setIsCouncil(true);
+      if (boardData.isAlreadyPushedLikeByUser) setIsLike(true);
+      if (boardData.isMineBoard) setIsMine(true);
+      setLikeCount(boardData.boards.likesCount);
+
+      setIsLoading(false);
     });
   } catch (e) {
     console.log(e);
   }
 }
 
-export async function likeBoard(boardId) {
+export async function likeBoard(boardId, setIsLike) {
   try {
-    await axios.post(`/api/boards${boardId}`).then((res) => {
+    await axios.post(`/api/boards/${boardId}`).then((res) => {
+      setIsLike((prev) => !prev);
       console.log(res, '좋아요');
     });
   } catch (e) {
@@ -40,9 +56,10 @@ export async function likeBoard(boardId) {
   }
 }
 
-export async function dislikeBoard(boardId) {
+export async function dislikeBoard(boardId, setIsLike) {
   try {
-    await axios.post(`/api/boards${boardId}`).then((res) => {
+    await axios.post(`/api/boards/${boardId}`).then((res) => {
+      setIsLike((prev) => !prev);
       console.log(res, '좋아요 취소');
     });
   } catch (e) {
@@ -50,22 +67,32 @@ export async function dislikeBoard(boardId) {
   }
 }
 
-export async function councilAnswer(boardId, content) {
+export async function registerReply(boardId, answerText, setIsAnsewred) {
   try {
-    await axios.post(`/api/boards/${boardId}/replies`, content).then((res) => {
-      console.log(res, '성공');
-    });
+    await axios
+      .post(`/api/boards/${boardId}/replies`, {
+        content: answerText,
+      })
+      .then((res) => {
+        setIsAnsewred(true);
+        toast('답변이 등록되었습니다.');
+      });
   } catch (e) {
-    console.log(e);
+    toast(e.result.msg);
   }
 }
 
-export async function modifyCouncilAnswer(boardId, content) {
+export async function modifyReply(boardId, answerText, setIsAnsewred) {
   try {
-    await axios(`/api/boards/${boardId}/replies`, content).then((res) => {
-      console.log(res, '성공');
-    });
+    await axios
+      .get(`/api/boards/${boardId}/replies`, {
+        content: answerText,
+      })
+      .then((res) => {
+        setIsAnsewred(true);
+        toast('답변이 등록되었습니다.');
+      });
   } catch (e) {
-    console.log(e);
+    toast(e.result.msg);
   }
 }

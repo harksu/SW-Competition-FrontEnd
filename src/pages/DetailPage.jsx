@@ -7,35 +7,80 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import LoadingPage from './LoadingPage';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
 import { ReactComponent as Heart } from '../assests/Heart.svg';
 import { ReactComponent as AnsweredIcon } from '../assests/Answered.svg';
 import { ReactComponent as FullHeart } from '../assests/FullHeart.svg';
-import { TestLogin, getBoardInfo } from '../api/Detail';
+import {
+  getBoardInfo,
+  likeBoard,
+  dislikeBoard,
+  registerReply,
+  modifyReply,
+} from '../api/Detail';
 
 function DetailPage() {
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
+
   const [answerWriting, setAnswerWriting] = useState(false);
   /* 답변이 작성중인지 알기 위한 state */
+
   const [answerText, setAnswerText] = useState('');
   /* 답변 입력값 state */
-  const [isGood, setIsGood] = useState(false);
+
+  const [isLike, setIsLike] = useState(false);
+  /* 좋아요가 눌렸는지 알기 위한 state */
+
+  const [isLoading, setIsLoading] = useState(true);
+  /* 로딩중인지 알기 위한 state */
 
   const [boardInfo, setBoardInfo] = useState();
-  useEffect(async () => {
-    await TestLogin();
-    getBoardInfo(2, setBoardInfo);
+  /* 게시판 정보를 저장하는 state */
+
+  const [isMine, setIsMine] = useState(false);
+  /* 작성자인지 알기 위한 state */
+
+  const [isCouncil, setIsCouncil] = useState(false);
+  /* 학생회인지 알기 위한 state */
+
+  const [likeCount, setLikeCount] = useState();
+  /* 좋아요 개수 state */
+
+  useEffect(() => {
+    getBoardInfo(
+      1,
+      setBoardInfo,
+      setIsLoading,
+      setIsAnswered,
+      setLikeCount,
+      setIsLike,
+      setIsMine,
+      setIsCouncil,
+    );
   }, []);
 
+  /* 좋아요 개수를 서버 state로 관리해야해서 react-query 공부 후에 리팩토링 */
+  function decreaseLike() {
+    dislikeBoard(1, setIsLike);
+    setLikeCount((prev) => prev - 1);
+  }
+  function increaseLike() {
+    likeBoard(1, setIsLike);
+    setLikeCount((prev) => prev + 1);
+  }
+
+  /* 학생회 답변 textarea handleChange 함수 */
   function handleAnswer(e) {
     setAnswerText(e.target.value);
-    console.log(boardInfo);
   }
+
+  /* 학생회 답변하기 버튼 handleClick 함수 */
   function handleAnswerBtn() {
     if (answerWriting) {
-      /* post answerText */
-      setAnswerText('');
+      if (!isAnswered) registerReply(1, answerText, setIsAnswered);
+      else modifyReply(1, answerText, setIsAnswered);
       setIsAnswered(true);
       setAnswerWriting(false);
     } else {
@@ -43,79 +88,92 @@ function DetailPage() {
       setAnswerWriting(true);
     }
   }
+
+  /* 수정하기 버튼 handleClick 함수 */
   function handleQuestionBtn() {
     console.log('글 작성 페이지로 이동');
   }
 
   return (
     <Container>
-      <BacktoList>
-        <ArrowStyled />
-        <BackText>목록으로 돌아가기</BackText>
-      </BacktoList>
-      <BoardContainer>
-        {boardInfo && (
-          <Title>
-            [{boardInfo.tag}]{boardInfo.title}
-          </Title>
-        )}
-        <BoardInfo>
-          <UserDate>
-            {boardInfo && <User>{boardInfo.writerName}</User>}
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <Container>
+          <BacktoList>
+            <ArrowStyled />
+            <BackText>목록으로 돌아가기</BackText>
+          </BacktoList>
+          <BoardContainer>
             {boardInfo && (
-              <Date>
-                {boardInfo.createdAt[0]}.{boardInfo.createdAt[1]}.
-                {boardInfo.createdAt[2]}
-              </Date>
+              <Title>
+                [{boardInfo.boards.tag}]{boardInfo.boards.title}
+              </Title>
             )}
-          </UserDate>
-          <Recommand>
-            {isGood ? (
-              <FullHeartStyled onClick={() => setIsGood((prev) => !prev)} />
+            <BoardInfo>
+              <UserDate>
+                {boardInfo && <User>{boardInfo.boards.writerName}</User>}
+                {boardInfo && (
+                  <Date>
+                    {boardInfo.boards.createdAt[0]}.
+                    {boardInfo.boards.createdAt[1]}.
+                    {boardInfo.boards.createdAt[2]}
+                  </Date>
+                )}
+              </UserDate>
+              <Recommand>
+                {isLike ? (
+                  <FullHeartStyled onClick={decreaseLike} />
+                ) : (
+                  <HeartStyled onClick={increaseLike} />
+                )}
+                {boardInfo && <RecommandCount>{likeCount}</RecommandCount>}
+              </Recommand>
+            </BoardInfo>
+            <QuestionText>내용</QuestionText>
+            {boardInfo && <QuestionBox>{boardInfo.boards.content}</QuestionBox>}
+            <QuestionButtonSpace>
+              {isMine && (
+                <QuestionButton onClick={handleQuestionBtn}>
+                  수정하기
+                </QuestionButton>
+              )}
+            </QuestionButtonSpace>
+            <AnswerText Answered={isAnswered}>
+              <AnswerContainer>
+                답변
+                {isAnswered && <AnsweredIconStyled />}
+              </AnswerContainer>
+            </AnswerText>
+            {answerWriting ? (
+              <AnswereTextArea onChange={handleAnswer} />
             ) : (
-              <HeartStyled onClick={() => setIsGood((prev) => !prev)} />
+              <AnswerBox Answered={isAnswered}>
+                {isAnswered ? (
+                  <AnswerComp>{boardInfo.reply.content}</AnswerComp>
+                ) : (
+                  <WaitAnswer>
+                    <div>의견이 전달되었습니다.</div>
+                    <div>답변을 조금만 기다려주세요.</div>
+                  </WaitAnswer>
+                )}
+              </AnswerBox>
             )}
-            {boardInfo && (
-              <RecommandCount>{boardInfo.likesCount}</RecommandCount>
-            )}
-          </Recommand>
-        </BoardInfo>
-        <QuestionText>내용</QuestionText>
-        {boardInfo && <QuestionBox>{boardInfo.content}</QuestionBox>}
-        <QuestionButtonSpace>
-          <QuestionButton onClick={handleQuestionBtn}>수정하기</QuestionButton>
-        </QuestionButtonSpace>
-        <AnswerText Answered={isAnswered}>
-          <AnswerContainer>
-            답변
-            {isAnswered && <AnsweredIconStyled />}
-          </AnswerContainer>
-        </AnswerText>
-        {answerWriting ? (
-          <AnswereTextArea onChange={handleAnswer} />
-        ) : (
-          <AnswerBox Answered={isAnswered}>
-            {isAnswered ? (
-              <AnswerComp>안녕하세요</AnswerComp>
-            ) : (
-              <WaitAnswer>
-                <div>의견이 전달되었습니다.</div>
-                <div>답변을 조금만 기다려주세요.</div>
-              </WaitAnswer>
-            )}
-          </AnswerBox>
-        )}
 
-        <AnswerButtonSpace>
-          <AnswerButton onClick={handleAnswerBtn} value={answerText}>
-            {answerWriting
-              ? '저장하기'
-              : isAnswered
-              ? '답변 수정하기'
-              : '답변 작성하기'}
-          </AnswerButton>
-        </AnswerButtonSpace>
-      </BoardContainer>
+            <AnswerButtonSpace>
+              {isCouncil && (
+                <AnswerButton onClick={handleAnswerBtn} value={answerText}>
+                  {answerWriting
+                    ? '저장하기'
+                    : isAnswered
+                    ? '답변 수정하기'
+                    : '답변 작성하기'}
+                </AnswerButton>
+              )}
+            </AnswerButtonSpace>
+          </BoardContainer>
+        </Container>
+      )}
     </Container>
   );
 }
