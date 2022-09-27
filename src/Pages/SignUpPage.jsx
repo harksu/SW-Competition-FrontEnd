@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-// 리팩터링은 나중에 하겠습니다.
+// 리팩터링,정규식 표현,유효할 때 블럭 채우는거,스타일링
 import {
   Container,
   SignHeader,
@@ -52,21 +52,21 @@ function SignUpPage() {
       },
     })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
+          console.log(response);
           setIsChecked(true);
-          alert(isChecked);
+          alert('이메일 인증에 성공했습니다');
         }
       })
       .catch((error) => {
         console.log(error);
         setIsChecked(false);
-        alert(isChecked);
+        alert(error);
       });
   };
 
   const SignUp = () => {
-    console.log(sendData);
+    console.log(sendData); // 이거 나중에 삭제
     if (isChecked) {
       axios({
         method: 'post',
@@ -76,9 +76,8 @@ function SignUpPage() {
         },
       })
         .then((response) => {
-          console.log(response);
-
           if (response.status === 200) {
+            // 근데 이게 반응이 뜬다는게 결국엔 성공했을 때 아닌건가 ?
             console.log(response);
           }
         })
@@ -86,7 +85,7 @@ function SignUpPage() {
           console.log(error);
         });
     } else {
-      alert('인증번호 ㄲ ');
+      alert('인증번호 확인이 완료되지 않았습니다.');
     }
   };
 
@@ -128,8 +127,10 @@ function SignUpPage() {
           event={setSendData}
           getevent={getCheck}
         />
-        {!isChecked && (
+        {isChecked ? (
           <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
+        ) : (
+          <EmptyBlock />
         )}
         {/* 이거 나중에 유효할 때 블럭 값 채워주도록 수정  */}
         <LoginButton onClick={SignUp}>
@@ -227,6 +228,10 @@ const AlertEmailText = styled(AlertText)`
   margin-bottom: 30px;
   font-style: normal;
   color: #0186d1;
+`;
+
+const EmptyBlock = styled.div`
+  height: 24px; //입력값 없을 때 스타일 깨지는거 방지용
 `;
 
 const InputContainer = styled.div`

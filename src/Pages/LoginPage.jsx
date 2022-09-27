@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assests/logo.png';
 
 function LoginPage() {
@@ -12,6 +13,10 @@ function LoginPage() {
   });
   const option = {
     loginUrl: 'http://13.125.85.216:8080/api/sign-in?',
+  };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/main'); // 이거 다녀와서 수행
   };
 
   const login = () => {
@@ -25,10 +30,8 @@ function LoginPage() {
     })
       .then((response) => {
         console.log(response);
-
-        if (response.status === 200) {
-          console.log(response);
-        }
+        window.alert(`${userInfo.username}님 환영합니다!`);
+        handleClick();
       })
       .catch((error) => {
         console.log(error);
