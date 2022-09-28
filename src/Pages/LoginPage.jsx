@@ -113,6 +113,7 @@ function InputForm({ text, isValid, placeText, data, event }) {
       ) : (
         <InputBox
           placeholder={placeText}
+          type="password"
           value={data.password || ''}
           onChange={(e) => {
             event({
