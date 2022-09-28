@@ -1,11 +1,36 @@
-import React from 'react';
+// import React from 'react';
 // import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+import { authToken } from '../Atoms/atom';
+import Axios from '../lib/axios';
 
 import ContentList from '../components/MainPage/ContentList';
 import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
+  const loginToken = useRecoilValue(authToken);
+  const [posts, setPosts] = useState([]);
+
+  const postAPI = async () => {
+    try {
+      const res = await Axios.get('/api/boards', {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      setPosts(res.data.result.data.boards);
+    } catch (err) {
+      console.log('불러오기 실패!');
+    }
+  };
+
+  useEffect(() => {
+    postAPI();
+    console.log(loginToken);
+  }, []);
+
   return (
     <MainWrap>
       <MainTitle>명지 의견 나눔함</MainTitle>
@@ -23,7 +48,7 @@ function MainPage() {
               <p>답변</p>
             </Header2ndContent>
           </ListHeader>
-          <ContentList />
+          <ContentList posts={posts} />
         </ListContainer>
         <WriteButton>작성하기</WriteButton>
         <ListPagesButton>
