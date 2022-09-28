@@ -5,6 +5,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable indent */
 /* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import LoadingPage from './LoadingPage';
@@ -12,15 +14,14 @@ import { ReactComponent as Arrow } from '../assests/backArrow.svg';
 import { ReactComponent as Heart } from '../assests/Heart.svg';
 import { ReactComponent as AnsweredIcon } from '../assests/Answered.svg';
 import { ReactComponent as FullHeart } from '../assests/FullHeart.svg';
-import {
-  getBoardInfo,
-  likeBoard,
-  dislikeBoard,
-  registerReply,
-  modifyReply,
-} from '../api/Detail';
+import useDisLike from '../hooks/useDisLike';
+import useLike from '../hooks/useLike';
+import useBoard from '../hooks/useBoard';
+import { useRegisterReply, useModifyReply } from '../hooks/useReply';
 
 function DetailPage() {
+  const queryClient = useQueryClient();
+  const boardId = 1;
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
 
@@ -33,42 +34,32 @@ function DetailPage() {
   const [isLike, setIsLike] = useState(false);
   /* 좋아요가 눌렸는지 알기 위한 state */
 
-  const [isLoading, setIsLoading] = useState(true);
-  /* 로딩중인지 알기 위한 state */
-
-  const [boardInfo, setBoardInfo] = useState();
-  /* 게시판 정보를 저장하는 state */
-
   const [isMine, setIsMine] = useState(false);
   /* 작성자인지 알기 위한 state */
 
   const [isCouncil, setIsCouncil] = useState(false);
   /* 학생회인지 알기 위한 state */
 
-  const [likeCount, setLikeCount] = useState();
-  /* 좋아요 개수 state */
-
+  const { board, boardLoading } = useBoard(1);
+  const boardInform = !boardLoading && board.data.result.data;
   useEffect(() => {
-    getBoardInfo(
-      1,
-      setBoardInfo,
-      setIsLoading,
-      setIsAnswered,
-      setLikeCount,
-      setIsLike,
-      setIsMine,
-      setIsCouncil,
-    );
-  }, []);
+    if (boardInform) {
+      boardInform.isAlreadyPushedLikeByUser && setIsLike(true);
+      boardInform.isPermittedToReplyOrEdit && setIsCouncil(true);
+      boardInform.isMineBoard && setIsMine(true);
+      boardInform.reply && setIsAnswered(true);
+    }
+  }, [board]);
 
-  /* 좋아요 개수를 서버 state로 관리해야해서 react-query 공부 후에 리팩토링 */
-  function decreaseLike() {
-    dislikeBoard(1, setIsLike);
-    setLikeCount((prev) => prev - 1);
+  const deleteLike = useDisLike(boardId);
+  async function disLike(Id) {
+    deleteLike.mutate(Id);
+    setIsLike(false);
   }
-  function increaseLike() {
-    likeBoard(1, setIsLike);
-    setLikeCount((prev) => prev + 1);
+  const postLike = useLike(boardId);
+  async function Like(Id) {
+    postLike.mutate(Id);
+    setIsLike(true);
   }
 
   /* 학생회 답변 textarea handleChange 함수 */
@@ -76,15 +67,20 @@ function DetailPage() {
     setAnswerText(e.target.value);
   }
 
+  const modify = useModifyReply(boardId);
+  const register = useRegisterReply(boardId);
   /* 학생회 답변하기 버튼 handleClick 함수 */
+
   function handleAnswerBtn() {
     if (answerWriting) {
-      if (!isAnswered) registerReply(1, answerText, setIsAnswered);
-      else modifyReply(1, answerText, setIsAnswered);
+      if (!isAnswered) register.mutate(boardId, answerText);
+      else {
+        modify.mutate(boardId, answerText);
+        queryClient.invalidateQueries(['Board', boardId]);
+      }
       setIsAnswered(true);
       setAnswerWriting(false);
     } else {
-      /* 학생회인지 아닌지 판단 */
       setAnswerWriting(true);
     }
   }
@@ -96,7 +92,7 @@ function DetailPage() {
 
   return (
     <Container>
-      {isLoading ? (
+      {boardLoading ? (
         <LoadingPage />
       ) : (
         <Container>
@@ -105,33 +101,39 @@ function DetailPage() {
             <BackText>목록으로 돌아가기</BackText>
           </BacktoList>
           <BoardContainer>
-            {boardInfo && (
+            {boardInform && (
               <Title>
-                [{boardInfo.boards.tag}]{boardInfo.boards.title}
+                [{boardInform.boards.tag}]{boardInform.boards.title}
               </Title>
             )}
             <BoardInfo>
               <UserDate>
-                {boardInfo && <User>{boardInfo.boards.writerName}</User>}
-                {boardInfo && (
+                {boardInform && <User>{boardInform.boards.writerName}</User>}
+                {boardInform && (
                   <Date>
-                    {boardInfo.boards.createdAt[0]}.
-                    {boardInfo.boards.createdAt[1]}.
-                    {boardInfo.boards.createdAt[2]}
+                    {boardInform.boards.createdAt[0]}.
+                    {boardInform.boards.createdAt[1]}.
+                    {boardInform.boards.createdAt[2]}
                   </Date>
                 )}
               </UserDate>
               <Recommand>
                 {isLike ? (
-                  <FullHeartStyled onClick={decreaseLike} />
+                  <FullHeartStyled onClick={() => disLike(boardId)} />
                 ) : (
-                  <HeartStyled onClick={increaseLike} />
+                  <HeartStyled onClick={() => Like(boardId)} />
                 )}
-                {boardInfo && <RecommandCount>{likeCount}</RecommandCount>}
+                {boardInform && (
+                  <RecommandCount>
+                    {boardInform.boards.likesCount}
+                  </RecommandCount>
+                )}
               </Recommand>
             </BoardInfo>
             <QuestionText>내용</QuestionText>
-            {boardInfo && <QuestionBox>{boardInfo.boards.content}</QuestionBox>}
+            {boardInform && (
+              <QuestionBox>{boardInform.boards.content}</QuestionBox>
+            )}
             <QuestionButtonSpace>
               {isMine && (
                 <QuestionButton onClick={handleQuestionBtn}>
@@ -150,7 +152,7 @@ function DetailPage() {
             ) : (
               <AnswerBox Answered={isAnswered}>
                 {isAnswered ? (
-                  <AnswerComp>{boardInfo.reply.content}</AnswerComp>
+                  <AnswerComp>{boardInform.reply.content}</AnswerComp>
                 ) : (
                   <WaitAnswer>
                     <div>의견이 전달되었습니다.</div>

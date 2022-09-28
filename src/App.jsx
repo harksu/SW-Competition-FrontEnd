@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-boolean-value */
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
 import axios from 'axios';
 import { Route, Routes } from 'react-router-dom';
@@ -15,29 +18,33 @@ import MainPage from './Pages/MainPage';
 
 function App() {
   axios.defaults.baseURL = 'http://13.125.85.216:8080';
+  const queryClient = new QueryClient();
   return (
-    <ThemeProvider theme={Theme}>
-      <GlobalStyle />
-      <AllWrap>
-        <Header />
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/detail" element={<DetailPage />} />
-          {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
-          <Route path="/loading" element={<LoadingPage />} />
-          <Route path="/main" element={<MainPage />} />
-        </Routes>
-        <Footer />
-      </AllWrap>
-      <ToastContainerStyled
-        limit={1}
-        position="bottom-center"
-        closeButton={false}
-        hideProgressBar
-        transition={Slide}
-        autoClose={4000}
-      />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={Theme}>
+        <GlobalStyle />
+        <AllWrap>
+          <Header />
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/detail" element={<DetailPage />} />
+            {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
+            <Route path="/loading" element={<LoadingPage />} />
+            <Route path="/main" element={<MainPage />} />
+          </Routes>
+          <Footer />
+        </AllWrap>
+        <ToastContainerStyled
+          limit={1}
+          position="bottom-center"
+          closeButton={false}
+          hideProgressBar
+          transition={Slide}
+          autoClose={4000}
+        />
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={true} />
+    </QueryClientProvider>
   );
 }
 
