@@ -73,9 +73,10 @@ function DetailPage() {
 
   function handleAnswerBtn() {
     if (answerWriting) {
-      if (!isAnswered) register.mutate(boardId, answerText);
+      if (!isAnswered) register.mutate({ boardId, answerText });
       else {
-        modify.mutate(boardId, answerText);
+        console.log(answerText);
+        modify.mutate({ boardId, answerText });
         queryClient.invalidateQueries(['Board', boardId]);
       }
       setIsAnswered(true);

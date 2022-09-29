@@ -56,10 +56,11 @@ export async function registerReply(boardId, answerText) {
 
 export async function modifyReply(boardId, answerText) {
   try {
-    await axios.get(`/api/boards/${boardId}/replies`, {
+    console.log(answerText);
+    await axios.put(`/api/boards/${boardId}/replies`, {
       content: answerText,
     });
   } catch (e) {
-    toast(e.result.msg);
+    toast(e);
   }
 }
