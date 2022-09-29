@@ -44,7 +44,6 @@ function LoginPage() {
           goMain();
         })
         .catch((error) => {
-          console.log(error);
           if (
             error.response.data.result.msg === '존재하지 않는 아이디입니다.'
           ) {
@@ -64,33 +63,38 @@ function LoginPage() {
     }
   };
   return (
-    <Container>
-      <SignHeader> 로그인</SignHeader>
-      <InputContainer>
-        <InputFormBox id>
-          <InputForm
-            text="아이디"
-            isValid={idValid}
-            placeText="예) MJUyogoyogu"
-            data={userInfo}
-            event={setUserInfo}
-          />
-        </InputFormBox>{' '}
-        <InputFormBox pw>
-          <InputForm
-            text="비밀번호"
-            isValid={pwValid}
-            placeText="예) MJU12345678"
-            data={userInfo}
-            event={setUserInfo}
-          />
-        </InputFormBox>{' '}
-        <QuestionText onClick={goSignUP}>아직 회원이 아니신가요?</QuestionText>
-        <LoginButton onClick={login}>
-          <ButtonText>로그인하기</ButtonText>
-        </LoginButton>
-      </InputContainer>
-    </Container>
+    <>
+      <Container>
+        <SignHeader> 로그인</SignHeader>
+        <InputContainer>
+          <InputFormBox id>
+            <InputForm
+              text="아이디"
+              isValid={idValid}
+              placeText="예) MJUyogoyogu"
+              data={userInfo}
+              event={setUserInfo}
+            />
+          </InputFormBox>{' '}
+          <InputFormBox pw>
+            <InputForm
+              text="비밀번호"
+              isValid={pwValid}
+              placeText="예) MJU12345678"
+              data={userInfo}
+              event={setUserInfo}
+            />
+          </InputFormBox>{' '}
+          <QuestionText onClick={goSignUP}>
+            아직 회원이 아니신가요?
+          </QuestionText>
+          <LoginButton onClick={login}>
+            <ButtonText>로그인하기</ButtonText>
+          </LoginButton>
+        </InputContainer>
+      </Container>
+      <EmptyDiv />
+    </>
   );
 }
 
@@ -136,6 +140,9 @@ function InputForm({ text, isValid, placeText, data, event }) {
 const EmptyBlock = styled.div`
   height: 31px; //입력값 없을 때 스타일 깨지는거 방지용
 `;
+const EmptyDiv = styled.div`
+  height: 10px; // 이거 진짜 아닌 것 같은데
+`;
 
 export const Container = styled.div`
   display: flex;
@@ -149,13 +156,12 @@ export const Container = styled.div`
   background-image: url(${backgroundImage});
   background-repeat: no-repeat;
   background-position: bottom;
-  //background-color: pink;
 `;
 
 export const SignHeader = styled.div`
   display: flex;
   width: 100%;
-  height: 14%;
+  height: 100px; // 14% -> 100px 변경
   background-color: #b5b5b5;
   color: ${({ theme }) => theme.colors.white};
   font-size: 35px;
@@ -173,7 +179,6 @@ export const InputContainer = styled.div`
   align-items: center;
   width: 65%;
   //height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
-  //background-color: pink;
   margin-bottom: 33px;
 `;
 
@@ -204,7 +209,6 @@ export const InputBox = styled.input`
   width: 100%;
   height: 62px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  //background-color: pink;
   border-radius: 10px;
   ::placeholder {
     font-size: 23px;
