@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
@@ -14,18 +13,13 @@ function WritingDropdownMenu() {
   const [isShow, setIsShow] = useState(false);
   const [tag] = useState('');
 
-  console.log('테스트 자체: ', test);
-
   const handleClickTag = (e) => {
-    console.log('캠퍼스: ', e.target.value);
     setTest(e.target.value);
   };
 
   const handleShow = async () => {
     try {
-      // const res = await Axios.post('/api/boards');
       setIsShow(!isShow);
-      // console.log(res);
     } catch (err) {
       console.log('에러');
     }
@@ -62,19 +56,19 @@ const DropDownWrapper = styled.div`
 const DropDownButton = styled.button`
   width: 94px;
   height: 30px;
-  background: none;
-  border: 2px solid #e2e2e2;
-  /* border-radius: 5px 5px 0px 0px; */
-  margin-top: 12px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border: 2px solid #e2e2e2;
+  background: none;
+  margin-top: 12px;
+
   cursor: pointer;
 `;
 
 const CampusBox = styled.div`
-  z-index: 50;
   width: 70px;
   height: 30px;
 
@@ -82,9 +76,13 @@ const CampusBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  z-index: 50;
+
   font-size: 15px;
   padding: 25px 10px 25px 10px;
   background: #ffffff;
+
   border: 2px solid #e2e2e2;
   border-radius: 0px 0px 5px 5px;
   cursor: pointer;
@@ -94,4 +92,5 @@ const CampusButton = styled.option`
   margin-bottom: 10px;
   margin-top: 10px;
 `;
+
 export default WritingDropdownMenu;

@@ -9,23 +9,22 @@ function WritingPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
+
   const tag = useRecoilValue(WritingAtom);
 
   const handleSendPost = async () => {
     if (isInfoChecked) {
       try {
-        const res = await instance.post('/api/boards', {
+        await instance.post('/api/boards', {
           content: contents,
           tag,
           title,
         });
-        console.log(res);
-        console.log(tag);
       } catch (err) {
         console.log(err);
       }
     } else {
-      console.log('체크안됐을 때');
+      console.log('정보 동의가 체크되지 않았습니다.');
     }
   };
 
@@ -99,10 +98,11 @@ const WritingWrapper = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: 50px;
   margin-top: 128px;
   margin-left: 268px;
+
   font-weight: bold;
+  font-size: 50px;
 
   user-select: none;
 `;
@@ -117,46 +117,49 @@ const WritingBox = styled.div`
   align-items: center;
 
   margin-top: 40px;
+  border-radius: 10px;
+
   background: #ffffff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
 `;
 
 // 제목 박스
 const SubTitleBox = styled.div`
   display: flex;
-  margin-bottom: 54px;
 
+  margin-bottom: 54px;
   margin-top: 28px;
 `;
 
 const SubTitleText = styled.p`
   font-size: 25px;
   font-weight: bold;
-
   user-select: none;
 `;
 
 const SubTitle = styled.div`
   width: 800px;
   height: 58px;
-  margin-left: 52px;
 
   display: flex;
-
+  margin-left: 52px;
   background: #ffffff;
+
   border: 2px solid #ededed;
   border-radius: 10px;
 `;
 
 const SubTitleInput = styled.input`
   width: 660px;
-  font-size: 22px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   margin-left: 25px;
+  font-size: 22px;
   border: none;
+
   :focus {
     outline: none;
   }
@@ -178,6 +181,7 @@ const ContentsTextArea = styled.textarea`
   margin-left: 52px;
   margin-bottom: 25px;
   padding: 30px;
+
   resize: none;
   overflow: hidden;
   font-size: 20px;
@@ -213,8 +217,8 @@ const CheckButton = styled.input`
 const WritingButton = styled.button`
   width: 130px;
   height: 40px;
-  background: #ffffff;
 
+  background: #ffffff;
   border: 1px solid #b5b5b5;
   border-radius: 5px;
   margin: 10px 0 10px 38px;
