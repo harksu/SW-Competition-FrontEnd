@@ -1,18 +1,28 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../Components/Request';
+import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
+  const [contents, setContents] = useState('');
+  const [title, setTitle] = useState('');
+  const tag = useRecoilValue(WritingAtom);
 
   const handleSendPost = async () => {
     if (isInfoChecked) {
       try {
-        const res = await instance.post('/api/boards');
+        const res = await instance.post('/api/boards', {
+          content: contents,
+          tag,
+          title,
+        });
         console.log(res);
+        console.log(tag);
       } catch (err) {
-        console.log('에러');
+        console.log(err);
       }
     } else {
       console.log('체크안됐을 때');
@@ -28,7 +38,16 @@ function WritingPage() {
     } else {
       setIsInfoChecked(false);
       console.log('체크안됨');
+      console.log(tag);
     }
+  };
+
+  const onChangeContents = (e) => {
+    setContents(e.target.value);
+  };
+
+  const onChangeTitle = (e) => {
+    setTitle(e.target.value);
   };
 
   return (
@@ -39,12 +58,20 @@ function WritingPage() {
           <SubTitleText>제목</SubTitleText>
           <SubTitle>
             <WritingDropdownMenu />
-            <SubTitleInput maxLength={100} />
+            <SubTitleInput
+              maxLength={100}
+              value={title}
+              onChange={onChangeTitle}
+            />
           </SubTitle>
         </SubTitleBox>
         <ContentsBox>
           <SubTitleText>내용</SubTitleText>
-          <ContentsTextArea />
+          <ContentsTextArea
+            name="contents"
+            value={contents}
+            onChange={onChangeContents}
+          />
         </ContentsBox>
         <AgreeAndPostBox>
           <p>
@@ -76,6 +103,8 @@ const Title = styled.p`
   margin-top: 128px;
   margin-left: 268px;
   font-weight: bold;
+
+  user-select: none;
 `;
 
 const WritingBox = styled.div`
@@ -104,6 +133,8 @@ const SubTitleBox = styled.div`
 const SubTitleText = styled.p`
   font-size: 25px;
   font-weight: bold;
+
+  user-select: none;
 `;
 
 const SubTitle = styled.div`
@@ -164,8 +195,10 @@ const AgreeAndPostBox = styled.div`
 
   margin-bottom: 37px;
   margin-left: 100px;
+
   p {
     font-size: 13px;
+    user-select: none;
   }
 `;
 
@@ -174,6 +207,7 @@ const CheckButton = styled.input`
   height: 20px;
 
   margin-left: 18px;
+  cursor: pointer;
 `;
 
 const WritingButton = styled.button`

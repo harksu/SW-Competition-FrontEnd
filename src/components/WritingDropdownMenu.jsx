@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import styled from 'styled-components';
-// import Axios from '../lib/axios';
 import { useRecoilState } from 'recoil';
 import { WritingAtom } from '../Atoms/WritingAtom';
 
@@ -12,9 +11,8 @@ const CampusData = [
 
 function WritingDropdownMenu() {
   const [test, setTest] = useRecoilState(WritingAtom);
-
-  // 열리는
   const [isShow, setIsShow] = useState(false);
+  const [tag] = useState('');
 
   console.log('테스트 자체: ', test);
 
@@ -36,7 +34,9 @@ function WritingDropdownMenu() {
   return (
     <DropDownWrapper>
       <div>
-        <DropDownButton onClick={setIsShow}>캠퍼스</DropDownButton>
+        <DropDownButton onClick={setIsShow} tag={tag} value={tag}>
+          {test}
+        </DropDownButton>
       </div>
       {isShow && (
         <CampusBox onClick={handleShow}>
@@ -70,6 +70,7 @@ const DropDownButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const CampusBox = styled.div`
@@ -86,6 +87,7 @@ const CampusBox = styled.div`
   background: #ffffff;
   border: 2px solid #e2e2e2;
   border-radius: 0px 0px 5px 5px;
+  cursor: pointer;
 `;
 
 const CampusButton = styled.option`
