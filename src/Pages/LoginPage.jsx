@@ -28,13 +28,10 @@ function LoginPage() {
   const login = () => {
     const { username, password } = userInfo;
     if (username && password) {
-      axios({
-        method: 'post',
-        url: option.loginUrl,
-        data: {
+      axios
+        .post(option.loginUrl, {
           ...userInfo,
-        },
-      })
+        })
         .then((response) => {
           console.log(response);
           setAuthToken(response.data.result.data.accessToken);
@@ -244,6 +241,7 @@ export const ButtonText = styled(Text)`
   &:hover {
     color: ${({ theme }) => theme.colors.blue};
   }
+  margin-left: 0px;
 `;
 
 export const InputFormBox = styled.div`
