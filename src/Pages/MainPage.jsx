@@ -1,47 +1,52 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { scrollTo } from 'seamless-scroll-polyfill';
-// import { useRecoilValue } from 'recoil';
-// import { authToken } from '../Atoms/atom';
-// import Axios from '../lib/axios';
+// import { scrollTo } from 'seamless-scroll-polyfill';
+import { useRecoilValue } from 'recoil';
+import { authToken } from '../Atoms/atom';
+import Axios from '../lib/axios';
 
 import ContentList from '../Components/MainPage/ContentList';
-import ListDemoData from '../Components/MainPage/ListDemoData';
+// import ListDemoData from '../Components/MainPage/ListDemoData';
 import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
-  // const loginToken = useRecoilValue(authToken);
-  // const [posts, setPosts] = useState([]);
+  const loginToken = useRecoilValue(authToken);
+  const [posts, setPosts] = useState([]);
+  const [postNum, setPostNum] = useState();
 
-  // const postAPI = async () => {
-  //   try {
-  //     const res = await Axios.get('/api/boards', {
-  //       headers: {
-  //         Authorization: `Bearer ${loginToken}`,
-  //       },
-  //     });
-  //     setPosts(res.data.result.data.boards);
-  //   } catch (err) {
-  //     console.log('불러오기 실패!');
-  //   }
-  // };
+  const postAPI = async () => {
+    try {
+      const res = await Axios.get('/api/boards', {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      setPosts(res.data.result.data.boards);
+      setPostNum(res.data.result.data.pageInfo.numberOfElements);
+    } catch (err) {
+      console.log('불러오기 실패!');
+    }
+  };
 
   useEffect(() => {
-    // postAPI();
+    postAPI();
+    console.log(posts);
+    console.log(postNum);
   }, []);
 
   const pagesRef = useRef();
   const [currentPage, setCurrentPage] = useState(1);
   const offset = (currentPage - 1) * 10;
-  const totalPageList = Math.ceil(ListDemoData.length / 10);
+  // const totalPageList = Math.ceil(ListDemoData.length / 10);
+  const totalPageList = Math.ceil(posts.length / 10);
   const pageNumber = [];
   for (let i = 1; i <= totalPageList; i++) {
     pageNumber.push(i);
   }
 
-  useEffect(() => {
-    scrollTo(pagesRef, { left: 165, behavior: 'smooth' });
-  }, []);
+  // useEffect(() => {
+  //   scrollTo(pagesRef, { left: 165, behavior: 'smooth' });
+  // }, []);
 
   return (
     <MainWrap>
@@ -61,7 +66,7 @@ function MainPage() {
             </Header2ndContent>
           </ListHeader>
           {/* <ContentList posts={posts} /> */}
-          <ContentList offset={offset} />
+          <ContentList posts={posts} postNum={postNum} offset={offset} />
         </ListContainer>
         <WriteButton>작성하기</WriteButton>
         <ListPagesButton>
@@ -161,8 +166,8 @@ const PageMovingBtn = styled(pageMovingBtn)`
 `;
 
 const ScrollWidth = styled.div`
-  display: flex;
-  justify-content: flex-start;
+  /* display: flex; */
+  /* justify-content: flex-start; */
   width: 165px;
   height: 40px;
   overflow: hidden;

@@ -5,13 +5,19 @@ import styled from 'styled-components';
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
 import { ReactComponent as FullHeartBtn } from '../../assests/fullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
-import ListDemoData from './ListDemoData';
+// import ListDemoData from './ListDemoData';
 
-function ContentList({ offset }) {
+function ContentList({ posts, postNum, offset }) {
+  const postNumber = [];
+  for (let i = 1; i <= postNum; i++) {
+    postNumber.push(i);
+  }
+  console.log(postNumber);
+
   return (
     <ListContainer>
       <Contents>
-        {ListDemoData.slice(offset, offset + 10).map((data) => (
+        {/* {ListDemoData.slice(offset, offset + 10).map((data) => (
           <ContentContainer key={data.boardId}>
             <ContentNum>{data.boardId}</ContentNum>
             <TitleBox>
@@ -35,13 +41,13 @@ function ContentList({ offset }) {
               {data.isReplied ? <BlueCheckStyle /> : ''}
             </ContentAnswer>
           </ContentContainer>
-        ))}
-        {/* {posts
-          .slice(0, 10)
+        ))} */}
+        {posts
+          .slice(offset, offset + 10)
           .reverse()
-          .map((data) => (
+          .map((data, i) => (
             <ContentContainer key={data.boardId}>
-              <ContentNum>{data.boardId}</ContentNum>
+              <ContentNum>{postNumber[i]}</ContentNum>
               <TitleBox>
                 <ContentTag>
                   {data.tag === 'none' ? '' : `[${data.tag}]`}
@@ -63,7 +69,7 @@ function ContentList({ offset }) {
                 {data.isReplied ? <BlueCheckStyle /> : ''}
               </ContentAnswer>
             </ContentContainer>
-          ))} */}
+          ))}
       </Contents>
     </ListContainer>
   );
