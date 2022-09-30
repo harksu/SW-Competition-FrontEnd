@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ContentList from '../components/MainPage/ContentList';
+import ContentList from '../Components/MainPage/ContentList';
 
 function MainPage() {
   return (
