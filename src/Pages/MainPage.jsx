@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { scrollTo } from 'seamless-scroll-polyfill';
 // import { useRecoilValue } from 'recoil';
 // import { authToken } from '../Atoms/atom';
 // import Axios from '../lib/axios';
@@ -25,15 +26,21 @@ function MainPage() {
   //   }
   // };
 
+  useEffect(() => {
+    // postAPI();
+  }, []);
+
+  const pagesRef = useRef();
   const [currentPage, setCurrentPage] = useState(1);
   const offset = (currentPage - 1) * 10;
+  const totalPageList = Math.ceil(ListDemoData.length / 10);
   const pageNumber = [];
-  for (let i = 1; i < Math.ceil(ListDemoData.length / 10); i++) {
+  for (let i = 1; i <= totalPageList; i++) {
     pageNumber.push(i);
   }
 
   useEffect(() => {
-    // postAPI();
+    scrollTo(pagesRef, { left: 165, behavior: 'smooth' });
   }, []);
 
   return (
@@ -59,18 +66,20 @@ function MainPage() {
         <WriteButton>작성하기</WriteButton>
         <ListPagesButton>
           <PageMovingBtn />
-          <PageBtnContainer>
-            {pageNumber.map((pages) => (
-              <PageBtn
-                key={pages}
-                onClick={() => {
-                  setCurrentPage(pages);
-                }}
-              >
-                {pages}
-              </PageBtn>
-            ))}
-          </PageBtnContainer>
+          <ScrollWidth ref={pagesRef}>
+            <PageBtnContainer>
+              {pageNumber.map((pages) => (
+                <PageBtn
+                  key={pages}
+                  onClick={() => {
+                    setCurrentPage(pages);
+                  }}
+                >
+                  {pages}
+                </PageBtn>
+              ))}
+            </PageBtnContainer>
+          </ScrollWidth>
           <PageMovingBtn rightbtn="true" />
         </ListPagesButton>
       </MainContainer>
@@ -151,15 +160,26 @@ const PageMovingBtn = styled(pageMovingBtn)`
   cursor: pointer;
 `;
 
+const ScrollWidth = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 165px;
+  height: 40px;
+  overflow: hidden;
+`;
+
 const PageBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: pink;
 `;
 
 const PageBtn = styled.div`
+  font-weight: 600;
   font-size: 25px;
-  padding: 8px;
+  margin: 10px;
+  cursor: pointer;
 `;
 
 const WriteButton = styled.button`
