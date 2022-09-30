@@ -1,34 +1,39 @@
-// import React from 'react';
-// import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { authToken } from '../Atoms/atom';
-import Axios from '../lib/axios';
+// import { useRecoilValue } from 'recoil';
+// import { authToken } from '../Atoms/atom';
+// import Axios from '../lib/axios';
 
-import ContentList from '../components/MainPage/ContentList';
+import ContentList from '../Components/MainPage/ContentList';
+import ListDemoData from '../Components/MainPage/ListDemoData';
 import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
-  const loginToken = useRecoilValue(authToken);
-  const [posts, setPosts] = useState([]);
+  // const loginToken = useRecoilValue(authToken);
+  // const [posts, setPosts] = useState([]);
 
-  const postAPI = async () => {
-    try {
-      const res = await Axios.get('/api/boards', {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-        },
-      });
-      setPosts(res.data.result.data.boards);
-    } catch (err) {
-      console.log('불러오기 실패!');
-    }
-  };
+  // const postAPI = async () => {
+  //   try {
+  //     const res = await Axios.get('/api/boards', {
+  //       headers: {
+  //         Authorization: `Bearer ${loginToken}`,
+  //       },
+  //     });
+  //     setPosts(res.data.result.data.boards);
+  //   } catch (err) {
+  //     console.log('불러오기 실패!');
+  //   }
+  // };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const offset = (currentPage - 1) * 10;
+  const pageNumber = [];
+  for (let i = 1; i < Math.ceil(ListDemoData.length / 10); i++) {
+    pageNumber.push(i);
+  }
 
   useEffect(() => {
-    postAPI();
-    console.log(loginToken);
+    // postAPI();
   }, []);
 
   return (
@@ -48,12 +53,24 @@ function MainPage() {
               <p>답변</p>
             </Header2ndContent>
           </ListHeader>
-          <ContentList posts={posts} />
+          {/* <ContentList posts={posts} /> */}
+          <ContentList offset={offset} />
         </ListContainer>
         <WriteButton>작성하기</WriteButton>
         <ListPagesButton>
           <PageMovingBtn />
-          <PageBtnContainer />
+          <PageBtnContainer>
+            {pageNumber.map((pages) => (
+              <PageBtn
+                key={pages}
+                onClick={() => {
+                  setCurrentPage(pages);
+                }}
+              >
+                {pages}
+              </PageBtn>
+            ))}
+          </PageBtnContainer>
           <PageMovingBtn rightbtn="true" />
         </ListPagesButton>
       </MainContainer>
@@ -134,7 +151,16 @@ const PageMovingBtn = styled(pageMovingBtn)`
   cursor: pointer;
 `;
 
-const PageBtnContainer = styled.div``;
+const PageBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PageBtn = styled.div`
+  font-size: 25px;
+  padding: 8px;
+`;
 
 const WriteButton = styled.button`
   width: 152px;

@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+// import Axios from '../../lib/axios';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
+import { ReactComponent as FullHeartBtn } from '../../assests/fullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
-// import ListDemoData from './ListDemoData';
+import ListDemoData from './ListDemoData';
 
-function ContentList({ posts }) {
+function ContentList({ offset }) {
   return (
     <ListContainer>
       <Contents>
-        {/* {ListDemoData.map((data) => (
+        {ListDemoData.slice(offset, offset + 10).map((data) => (
           <ContentContainer key={data.boardId}>
             <ContentNum>{data.boardId}</ContentNum>
             <TitleBox>
@@ -21,7 +23,11 @@ function ContentList({ posts }) {
             <ContentWriter>{data.writer_name}</ContentWriter>
             <ContentSympathy>
               <SympathyContainer>
-                <HeartBtnStyle />
+                {data.isAlreadyPushedLikeByUser ? (
+                  <FullHeartBtnStyle />
+                ) : (
+                  <HeartBtnStyle />
+                )}
                 {data.likesCount}
               </SympathyContainer>
             </ContentSympathy>
@@ -29,9 +35,9 @@ function ContentList({ posts }) {
               {data.isReplied ? <BlueCheckStyle /> : ''}
             </ContentAnswer>
           </ContentContainer>
-        ))} */}
-        {posts
-          .slice(0)
+        ))}
+        {/* {posts
+          .slice(0, 10)
           .reverse()
           .map((data) => (
             <ContentContainer key={data.boardId}>
@@ -45,7 +51,11 @@ function ContentList({ posts }) {
               <ContentWriter>{data.writer_name}</ContentWriter>
               <ContentSympathy>
                 <SympathyContainer>
-                  <HeartBtnStyle />
+                  {posts.isAlreadyPushedLikeByUser ? (
+                    <FullHeartBtnStyle />
+                  ) : (
+                    <HeartBtnStyle />
+                  )}
                   {data.likesCount}
                 </SympathyContainer>
               </ContentSympathy>
@@ -53,7 +63,7 @@ function ContentList({ posts }) {
                 {data.isReplied ? <BlueCheckStyle /> : ''}
               </ContentAnswer>
             </ContentContainer>
-          ))}
+          ))} */}
       </Contents>
     </ListContainer>
   );
@@ -131,6 +141,11 @@ const SympathyContainer = styled.div`
 `;
 
 const HeartBtnStyle = styled(HeartBtn)`
+  margin-right: 14px;
+  cursor: pointer;
+`;
+
+const FullHeartBtnStyle = styled(FullHeartBtn)`
   margin-right: 14px;
   cursor: pointer;
 `;
