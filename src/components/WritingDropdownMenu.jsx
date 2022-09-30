@@ -73,6 +73,7 @@ const DropDownButton = styled.button`
 `;
 
 const CampusBox = styled.div`
+  z-index: 50;
   width: 70px;
   height: 30px;
 
@@ -81,7 +82,7 @@ const CampusBox = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 15px;
-  padding: 15px 20px 20px 10px;
+  padding: 25px 10px 25px 10px;
   background: #ffffff;
   border: 2px solid #e2e2e2;
   border-radius: 0px 0px 5px 5px;

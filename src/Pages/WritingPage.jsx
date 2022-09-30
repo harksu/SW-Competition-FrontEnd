@@ -1,33 +1,21 @@
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
-import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
-  const { tag } = useRecoilValue(WritingAtom);
-  console.log('tag: ', tag);
-  // const setWritingTitleState = useSetRecoilState(WritingAtom);
-
   return (
     <WritingWrapper>
       <Title>명지 의견 글작성</Title>
       <WritingBox>
         <SubTitleBox>
           <SubTitleText>제목</SubTitleText>
-          <SubTitleInput>
+          <SubTitle>
             <WritingDropdownMenu />
-            <SubTitle> {tag} </SubTitle>
-          </SubTitleInput>
+            <SubTitleInput maxLength={100} />
+          </SubTitle>
         </SubTitleBox>
         <ContentsBox>
           <SubTitleText>내용</SubTitleText>
-          <ContentsInput>
-            <ContentsText>
-              안녕하세요. 자연캠퍼스에 재학 중입니다. 현재 학식이 늦어짐에 따라
-              불편을 겪는 학우들이 많은 걸로 알고 있습니다. 언제쯤 확실히 운영을
-              하게 될지 제대로 된 날짜를 알려주시면 좋겠습니다. 감사합니다.
-            </ContentsText>
-          </ContentsInput>
+          <ContentsTextArea />
         </ContentsBox>
         <AgreeAndPostBox>
           <p>
@@ -84,7 +72,7 @@ const SubTitleText = styled.p`
   font-weight: bold;
 `;
 
-const SubTitleInput = styled.div`
+const SubTitle = styled.div`
   width: 800px;
   height: 58px;
   margin-left: 52px;
@@ -96,12 +84,17 @@ const SubTitleInput = styled.div`
   border-radius: 10px;
 `;
 
-const SubTitle = styled.p`
+const SubTitleInput = styled.input`
+  width: 660px;
   font-size: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 25px;
+  border: none;
+  :focus {
+    outline: none;
+  }
 `;
 
 // 내용 박스
@@ -109,9 +102,9 @@ const ContentsBox = styled.div`
   display: flex;
 `;
 
-const ContentsInput = styled.div`
-  width: 800px;
-  height: 600px;
+const ContentsTextArea = styled.textarea`
+  width: 740px;
+  height: 540px;
 
   background: #ffffff;
   border: 2px solid #ededed;
@@ -119,10 +112,10 @@ const ContentsInput = styled.div`
 
   margin-left: 52px;
   margin-bottom: 25px;
-`;
-
-const ContentsText = styled.p`
-  margin: 30px 30px 30px 30px;
+  padding: 30px;
+  resize: none;
+  overflow: hidden;
+  font-size: 20px;
 `;
 
 const NoneBox = styled.div`
