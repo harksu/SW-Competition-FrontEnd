@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
-import instance from '../Components/Request';
+import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
