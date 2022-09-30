@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import WritingDropdownMenu from '../components/WritingDropdownMenu';
 
 function WritingPage() {
   return (
@@ -8,7 +9,7 @@ function WritingPage() {
         <SubTitleBox>
           <SubTitleText>제목</SubTitleText>
           <SubTitleInput>
-            <DropDownBox>자연캠</DropDownBox>
+            <WritingDropdownMenu />
             <SubTitle>안녕하세요. 제목임.</SubTitle>
           </SubTitleInput>
         </SubTitleBox>
@@ -97,20 +98,6 @@ const SubTitle = styled.p`
   margin-left: 25px;
 `;
 
-const DropDownBox = styled.div`
-  width: 86px;
-  height: 30px;
-  background: #ffffff;
-  border: 2px solid #e2e2e2;
-  border-radius: 5px;
-  margin-top: 12px;
-  margin-left: 15px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 // 내용 박스
 const ContentsBox = styled.div`
   display: flex;
@@ -155,6 +142,7 @@ const CheckButton = styled.input`
 
   margin-left: 18px;
 `;
+
 const WritingButton = styled.button`
   width: 130px;
   height: 40px;
@@ -162,7 +150,7 @@ const WritingButton = styled.button`
 
   border: 1px solid #b5b5b5;
   border-radius: 5px;
-  margin: 5px 0 10px 38px;
+  margin: 10px 0 10px 38px;
 `;
 
 export default WritingPage;
