@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { authToken } from '../Atoms/atom';
-import backgroundImage from '../assests/logo.png';
+import backgroundImage from '../assests/logo.svg';
 
 function LoginPage() {
   const [idValid, setIdValid] = useState(true);
@@ -150,9 +150,6 @@ export const Container = styled.div`
   margin: 69px auto 55px auto;
   border-radius: 20px 20px 0px 0px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  background-image: url(${backgroundImage});
-  background-repeat: no-repeat;
-  background-position: bottom;
 `;
 
 export const SignHeader = styled.div`
@@ -177,6 +174,11 @@ export const InputContainer = styled.div`
   width: 65%;
   //height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
   margin-bottom: 33px;
+  background-image: url(${backgroundImage});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.7;
 `;
 
 export const Text = styled.p`

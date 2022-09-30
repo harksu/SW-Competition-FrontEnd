@@ -12,6 +12,7 @@ import {
   LoginButton,
   ButtonText,
 } from './LoginPage';
+import backgroundImage from '../assests/logo.svg';
 
 function SignUpPage() {
   const showToastMessage = () => {
@@ -130,10 +131,15 @@ function SignUpPage() {
                 }
               }}
             />
+            {regExprees.nameRegExpress ? (
+              <EmptyBlock />
+            ) : (
+              <AlertIdPwText>이름이 올바르지 않습니다. </AlertIdPwText>
+            )}
           </InputFormBox>
           <UserInfoInputContainer
             exid="예) MJUyogoyogu"
-            expw="예) MJU12345678"
+            expw="예) MJU12345678!"
             data={sendData}
             event={setSendData}
             reg={pwRegEx}
@@ -200,6 +206,11 @@ function UserInfoInputContainer({
             });
           }}
         />
+        {data.username ? (
+          <EmptyBlock />
+        ) : (
+          <AlertIdPwText>아이디가 올바르지 않습니다. </AlertIdPwText>
+        )}
       </InputFormBox>
       <InputFormBox>
         <UserInfoText>비밀번호</UserInfoText>
@@ -217,6 +228,11 @@ function UserInfoInputContainer({
             }
           }}
         />
+        {regstate.pwRegExpress ? (
+          <EmptyBlock />
+        ) : (
+          <AlertIdPwText>비밀번호가 올바르지 않습니다. </AlertIdPwText>
+        )}
       </InputFormBox>
     </UserInfoInputFormBox>
   );
@@ -289,12 +305,24 @@ const AlertEmailText = styled(AlertText)`
   color: #0186d1;
 `;
 
+const AlertIdPwText = styled(AlertEmailText)`
+  width: 100%;
+  margin-bottom: 0px;
+`;
+
 const EmptyBlock = styled.div`
   height: 24px; //입력값 없을 때 스타일 깨지는거 방지용
+  margin-top: 16px;
+  //margin-bottom: 30px;
 `;
 
 const InputContainer = styled.div`
   margin: 0px 95px 54px 65px;
+  background-image: url(${backgroundImage});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.7;
 `;
 
 const InputFormBox = styled.div`
