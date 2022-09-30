@@ -13,6 +13,7 @@ import WritingPage from './Pages/WritingPage';
 import LoadingPage from './Pages/LoadingPage';
 import MainPage from './Pages/MainPage';
 import SignUpPage from './Pages/SignUpPage';
+import EditPage from './Pages/EditPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/writing" element={<WritingPage />} />
           <Route path="/main" element={<MainPage />} />
+          <Route path="/edit" element={<EditPage />} />
         </Routes>
         <ToastContainerStyled
           limit={1}
