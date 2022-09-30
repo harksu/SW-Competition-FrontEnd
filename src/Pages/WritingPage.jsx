@@ -1,7 +1,13 @@
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
+import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
+  const { tag } = useRecoilValue(WritingAtom);
+  console.log('tag: ', tag);
+  // const setWritingTitleState = useSetRecoilState(WritingAtom);
+
   return (
     <WritingWrapper>
       <Title>명지 의견 글작성</Title>
@@ -10,7 +16,7 @@ function WritingPage() {
           <SubTitleText>제목</SubTitleText>
           <SubTitleInput>
             <WritingDropdownMenu />
-            <SubTitle>안녕하세요. 제목임.</SubTitle>
+            <SubTitle> {tag} </SubTitle>
           </SubTitleInput>
         </SubTitleBox>
         <ContentsBox>

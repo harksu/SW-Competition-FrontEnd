@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import styled from 'styled-components';
 // import Axios from '../lib/axios';
+import { useRecoilState } from 'recoil';
+import { WritingAtom } from '../Atoms/WritingAtom';
 
 const CampusData = [
   { id: '01', value: '자연캠' },
@@ -8,20 +11,18 @@ const CampusData = [
 ];
 
 function WritingDropdownMenu() {
+  const [test, setTest] = useRecoilState(WritingAtom);
+
   // 열리는
   const [isShow, setIsShow] = useState(false);
 
-  // 학교 출력 useState
-  const [selectedDropValue, setSelectedDropValue] = useState('캠퍼스');
-  // onChange 이벤트가 발생한 target을 받아와 value 값 할당
+  console.log('테스트 자체: ', test);
 
-  const handleDropCampus = (e) => {
-    const { value } = e.target;
-    // 제목에 넣을 데이터
-    setSelectedDropValue(
-      CampusData.filter((el) => el.value === value[0].value),
-    );
+  const handleClickTag = (e) => {
+    console.log('캠퍼스: ', e.target.value);
+    setTest(e.target.value);
   };
+
   const handleShow = async () => {
     try {
       // const res = await Axios.post('/api/boards');
@@ -35,17 +36,17 @@ function WritingDropdownMenu() {
   return (
     <DropDownWrapper>
       <div>
-        <DropDownButton onClick={setIsShow} onChange={handleDropCampus}>
-          {selectedDropValue}
-        </DropDownButton>
+        <DropDownButton onClick={setIsShow}>캠퍼스</DropDownButton>
       </div>
       {isShow && (
         <CampusBox onClick={handleShow}>
-          <div>
-            {CampusData.map((el) => (
-              <option key={el.id}>{el.value}</option>
+          <>
+            {CampusData.map((taging) => (
+              <CampusButton key={taging.id} onClick={handleClickTag}>
+                {taging.value}
+              </CampusButton>
             ))}
-          </div>
+          </>
         </CampusBox>
       )}
     </DropDownWrapper>
@@ -63,7 +64,7 @@ const DropDownButton = styled.button`
   height: 30px;
   background: none;
   border: 2px solid #e2e2e2;
-  border-radius: 5px 5px 0px 0px;
+  /* border-radius: 5px 5px 0px 0px; */
   margin-top: 12px;
 
   display: flex;
@@ -76,13 +77,18 @@ const CampusBox = styled.div`
   height: 30px;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 15px;
-  padding: 15px 10px 15px 10px;
+  padding: 15px 20px 20px 10px;
   background: #ffffff;
   border: 2px solid #e2e2e2;
   border-radius: 0px 0px 5px 5px;
 `;
 
+const CampusButton = styled.option`
+  margin-bottom: 10px;
+  margin-top: 10px;
+`;
 export default WritingDropdownMenu;
