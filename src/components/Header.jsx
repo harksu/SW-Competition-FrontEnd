@@ -38,7 +38,7 @@ export default Header;
 
 const HeaderWrapper = styled.div`
   width: 100%;
-  height: 70px;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -74,6 +74,6 @@ const SelectBtn = styled.button`
     margin-left: 8%;
   }
   &:nth-child(1) {
-    display: ${(props) => !props && 'none'};
+    display: ${(props) => props.isLogin && 'none'};
   }
 `;
