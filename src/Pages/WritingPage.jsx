@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import WritingDropdownMenu from '../components/WritingDropdownMenu';
+import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 
 function WritingPage() {
   return (
