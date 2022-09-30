@@ -8,6 +8,7 @@
 /* eslint-disable no-unused-vars */
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import LoadingPage from './LoadingPage';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
@@ -21,7 +22,9 @@ import { useRegisterReply, useModifyReply } from '../hooks/useReply';
 
 function DetailPage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const boardId = 1;
+
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
 
@@ -88,7 +91,7 @@ function DetailPage() {
 
   /* 수정하기 버튼 handleClick 함수 */
   function handleQuestionBtn() {
-    console.log('글 작성 페이지로 이동');
+    navigate(`/writing/${boardId}`);
   }
 
   return (

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const user = {
-  username: 'test',
+  username: 'test2',
   password: 'password12345!',
 };
 
