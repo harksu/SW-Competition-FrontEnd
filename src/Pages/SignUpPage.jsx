@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-// 리팩터링,스타일링 ++console은 나중에 리팩터링 끝나면 다 지우겠습니다.
+import { toast } from 'react-toastify';
 import {
   Container,
   SignHeader,
@@ -15,6 +14,12 @@ import {
 } from './LoginPage';
 
 function SignUpPage() {
+  const showToastMessage = () => {
+    toast.success('인증번호가 확인되었습니다', {
+      duration: 4000,
+      position: toast.POSITION.BOTTOM_CENTER,
+    }); // 이거말고는 어떻게 쓰는건질 모르겠..
+  };
   const [sendData, setSendData] = useState({
     email: '',
     name: '',
@@ -55,7 +60,7 @@ function SignUpPage() {
         params: {
           email: emailvalue,
         },
-      }).then(console.log(emailvalue));
+      }).then(window.alert('인증번호를 발송하였습니다.'));
     } else {
       window.alert('이메일 형식은 @mju.ac.kr입니다');
     }
@@ -72,7 +77,6 @@ function SignUpPage() {
     })
       .then((response) => {
         if (response.status === 200) {
-          console.log(response);
           setIsChecked(true);
           alert('이메일 인증에 성공했습니다');
         }
@@ -85,7 +89,6 @@ function SignUpPage() {
   };
 
   const SignUp = () => {
-    console.log(sendData); // 이거 나중에 삭제
     const { nameRegExpress, pwRegExpress, emailRegExpress } = regExprees;
     const isValid = nameRegExpress && pwRegExpress && emailRegExpress;
     if (isChecked && isValid) {
@@ -95,14 +98,10 @@ function SignUpPage() {
         data: {
           ...sendData,
         },
-      })
-        .then((response) => {
-          console.log(response);
-          gologin();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      }).then(() => {
+        showToastMessage();
+        gologin();
+      });
     } else if (!isValid) {
       alert('입력 형식이 올바르지 않습니다.');
     } else {
@@ -111,67 +110,69 @@ function SignUpPage() {
   };
 
   return (
-    <SignUpContainer>
-      <SignHeader>회원가입</SignHeader>
-      <InputContainer>
-        <InputFormBox>
-          <UserInfoText>이름</UserInfoText>
-          <UserInputBox
-            placeholder="예) 김명지"
-            value={sendData.name}
-            onChange={(e) => {
-              const { value } = e.target;
-              setSendData({ ...sendData, name: e.target.value });
-              console.log(value.match(nameRegEx));
-              if (value.match(nameRegEx)) {
-                setRegExpress({ ...regExprees, nameRegExpress: true });
-              } else {
-                setRegExpress({ ...regExprees, nameRegExpress: false });
-              }
-              // console.log(regExprees);
-            }}
+    <>
+      <SignUpContainer>
+        <SignHeader>회원가입</SignHeader>
+        <InputContainer>
+          <InputFormBox>
+            <UserInfoText>이름</UserInfoText>
+            <UserInputBox
+              placeholder="예) 김명지"
+              value={sendData.name}
+              onChange={(e) => {
+                const { value } = e.target;
+                setSendData({ ...sendData, name: e.target.value });
+                console.log(value.match(nameRegEx));
+                if (value.match(nameRegEx)) {
+                  setRegExpress({ ...regExprees, nameRegExpress: true });
+                } else {
+                  setRegExpress({ ...regExprees, nameRegExpress: false });
+                }
+              }}
+            />
+          </InputFormBox>
+          <UserInfoInputContainer
+            exid="예) MJUyogoyogu"
+            expw="예) MJU12345678"
+            data={sendData}
+            event={setSendData}
+            reg={pwRegEx}
+            regEvent={setRegExpress}
+            regstate={regExprees}
           />
-        </InputFormBox>
-        <UserInfoInputContainer
-          exid="예) MJUyogoyogu"
-          expw="예) MJU12345678"
-          data={sendData}
-          event={setSendData}
-          reg={pwRegEx}
-          regEvent={setRegExpress}
-          regstate={regExprees}
-        />
-        <EmailInfoInputContainer
-          type="email"
-          email="이메일"
-          alertText="인증번호 받기"
-          exemail="예) MJU@mju.ac.kr"
-          data={sendData}
-          event={setSendData}
-          getevent={getAuth}
-          reg={emailRegEx}
-          regEvent={setRegExpress}
-          regstate={regExprees}
-        />
-        <EmailInfoInputContainer
-          type="confirm"
-          email="이메일 인증번호"
-          alertText="인증번호 확인"
-          exemail="예) MJU12345667"
-          data={sendData}
-          event={setSendData}
-          getevent={getCheck}
-        />
-        {isChecked ? (
-          <EmptyBlock />
-        ) : (
-          <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
-        )}
-        <LoginButton onClick={SignUp}>
-          <ButtonText>회원가입하기</ButtonText>
-        </LoginButton>
-      </InputContainer>
-    </SignUpContainer>
+          <EmailInfoInputContainer
+            type="email"
+            email="이메일"
+            alertText="인증번호 받기"
+            exemail="예) MJU@mju.ac.kr"
+            data={sendData}
+            event={setSendData}
+            getevent={getAuth}
+            reg={emailRegEx}
+            regEvent={setRegExpress}
+            regstate={regExprees}
+          />
+          <EmailInfoInputContainer
+            type="confirm"
+            email="이메일 인증번호"
+            alertText="인증번호 확인"
+            exemail="예) MJU12345667"
+            data={sendData}
+            event={setSendData}
+            getevent={getCheck}
+          />
+          {isChecked ? (
+            <EmptyBlock />
+          ) : (
+            <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
+          )}
+          <LoginButton onClick={SignUp}>
+            <ButtonText>회원가입하기</ButtonText>
+          </LoginButton>
+        </InputContainer>
+      </SignUpContainer>
+      <EmptyDiv />
+    </>
   );
 }
 
@@ -209,13 +210,11 @@ function UserInfoInputContainer({
           onChange={(e) => {
             const { value } = e.target;
             event({ ...data, password: e.target.value });
-            console.log(value.match(reg));
             if (value.match(reg)) {
               regEvent({ ...regstate, pwRegExpress: true });
             } else {
               regEvent({ ...regstate, pwRegExpress: false });
             }
-            console.log(regstate);
           }}
         />
       </InputFormBox>
@@ -245,13 +244,11 @@ function EmailInfoInputContainer({
             onChange={(e) => {
               const { value } = e.target;
               event({ ...data, email: e.target.value });
-              console.log(reg.test(value));
               if (reg.test(value)) {
                 regEvent({ ...regstate, emailRegExpress: true });
               } else {
                 regEvent({ ...regstate, emailRegExpress: false });
               }
-              console.log(regstate);
             }}
           />
         ) : (
@@ -280,6 +277,7 @@ function EmailInfoInputContainer({
 export default React.memo(SignUpPage);
 const SignUpContainer = styled(Container)`
   margin: 42px auto 12px auto;
+  height: 70%;
 `;
 const AlertEmailText = styled(AlertText)`
   line-height: 24px;
@@ -296,18 +294,14 @@ const EmptyBlock = styled.div`
 `;
 
 const InputContainer = styled.div`
-  //background-color: blue;
-  margin: 2px 95px 0px 65px; //이것 때문에 버튼 밑에 붙음
-  // width: 100%;
-  // 65,26,95,54
+  margin: 0px 95px 54px 65px;
 `;
 
 const InputFormBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 37%; //이것도 .. 회의 끝나고 물어보기(300px -> 37%뭘 선택할 건지 )
   //height: 98px;
-  //background-color: red;
   justify-content: space-between;
 `;
 const EmailInputBox = styled(InputFormBox)`
@@ -319,7 +313,6 @@ const UserInfoInputFormBox = styled.div`
   flex-direction: row;
   width: 100%;
   //height: 98px;
-  //background-color: pink;
   justify-content: space-between;
 `;
 const EmailInputFormBox = styled.div`
@@ -328,14 +321,17 @@ const EmailInputFormBox = styled.div`
   align-items: center;
   width: 100%;
   //height: 98px;
-  //background-color: pink;
   justify-content: space-between;
   align-items: center;
 `;
 
+const EmptyDiv = styled.div`
+  height: 30px; // 이거 진짜 아닌 것 같은데
+`;
+
 const UserInputBox = styled(InputBox)`
   border: 0 solid black;
-  width: 100%; // 이메일일경우는 59.5프로
+  width: 100%;
   height: 60px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
   background-color: white;
@@ -360,7 +356,7 @@ const EmailButton = styled.div`
   cursor: pointer;
   background-color: #0186d1;
   display: flex;
-  margin-bottom: 5px; //이거 피그마상 맞추려면 컨테이너가 너무 복잡해집니다
+  margin-bottom: 5px;
   align-self: flex-end;
   justify-content: center;
   align-items: center;
