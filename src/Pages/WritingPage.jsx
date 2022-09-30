@@ -1,7 +1,36 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
+import instance from '../Components/Request';
 
 function WritingPage() {
+  const [isInfoChecked, setIsInfoChecked] = useState(false);
+
+  const handleSendPost = async () => {
+    if (isInfoChecked) {
+      try {
+        const res = await instance.post('/api/boards');
+        console.log(res);
+      } catch (err) {
+        console.log('에러');
+      }
+    } else {
+      console.log('체크안됐을 때');
+    }
+  };
+
+  console.log(isInfoChecked);
+
+  const handleChecked = (e) => {
+    if (e.target.checked) {
+      setIsInfoChecked(true);
+      console.log('체크됨');
+    } else {
+      setIsInfoChecked(false);
+      console.log('체크안됨');
+    }
+  };
+
   return (
     <WritingWrapper>
       <Title>명지 의견 글작성</Title>
@@ -22,8 +51,12 @@ function WritingPage() {
             폭력적인 글이나 명예훼손성 발언의 글을 작성하실 경우 학교 측으로
             사용자 정보를 제공하는 것에 동의하십니까?
           </p>
-          <CheckButton type="checkbox" />
-          <WritingButton>작성하기</WritingButton>
+          <CheckButton
+            type="checkbox"
+            checked={isInfoChecked}
+            onChange={handleChecked}
+          />
+          <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
         </AgreeAndPostBox>
       </WritingBox>
       <NoneBox />
@@ -34,6 +67,7 @@ function WritingPage() {
 const WritingWrapper = styled.div`
   width: 100%;
   height: 100%;
+
   margin-top: 128px;
 `;
 
@@ -47,13 +81,13 @@ const Title = styled.p`
 const WritingBox = styled.div`
   width: 100%;
   height: 850px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   margin-top: 40px;
-
   background: #ffffff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
