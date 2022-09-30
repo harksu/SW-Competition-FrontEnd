@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Header() {
   const [isLogin] = useState(false);
   const locationNow = useLocation();
-
+  const [isShow, setIsShow] = useState(true);
   if (locationNow.pathname === '/loading') return null;
+  useEffect(() => {
+    if (locationNow.pathname === '/' || locationNow.pathname === '/signup') {
+      setIsShow(false);
+    } else {
+      setIsShow(true);
+    } // 로그인 페이지랑 회원가입 페이지에선 헤더에서 로그인이랑 회원가입 버튼 오면 안되니까 컨디셔닝입니다.
+  }, [locationNow.pathname]);
+
+  // ++로그인 상태 관리도 해야될 듯 싶습니당
   return (
     <HeaderWrapper>
       <ItemBox> </ItemBox>
@@ -14,10 +23,12 @@ function Header() {
         <Title>요고 요구</Title>
       </ItemBox>
       <ItemBox>
-        <UserSelect>
-          <SelectBtn isLogin={isLogin}>로그인</SelectBtn>
-          <SelectBtn>회원가입</SelectBtn>
-        </UserSelect>
+        {isShow && (
+          <UserSelect>
+            <SelectBtn isLogin={isLogin}>로그인</SelectBtn>
+            <SelectBtn>회원가입</SelectBtn>
+          </UserSelect>
+        )}
       </ItemBox>
     </HeaderWrapper>
   );
