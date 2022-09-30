@@ -9,6 +9,7 @@ import Theme from './styles/theme';
 import Footer from './Components/Footer';
 import LoginPage from './Pages/LoginPage';
 import DetailPage from './Pages/DetailPage';
+import WritingPage from './Pages/WritingPage';
 import LoadingPage from './Pages/LoadingPage';
 import MainPage from './Pages/MainPage';
 import SignUpPage from './Pages/SignUpPage';
@@ -26,6 +27,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
           <Route path="/loading" element={<LoadingPage />} />
+          <Route path="/writing" element={<WritingPage />} />
           <Route path="/main" element={<MainPage />} />
         </Routes>
         <ToastContainerStyled
