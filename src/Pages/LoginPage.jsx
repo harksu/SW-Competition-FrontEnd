@@ -3,8 +3,18 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { Cookies } from 'react-cookie';
 import { authToken } from '../Atoms/atom';
 import backgroundImage from '../assests/logo.svg';
+
+const cookies = new Cookies();
+export const setCookie = (name, value, option) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  cookies.set(name, value, { ...option });
+
+export const getCookie = (name) => cookies.get(name);
+
+export const removeCookie = (name) => cookies.remove(name);
 
 function LoginPage() {
   const [idValid, setIdValid] = useState(true);
@@ -33,8 +43,11 @@ function LoginPage() {
           ...userInfo,
         })
         .then((response) => {
-          console.log(response);
+          console.log(response.data.result.data.accessToken);
           setAuthToken(response.data.result.data.accessToken);
+          setCookie('authToken', response.data.result.data.accessToken, {
+            path: '/',
+          });
           setIdValid(true);
           setPwValid(true);
           window.alert(`${userInfo.username}님 환영합니다!`);
