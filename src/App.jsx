@@ -18,6 +18,7 @@ import LoadingPage from './Pages/LoadingPage';
 import MainPage from './Pages/MainPage';
 import SignUpPage from './Pages/SignUpPage';
 import EditPage from './Pages/EditPage';
+import NotFound from './Pages/NotFound';
 
 function App() {
   axios.defaults.baseURL = 'http://13.125.85.216:8080';
@@ -28,17 +29,28 @@ function App() {
         <GlobalStyle />
         <AllWrap>
           <Header />
+          <Footer />
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/edit" element={<EditPage />} />
             <Route path="/writing" element={<WritingPage />} />
             <Route path="/detail" element={<DetailPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
             {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
             <Route path="/loading" element={<LoadingPage />} />
+            <Route path="/writing" element={<WritingPage />} />
             <Route path="/main" element={<MainPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
-          <Footer />
+          <ToastContainerStyled
+            limit={1}
+            position="bottom-center"
+            closeButton={false}
+            hideProgressBar
+            transition={Slide}
+            autoClose={4000}
+          />
         </AllWrap>
         <ToastContainerStyled
           limit={1}
