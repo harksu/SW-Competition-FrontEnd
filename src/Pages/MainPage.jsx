@@ -1,28 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 // import { scrollTo } from 'seamless-scroll-polyfill';
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { authToken } from '../Atoms/atom';
-import Axios from '../lib/axios';
 
 import ContentList from '../Components/MainPage/ContentList';
-// import ListDemoData from '../Components/MainPage/ListDemoData';
 import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
+  const navigate = useNavigate();
+  const goDetail = () => {
+    navigate('/writing');
+  };
+
+  // 최신순, 좋아요순
+  const [sorting, setSorting] = useState('createdAt');
+  const onClickNew = () => {
+    setSorting('createAt');
+  };
+  const onClickBest = () => {
+    setSorting('Best');
+  };
+
+  // 글 목록 불러오기
   const loginToken = useRecoilValue(authToken);
   const [posts, setPosts] = useState([]);
-  const [postNum, setPostNum] = useState();
 
   const postAPI = async () => {
     try {
-      const res = await Axios.get('/api/boards', {
+      const res = await axios.get('/api/boards/all?sort=id', {
         headers: {
           Authorization: `Bearer ${loginToken}`,
         },
       });
-      setPosts(res.data.result.data.boards);
-      setPostNum(res.data.result.data.pageInfo.numberOfElements);
+      setPosts(res.data.result.data);
     } catch (err) {
       console.log('불러오기 실패!');
     }
@@ -30,23 +43,21 @@ function MainPage() {
 
   useEffect(() => {
     postAPI();
+    console.log(sorting);
     console.log(posts);
-    console.log(postNum);
+    // console.log(posts);
   }, []);
 
-  const pagesRef = useRef();
+  // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
   const offset = (currentPage - 1) * 10;
-  // const totalPageList = Math.ceil(ListDemoData.length / 10);
-  const totalPageList = Math.ceil(posts.length / 10);
+  const totalPages = Math.ceil(posts.length / 10);
   const pageNumber = [];
-  for (let i = 1; i <= totalPageList; i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pageNumber.push(i);
   }
 
-  // useEffect(() => {
-  //   scrollTo(pagesRef, { left: 165, behavior: 'smooth' });
-  // }, []);
+  // 좋아요 기능
 
   return (
     <MainWrap>
@@ -55,7 +66,13 @@ function MainPage() {
         <ListContainer>
           <ListHeader>
             <Header1stContent>
-              <p>최신순&nbsp;</p>|<p>&nbsp;인기순</p>
+              <p role="presentation" onClick={onClickNew}>
+                최신순&nbsp;
+              </p>
+              |
+              <p role="presentation" onClick={onClickBest}>
+                &nbsp;인기순
+              </p>
             </Header1stContent>
             <Header2ndContent>
               <p>순번</p>
@@ -65,13 +82,12 @@ function MainPage() {
               <p>답변</p>
             </Header2ndContent>
           </ListHeader>
-          {/* <ContentList posts={posts} /> */}
-          <ContentList posts={posts} postNum={postNum} offset={offset} />
+          <ContentList posts={posts} totalPages={totalPages} offset={offset} />
         </ListContainer>
-        <WriteButton>작성하기</WriteButton>
+        <WriteButton onClick={goDetail}>작성하기</WriteButton>
         <ListPagesButton>
           <PageMovingBtn />
-          <ScrollWidth ref={pagesRef}>
+          <ScrollWidth>
             <PageBtnContainer>
               {pageNumber.map((pages) => (
                 <PageBtn
@@ -79,6 +95,7 @@ function MainPage() {
                   onClick={() => {
                     setCurrentPage(pages);
                   }}
+                  active={currentPage === pages}
                 >
                   {pages}
                 </PageBtn>
@@ -130,9 +147,10 @@ const Header1stContent = styled.div`
   display: flex;
   margin: 56px 0 0 36px;
 
-  p {
+  div {
     font-size: 20px;
     font-weight: 400;
+
     cursor: pointer;
   }
 `;
@@ -177,7 +195,6 @@ const PageBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: pink;
 `;
 
 const PageBtn = styled.div`

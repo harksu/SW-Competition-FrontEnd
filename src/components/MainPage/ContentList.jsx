@@ -1,56 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-// import Axios from '../../lib/axios';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
-import { ReactComponent as FullHeartBtn } from '../../assests/fullHeart.svg';
+import { ReactComponent as FullHeartBtn } from '../../assests/Heart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
-// import ListDemoData from './ListDemoData';
 
-function ContentList({ posts, postNum, offset }) {
+function ContentList({ posts, offset }) {
   const postNumber = [];
-  for (let i = 1; i <= postNum; i++) {
+  for (let i = 1; i <= posts.length; i++) {
     postNumber.push(i);
   }
-  console.log(postNumber);
 
   return (
     <ListContainer>
       <Contents>
-        {/* {ListDemoData.slice(offset, offset + 10).map((data) => (
-          <ContentContainer key={data.boardId}>
-            <ContentNum>{data.boardId}</ContentNum>
-            <TitleBox>
-              <ContentTag>
-                {data.tag === 'none' ? '' : `[${data.tag}]`}
-              </ContentTag>
-              <ContentTitle>&nbsp;{data.title}</ContentTitle>
-            </TitleBox>
-            <ContentWriter>{data.writer_name}</ContentWriter>
-            <ContentSympathy>
-              <SympathyContainer>
-                {data.isAlreadyPushedLikeByUser ? (
-                  <FullHeartBtnStyle />
-                ) : (
-                  <HeartBtnStyle />
-                )}
-                {data.likesCount}
-              </SympathyContainer>
-            </ContentSympathy>
-            <ContentAnswer>
-              {data.isReplied ? <BlueCheckStyle /> : ''}
-            </ContentAnswer>
-          </ContentContainer>
-        ))} */}
         {posts
           .slice(offset, offset + 10)
           .reverse()
-          .map((data, i) => (
+          .map((data) => (
             <ContentContainer key={data.boardId}>
-              <ContentNum>{postNumber[i]}</ContentNum>
+              <ContentNum>{data.boardId}</ContentNum>
               <TitleBox>
                 <ContentTag>
-                  {data.tag === 'none' ? '' : `[${data.tag}]`}
+                  {/* {data.tag === 'none' ? '' : `[${data.tag}]`} */}[
+                  {data.tag}]
                 </ContentTag>
                 <ContentTitle>&nbsp;{data.title}</ContentTitle>
               </TitleBox>
