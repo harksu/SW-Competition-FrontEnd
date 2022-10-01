@@ -52,7 +52,7 @@ function MainPage() {
   const offset = (currentPage - 1) * 10;
   const totalPages = Math.ceil(posts.length / 10);
   const pageNumber = [];
-  for (let i = 1; i <= totalPages; i++) {
+  for (let i = 1; i <= totalPages; i += 1) {
     pageNumber.push(i);
   }
 

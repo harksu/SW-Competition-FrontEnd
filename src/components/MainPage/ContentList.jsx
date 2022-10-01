@@ -13,7 +13,7 @@ function ContentList({ posts, offset }) {
   };
 
   const postNumber = [];
-  for (let i = 1; i <= posts.length; i++) {
+  for (let i = 1; i <= posts.length; i += 1) {
     postNumber.push(i);
   }
 
