@@ -17,9 +17,9 @@ function ContentList({ posts, offset }) {
         {posts
           .slice(offset, offset + 10)
           .reverse()
-          .map((data) => (
+          .map((data, i) => (
             <ContentContainer key={data.boardId}>
-              <ContentNum>{data.boardId}</ContentNum>
+              <ContentNum>{postNumber[i]}</ContentNum>
               <TitleBox>
                 <ContentTag>
                   {/* {data.tag === 'none' ? '' : `[${data.tag}]`} */}[

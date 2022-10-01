@@ -45,7 +45,6 @@ function MainPage() {
     postAPI();
     console.log(sorting);
     console.log(posts);
-    // console.log(posts);
   }, []);
 
   // 페이지네이션
@@ -198,9 +197,11 @@ const PageBtnContainer = styled.div`
 `;
 
 const PageBtn = styled.div`
-  font-weight: 600;
-  font-size: 25px;
-  margin: 10px;
+  /* margin: 10px; */
+  margin: 5px 10px 5px 10px;
+  font-weight: ${(props) => (props.active ? '700' : '600')};
+  font-size: ${(props) => (props.active ? '28px' : '25px')};
+  color: ${(props) => (props.active ? '#0186D1' : 'none')};
   cursor: pointer;
 `;
 
