@@ -8,11 +8,13 @@ import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
-  const navigate = useNavigate();
-  const [contents, setContents] = useState('');
-  const [title, setTitle] = useState('');
 
+  // 게시판 state 목록
+  const [title, setTitle] = useState('');
   const tag = useRecoilValue(WritingAtom);
+  const [contents, setContents] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSendPost = async () => {
     if (isInfoChecked) {
@@ -54,7 +56,7 @@ function WritingPage() {
 
   return (
     <WritingWrapper>
-      <Title>명지 의견 글작성</Title>
+      <Title>명지 의견 글 작성</Title>
       <WritingBox>
         <SubTitleBox>
           <SubTitleText>제목</SubTitleText>
@@ -104,7 +106,7 @@ const WritingWrapper = styled.div`
 
 const Title = styled.p`
   margin-top: 128px;
-  margin-left: 268px;
+  margin-left: 20%;
 
   font-weight: bold;
   font-size: 50px;

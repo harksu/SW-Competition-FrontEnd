@@ -8,10 +8,13 @@ import { WritingAtom } from '../Atoms/WritingAtom';
 
 function EditPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
-  const { boardId } = useParams();
-  const [contents, setContents] = useState('');
+
+  // 게시판 state 목록
   const [title, setTitle] = useState('');
   const [tag, setTag] = useRecoilState(WritingAtom);
+  const [contents, setContents] = useState('');
+
+  const { boardId } = useParams();
 
   const handleSendEditPost = async () => {
     if (isInfoChecked) {
@@ -111,7 +114,7 @@ const WritingWrapper = styled.div`
 
 const Title = styled.p`
   margin-top: 128px;
-  margin-left: 268px;
+  margin-left: 20%;
 
   font-weight: bold;
   font-size: 50px;
