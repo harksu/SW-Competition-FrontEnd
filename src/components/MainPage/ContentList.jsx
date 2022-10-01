@@ -1,11 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
 import { ReactComponent as FullHeartBtn } from '../../assests/Heart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
 
 function ContentList({ posts, offset }) {
+  const navigate = useNavigate();
+  const goDetail = (id) => {
+    navigate(`/detail/${id}`);
+  };
+
   const postNumber = [];
   for (let i = 1; i <= posts.length; i++) {
     postNumber.push(i);
@@ -17,9 +23,15 @@ function ContentList({ posts, offset }) {
         {posts
           .slice(offset, offset + 10)
           .reverse()
-          .map((data) => (
-            <ContentContainer key={data.boardId}>
-              <ContentNum>{data.boardId}</ContentNum>
+          .map((data, i) => (
+            <ContentContainer
+              key={data.boardId}
+              onClick={() => {
+                console.log(`${data.boardId} 클릭!`);
+                goDetail(data.boardId);
+              }}
+            >
+              <ContentNum>{postNumber[i]}</ContentNum>
               <TitleBox>
                 <ContentTag>
                   {/* {data.tag === 'none' ? '' : `[${data.tag}]`} */}[

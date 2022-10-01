@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-// import { scrollTo } from 'seamless-scroll-polyfill';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -11,7 +10,7 @@ import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
   const navigate = useNavigate();
-  const goDetail = () => {
+  const goWriting = () => {
     navigate('/writing');
   };
 
@@ -21,7 +20,7 @@ function MainPage() {
     setSorting('createAt');
   };
   const onClickBest = () => {
-    setSorting('Best');
+    setSorting('best');
   };
 
   // 글 목록 불러오기
@@ -43,10 +42,10 @@ function MainPage() {
 
   useEffect(() => {
     postAPI();
-    console.log(sorting);
     console.log(posts);
-    // console.log(posts);
   }, []);
+
+  console.log(sorting);
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,13 +65,13 @@ function MainPage() {
         <ListContainer>
           <ListHeader>
             <Header1stContent>
-              <p role="presentation" onClick={onClickNew}>
+              <div role="presentation" onClick={onClickNew}>
                 최신순&nbsp;
-              </p>
+              </div>
               |
-              <p role="presentation" onClick={onClickBest}>
+              <div role="presentation" onClick={onClickBest}>
                 &nbsp;인기순
-              </p>
+              </div>
             </Header1stContent>
             <Header2ndContent>
               <p>순번</p>
@@ -84,7 +83,7 @@ function MainPage() {
           </ListHeader>
           <ContentList posts={posts} totalPages={totalPages} offset={offset} />
         </ListContainer>
-        <WriteButton onClick={goDetail}>작성하기</WriteButton>
+        <WriteButton onClick={goWriting}>작성하기</WriteButton>
         <ListPagesButton>
           <PageMovingBtn />
           <ScrollWidth>
@@ -95,7 +94,6 @@ function MainPage() {
                   onClick={() => {
                     setCurrentPage(pages);
                   }}
-                  active={currentPage === pages}
                 >
                   {pages}
                 </PageBtn>
@@ -150,7 +148,7 @@ const Header1stContent = styled.div`
   div {
     font-size: 20px;
     font-weight: 400;
-
+    color: ${(props) => (props.active ? '#0186D1' : 'none')};
     cursor: pointer;
   }
 `;
@@ -198,9 +196,11 @@ const PageBtnContainer = styled.div`
 `;
 
 const PageBtn = styled.div`
-  font-weight: 600;
-  font-size: 25px;
-  margin: 10px;
+  /* margin: 10px; */
+  margin: 5px 10px 5px 10px;
+  font-weight: ${(props) => (props.active ? '700' : '600')};
+  font-size: ${(props) => (props.active ? '28px' : '25px')};
+  color: ${(props) => (props.active ? '#0186D1' : 'none')};
   cursor: pointer;
 `;
 
