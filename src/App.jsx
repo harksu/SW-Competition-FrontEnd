@@ -1,43 +1,56 @@
+/* eslint-disable react/jsx-boolean-value */
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React from 'react';
+import axios from 'axios';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled, { ThemeProvider } from 'styled-components';
-import Header from './components/Header';
+import Header from './Components/Header';
 import GlobalStyle from './styles/GlobalStyles';
 import Theme from './styles/theme';
-import Footer from './components/Footer';
+import Footer from './Components/Footer';
 import LoginPage from './Pages/LoginPage';
 import DetailPage from './Pages/DetailPage';
+import WritingPage from './Pages/WritingPage';
 import LoadingPage from './Pages/LoadingPage';
 import MainPage from './Pages/MainPage';
 import SignUpPage from './Pages/SignUpPage';
+import NotFound from './Pages/NotFound';
 
 function App() {
+  axios.defaults.baseURL = 'http://13.125.85.216:8080';
+  const queryClient = new QueryClient();
   return (
-    <ThemeProvider theme={Theme}>
-      <GlobalStyle />
-      <AllWrap>
-        <Header />
-        <Footer />
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/detail" element={<DetailPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
-          <Route path="/loading" element={<LoadingPage />} />
-          <Route path="/main" element={<MainPage />} />
-        </Routes>
-        <ToastContainerStyled
-          limit={1}
-          position="bottom-center"
-          closeButton={false}
-          hideProgressBar
-          transition={Slide}
-          autoClose={4000}
-        />
-      </AllWrap>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={Theme}>
+        <GlobalStyle />
+        <AllWrap>
+          <Header />
+          <Footer />
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/detail" element={<DetailPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
+            <Route path="/loading" element={<LoadingPage />} />
+            <Route path="/writing" element={<WritingPage />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <ToastContainerStyled
+            limit={1}
+            position="bottom-center"
+            closeButton={false}
+            hideProgressBar
+            transition={Slide}
+            autoClose={4000}
+          />
+        </AllWrap>
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={true} />
+    </QueryClientProvider>
   );
 }
 

@@ -22,10 +22,8 @@ function Footer() {
 export default Footer;
 
 const FooterWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
   width: 100%;
-  height: 35px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -3,8 +3,18 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { Cookies } from 'react-cookie';
 import { authToken } from '../Atoms/atom';
-import backgroundImage from '../assests/logo.png';
+import backgroundImage from '../assests/logo.svg';
+
+const cookies = new Cookies();
+export const setCookie = (name, value, option) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  cookies.set(name, value, { ...option });
+
+export const getCookie = (name) => cookies.get(name);
+
+export const removeCookie = (name) => cookies.remove(name);
 
 function LoginPage() {
   const [idValid, setIdValid] = useState(true);
@@ -28,16 +38,16 @@ function LoginPage() {
   const login = () => {
     const { username, password } = userInfo;
     if (username && password) {
-      axios({
-        method: 'post',
-        url: option.loginUrl,
-        data: {
+      axios
+        .post(option.loginUrl, {
           ...userInfo,
-        },
-      })
+        })
         .then((response) => {
-          console.log(response);
+          console.log(response.data.result.data.accessToken);
           setAuthToken(response.data.result.data.accessToken);
+          setCookie('authToken', response.data.result.data.accessToken, {
+            path: '/',
+          });
           setIdValid(true);
           setPwValid(true);
           window.alert(`${userInfo.username}님 환영합니다!`);
@@ -153,9 +163,6 @@ export const Container = styled.div`
   margin: 69px auto 55px auto;
   border-radius: 20px 20px 0px 0px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  background-image: url(${backgroundImage});
-  background-repeat: no-repeat;
-  background-position: bottom;
 `;
 
 export const SignHeader = styled.div`
@@ -180,6 +187,11 @@ export const InputContainer = styled.div`
   width: 65%;
   //height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
   margin-bottom: 33px;
+  background-image: url(${backgroundImage});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.7;
 `;
 
 export const Text = styled.p`
@@ -244,6 +256,7 @@ export const ButtonText = styled(Text)`
   &:hover {
     color: ${({ theme }) => theme.colors.blue};
   }
+  margin-left: 0px;
 `;
 
 export const InputFormBox = styled.div`
