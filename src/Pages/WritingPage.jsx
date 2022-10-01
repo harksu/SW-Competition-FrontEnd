@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { Link, useNavigate } from 'react-router-dom';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
+  const navigate = useNavigate();
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
 
@@ -20,6 +22,7 @@ function WritingPage() {
           tag,
           title,
         });
+        navigate('/main');
       } catch (err) {
         console.log(err);
       }
@@ -82,7 +85,9 @@ function WritingPage() {
             checked={isInfoChecked}
             onChange={handleChecked}
           />
-          <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
+          <Link to="/main">
+            <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
+          </Link>
         </AgreeAndPostBox>
       </WritingBox>
       <NoneBox />
