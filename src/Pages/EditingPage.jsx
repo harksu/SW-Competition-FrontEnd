@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { useParams } from 'react-router-dom';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../lib/Request';
@@ -8,16 +8,15 @@ import { WritingAtom } from '../Atoms/WritingAtom';
 
 function EditPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
-  const { board_id } = useParams();
+  const { boardId } = useParams();
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
+  const [tag, setTag] = useRecoilState(WritingAtom);
 
-  const tag = useRecoilValue(WritingAtom);
-
-  const handleSendPost = async () => {
+  const handleSendEditPost = async () => {
     if (isInfoChecked) {
       try {
-        await instance.put('/api/boards/{boardId}', {
+        await instance.put(`/api/boards/${boardId}`, {
           content: contents,
           tag,
           title,
@@ -27,10 +26,9 @@ function EditPage() {
       }
     } else {
       console.log('정보 동의가 체크되지 않았습니다.');
+      console.log('얘를 봐!', boardId);
     }
   };
-
-  console.log(isInfoChecked);
 
   const handleChecked = (e) => {
     if (e.target.checked) {
@@ -39,7 +37,6 @@ function EditPage() {
     } else {
       setIsInfoChecked(false);
       console.log('체크안됨');
-      console.log(tag);
     }
   };
 
@@ -51,11 +48,17 @@ function EditPage() {
     setTitle(e.target.value);
   };
 
-  //   useEffect(() => {
-  //     const getBoard = async () => {
-  //       const {data} = await axios.get(`/api/board/${board_id}`);
-  //       return data;
-  //     }
+  const getPost = async () => {
+    await instance.get(`/api/boards/${boardId}`).then((res) => {
+      setTitle(res.data?.result?.data?.boards?.title);
+      setContents(res.data?.result?.data?.boards?.content);
+      setTag(res.data?.result?.data?.boards?.tag);
+    });
+  };
+
+  useEffect(() => {
+    getPost();
+  }, []);
 
   return (
     <WritingWrapper>
@@ -90,7 +93,8 @@ function EditPage() {
             checked={isInfoChecked}
             onChange={handleChecked}
           />
-          <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
+
+          <EditButton onClick={handleSendEditPost}>수정하기</EditButton>
         </AgreeAndPostBox>
       </WritingBox>
       <NoneBox />
@@ -222,7 +226,7 @@ const CheckButton = styled.input`
   cursor: pointer;
 `;
 
-const WritingButton = styled.button`
+const EditButton = styled.button`
   width: 130px;
   height: 40px;
 
