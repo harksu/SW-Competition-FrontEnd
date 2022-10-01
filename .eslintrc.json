@@ -13,11 +13,12 @@
   "plugins": ["react"],
   "rules": {
     "linebreak-style": 0,
-    "object-curly-newline":"off",
-    "react/jsx-one-expression-per-line":"off",
+    "object-curly-newline": "off",
+    "react/jsx-one-expression-per-line": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "no-console":"off",
-    "no-alert":"off"
+    "no-console": "off",
+    "no-alert": "off",
+    "no-plusplus": "off"
   }
 }

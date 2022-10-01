@@ -2,34 +2,47 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
+import { ReactComponent as FullHeartBtn } from '../../assests/Heart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
-import ListDemoData from './ListDemoData';
 
-function ContentList() {
+function ContentList({ posts, offset }) {
+  const postNumber = [];
+  for (let i = 1; i <= posts.length; i++) {
+    postNumber.push(i);
+  }
+
   return (
     <ListContainer>
       <Contents>
-        {ListDemoData.map((data) => (
-          <ContentContainer key={data.boardId}>
-            <ContentNum>{data.boardId}</ContentNum>
-            <TitleBox>
-              <ContentTag>
-                {data.tag === 'none' ? '' : `[${data.tag}]`}
-              </ContentTag>
-              <ContentTitle>&nbsp;{data.title}</ContentTitle>
-            </TitleBox>
-            <ContentWriter>{data.writer_name}</ContentWriter>
-            <ContentSympathy>
-              <SympathyContainer>
-                <HeartBtnStyle />
-                {data.likesCount}
-              </SympathyContainer>
-            </ContentSympathy>
-            <ContentAnswer>
-              {data.isReplied ? <BlueCheckStyle /> : ''}
-            </ContentAnswer>
-          </ContentContainer>
-        ))}
+        {posts
+          .slice(offset, offset + 10)
+          .reverse()
+          .map((data) => (
+            <ContentContainer key={data.boardId}>
+              <ContentNum>{data.boardId}</ContentNum>
+              <TitleBox>
+                <ContentTag>
+                  {/* {data.tag === 'none' ? '' : `[${data.tag}]`} */}[
+                  {data.tag}]
+                </ContentTag>
+                <ContentTitle>&nbsp;{data.title}</ContentTitle>
+              </TitleBox>
+              <ContentWriter>{data.writer_name}</ContentWriter>
+              <ContentSympathy>
+                <SympathyContainer>
+                  {posts.isAlreadyPushedLikeByUser ? (
+                    <FullHeartBtnStyle />
+                  ) : (
+                    <HeartBtnStyle />
+                  )}
+                  {data.likesCount}
+                </SympathyContainer>
+              </ContentSympathy>
+              <ContentAnswer>
+                {data.isReplied ? <BlueCheckStyle /> : ''}
+              </ContentAnswer>
+            </ContentContainer>
+          ))}
       </Contents>
     </ListContainer>
   );
@@ -70,6 +83,9 @@ const TitleBox = styled.div`
   align-items: center;
   margin-left: 20px;
   border-right: 2px solid #ededed;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: pointer;
 `;
 
@@ -83,9 +99,12 @@ const ContentTitle = styled.div`
 `;
 
 const ContentWriter = styled.div`
-  padding-top: 20px;
+  padding: 20px 2px 0 10px;
   border-right: 2px solid #ededed;
   font-size: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ContentSympathy = styled.div`
@@ -101,6 +120,11 @@ const SympathyContainer = styled.div`
 `;
 
 const HeartBtnStyle = styled(HeartBtn)`
+  margin-right: 14px;
+  cursor: pointer;
+`;
+
+const FullHeartBtnStyle = styled(FullHeartBtn)`
   margin-right: 14px;
   cursor: pointer;
 `;

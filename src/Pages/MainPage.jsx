@@ -1,9 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+// import { scrollTo } from 'seamless-scroll-polyfill';
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { authToken } from '../Atoms/atom';
 
 import ContentList from '../Components/MainPage/ContentList';
+import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
 
 function MainPage() {
+  const navigate = useNavigate();
+  const goDetail = () => {
+    navigate('/writing');
+  };
+
+  // 최신순, 좋아요순
+  const [sorting, setSorting] = useState('createdAt');
+  const onClickNew = () => {
+    setSorting('createAt');
+  };
+  const onClickBest = () => {
+    setSorting('Best');
+  };
+
+  // 글 목록 불러오기
+  const loginToken = useRecoilValue(authToken);
+  const [posts, setPosts] = useState([]);
+
+  const postAPI = async () => {
+    try {
+      const res = await axios.get('/api/boards/all?sort=id', {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      setPosts(res.data.result.data);
+    } catch (err) {
+      console.log('불러오기 실패!');
+    }
+  };
+
+  useEffect(() => {
+    postAPI();
+    console.log(sorting);
+    console.log(posts);
+    // console.log(posts);
+  }, []);
+
+  // 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const offset = (currentPage - 1) * 10;
+  const totalPages = Math.ceil(posts.length / 10);
+  const pageNumber = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumber.push(i);
+  }
+
+  // 좋아요 기능
+
   return (
     <MainWrap>
       <MainTitle>명지 의견 나눔함</MainTitle>
@@ -11,7 +66,13 @@ function MainPage() {
         <ListContainer>
           <ListHeader>
             <Header1stContent>
-              <p>최신순&nbsp;</p>|<p>&nbsp;인기순</p>
+              <p role="presentation" onClick={onClickNew}>
+                최신순&nbsp;
+              </p>
+              |
+              <p role="presentation" onClick={onClickBest}>
+                &nbsp;인기순
+              </p>
             </Header1stContent>
             <Header2ndContent>
               <p>순번</p>
@@ -21,10 +82,28 @@ function MainPage() {
               <p>답변</p>
             </Header2ndContent>
           </ListHeader>
-          <ContentList />
+          <ContentList posts={posts} totalPages={totalPages} offset={offset} />
         </ListContainer>
-        <WriteButton>작성하기</WriteButton>
-        <ListPagesButton />
+        <WriteButton onClick={goDetail}>작성하기</WriteButton>
+        <ListPagesButton>
+          <PageMovingBtn />
+          <ScrollWidth>
+            <PageBtnContainer>
+              {pageNumber.map((pages) => (
+                <PageBtn
+                  key={pages}
+                  onClick={() => {
+                    setCurrentPage(pages);
+                  }}
+                  active={currentPage === pages}
+                >
+                  {pages}
+                </PageBtn>
+              ))}
+            </PageBtnContainer>
+          </ScrollWidth>
+          <PageMovingBtn rightbtn="true" />
+        </ListPagesButton>
       </MainContainer>
     </MainWrap>
   );
@@ -68,9 +147,10 @@ const Header1stContent = styled.div`
   display: flex;
   margin: 56px 0 0 36px;
 
-  p {
+  div {
     font-size: 20px;
     font-weight: 400;
+
     cursor: pointer;
   }
 `;
@@ -90,10 +170,38 @@ const Header2ndContent = styled.div`
 `;
 
 const ListPagesButton = styled.div`
+  display: flex;
+  justify-content: space-between;
   width: 350px;
   height: 40px;
   border: 1px solid #adadad;
   border-radius: 5px;
+`;
+
+const PageMovingBtn = styled(pageMovingBtn)`
+  transform: ${(props) => props.rightbtn && 'rotate(180deg)'};
+  cursor: pointer;
+`;
+
+const ScrollWidth = styled.div`
+  /* display: flex; */
+  /* justify-content: flex-start; */
+  width: 165px;
+  height: 40px;
+  overflow: hidden;
+`;
+
+const PageBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PageBtn = styled.div`
+  font-weight: 600;
+  font-size: 25px;
+  margin: 10px;
+  cursor: pointer;
 `;
 
 const WriteButton = styled.button`
