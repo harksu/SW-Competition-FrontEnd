@@ -1,27 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
+import { ReactComponent as FullHeartBtn } from '../../assests/FullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
-import ListDemoData from './ListDemoData';
 
-function ContentList() {
+function ContentList({ posts, offset }) {
+  // 순번을 새로운 값으로 객체마다 넣기
+  const viewPosts = [...posts];
+  for (let i = 1; i <= posts.length; i += 1) {
+    viewPosts[i - 1].order = i;
+  }
+
+  // map중첩해결 - 제목 클릭 시 해당 /detail/${boardId} 값으로 이동
+  const navigate = useNavigate();
+  const [isClickDetail, setIsClickDetail] = useState(false);
+
+  const clickDetail = (order, id) => {
+    setIsClickDetail(!isClickDetail);
+    viewPosts[order].isClickDetail = !isClickDetail;
+    navigate(`/detail/${id}`);
+  };
+
+  // map중첩해결 - 하트 클릭 시 해당 id 글에만 공감 담기
+  // const [isLike, setIsLike] = useState(false);
+
+  // 하트 클릭 시 false, true 서로 반대값으로 교환
+  // const clickLike = (order) => {
+  //   setIsLike(!viewPosts[order].isAlreadyPushedLikeByUser);
+  //   console.log(isLike);
+  // };
+
+  useEffect(() => {}, [isClickDetail]);
+
   return (
     <ListContainer>
       <Contents>
-        {ListDemoData.map((data) => (
+        {viewPosts.slice(offset, offset + 10).map((data) => (
           <ContentContainer key={data.boardId}>
-            <ContentNum>{data.boardId}</ContentNum>
-            <TitleBox>
-              <ContentTag>
-                {data.tag === 'none' ? '' : `[${data.tag}]`}
-              </ContentTag>
+            <ContentNum>{data.order}</ContentNum>
+            <TitleBox onClick={() => clickDetail(data.order, data.boardId)}>
+              <ContentTag>[{data.tag}]</ContentTag>
               <ContentTitle>&nbsp;{data.title}</ContentTitle>
             </TitleBox>
             <ContentWriter>{data.writer_name}</ContentWriter>
             <ContentSympathy>
               <SympathyContainer>
-                <HeartBtnStyle />
+                {data.isAlreadyPushedLikeByUser ? (
+                  <FullHeartBtnStyle />
+                ) : (
+                  <HeartBtnStyle />
+                )}
                 {data.likesCount}
               </SympathyContainer>
             </ContentSympathy>
@@ -70,6 +100,9 @@ const TitleBox = styled.div`
   align-items: center;
   margin-left: 20px;
   border-right: 2px solid #ededed;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: pointer;
 `;
 
@@ -83,9 +116,12 @@ const ContentTitle = styled.div`
 `;
 
 const ContentWriter = styled.div`
-  padding-top: 20px;
+  padding: 20px 2px 0 10px;
   border-right: 2px solid #ededed;
   font-size: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const ContentSympathy = styled.div`
@@ -101,6 +137,11 @@ const SympathyContainer = styled.div`
 `;
 
 const HeartBtnStyle = styled(HeartBtn)`
+  margin-right: 14px;
+  cursor: pointer;
+`;
+
+const FullHeartBtnStyle = styled(FullHeartBtn)`
   margin-right: 14px;
   cursor: pointer;
 `;
