@@ -21,7 +21,7 @@ export function useModifyReply(id) {
   const queryClient = useQueryClient();
   return useMutation(
     ({ boardId, answerText }) => {
-      modifyReply(boardId, answerText);
+      modifyReply({ boardId, answerText });
     },
     {
       onSuccess: () => {

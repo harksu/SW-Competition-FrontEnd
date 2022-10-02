@@ -28,17 +28,19 @@ function App() {
         <GlobalStyle />
         <AllWrap>
           <Header />
-          <Footer />
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/detail" element={<DetailPage />} />
+            <Route path="/detail/:boardId" element={<DetailPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
             <Route path="/loading" element={<LoadingPage />} />
-            <Route path="/writing" element={<WritingPage />} />
+            <Route exact path="/writing" element={<WritingPage />} />
+            <Route path="/writing/:boardId" element={<WritingPage />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <Footer />
+
           <ToastContainerStyled
             limit={1}
             position="bottom-center"

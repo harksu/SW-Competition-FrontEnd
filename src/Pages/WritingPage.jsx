@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -6,12 +7,14 @@ import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
 
 function WritingPage() {
+  const { boardId } = useParams();
+  // boardId 바로 쓰시면 됩니다
+  console.log(boardId);
   const [isInfoChecked, setIsInfoChecked] = useState(false);
   const [contents, setContents] = useState('');
   const [title, setTitle] = useState('');
 
   const tag = useRecoilValue(WritingAtom);
-
   const handleSendPost = async () => {
     if (isInfoChecked) {
       try {

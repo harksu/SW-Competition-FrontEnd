@@ -8,7 +8,7 @@
 /* eslint-disable no-unused-vars */
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import LoadingPage from './LoadingPage';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
@@ -21,9 +21,11 @@ import useBoard from '../hooks/useBoard';
 import { useRegisterReply, useModifyReply } from '../hooks/useReply';
 
 function DetailPage() {
+  const { boardid } = useParams();
+  console.log(boardid);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const boardId = 1;
+  const boardId = 67;
 
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
@@ -43,7 +45,7 @@ function DetailPage() {
   const [isCouncil, setIsCouncil] = useState(false);
   /* 학생회인지 알기 위한 state */
 
-  const { board, boardLoading } = useBoard(1);
+  const { board, boardLoading } = useBoard(boardId);
   const boardInform = !boardLoading && board.data.result.data;
   useEffect(() => {
     if (boardInform) {

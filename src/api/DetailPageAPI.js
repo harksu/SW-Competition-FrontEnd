@@ -44,8 +44,9 @@ export async function dislikeBoard(boardId) {
   }
 }
 
-export async function registerReply(boardId, answerText) {
+export async function registerReply({ boardId, answerText }) {
   try {
+    console.log(answerText);
     await axios.post(`/api/boards/${boardId}/replies`, {
       content: answerText,
     });
@@ -54,7 +55,7 @@ export async function registerReply(boardId, answerText) {
   }
 }
 
-export async function modifyReply(boardId, answerText) {
+export async function modifyReply({ boardId, answerText }) {
   try {
     console.log(answerText);
     await axios.put(`/api/boards/${boardId}/replies`, {
