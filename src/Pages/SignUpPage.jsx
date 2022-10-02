@@ -172,7 +172,7 @@ function SignUpPage() {
           ) : (
             <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
           )}
-          <LoginButton onClick={SignUp}>
+          <LoginButton onClick={SignUp} isChecked={isChecked}>
             <ButtonText>회원가입하기</ButtonText>
           </LoginButton>
         </InputContainer>

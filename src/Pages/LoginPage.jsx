@@ -95,12 +95,12 @@ function LoginPage() {
               event={setUserInfo}
             />
           </InputFormBox>{' '}
+          <LoginButton login onClick={login}>
+            <ButtonText>로그인하기</ButtonText>
+          </LoginButton>
           <QuestionText onClick={goSignUP}>
             아직 회원이 아니신가요?
           </QuestionText>
-          <LoginButton onClick={login}>
-            <ButtonText>로그인하기</ButtonText>
-          </LoginButton>
         </InputContainer>
       </Container>
       <EmptyDiv />
@@ -109,6 +109,7 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
 function InputForm({ text, isValid, placeText, data, event }) {
   return (
     <>
@@ -243,7 +244,11 @@ export const LoginButton = styled.div`
   border-radius: 10px;
   justify-content: center;
   align-items: center;
-  background-color: #b5b5b5;
+
+  &:hover {
+    background-color: ${(props) => (props.login ? '#012868' : '#b5b5b5')};
+  }
+  background-color: ${({ isChecked }) => (isChecked ? '#012868' : '#b5b5b5')};
   cursor: pointer;
   margin-left: auto;
   margin-right: auto;
@@ -253,9 +258,6 @@ export const ButtonText = styled(Text)`
   font-weight: 400;
   font-size: 28px;
   line-height: 32px;
-  &:hover {
-    color: ${({ theme }) => theme.colors.blue};
-  }
   margin-left: 0px;
 `;
 
