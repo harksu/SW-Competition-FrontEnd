@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { authToken } from '../Atoms/atom';
+import instance from '../lib/Request';
 
 import ContentList from '../Components/MainPage/ContentList';
 import { ReactComponent as pageMovingBtn } from '../assests/pageMovingBtn.svg';
@@ -23,17 +21,13 @@ function MainPage() {
   };
 
   // 글 목록 불러오기
-  const loginToken = useRecoilValue(authToken);
+  // const loginToken = useRecoilValue(authToken);
   const [posts, setPosts] = useState([]);
 
   const postAPI = async () => {
     if (sorting === 'createAt') {
       try {
-        const res = await axios.get('/api/boards/all?sort=id', {
-          headers: {
-            Authorization: `Bearer ${loginToken}`,
-          },
-        });
+        const res = await instance.get('/api/boards/all?sort=id');
         setPosts(res.data.result.data);
       } catch (err) {
         console.log('불러오기 실패!');
@@ -41,11 +35,7 @@ function MainPage() {
     }
     if (sorting === 'best') {
       try {
-        const res = await axios.get('/api/boards/all?sort=likesCount', {
-          headers: {
-            Authorization: `Bearer ${loginToken}`,
-          },
-        });
+        const res = await instance.get('/api/boards/all?sort=likesCount');
         setPosts(res.data.result.data);
       } catch (err) {
         console.log('불러오기 실패!');
