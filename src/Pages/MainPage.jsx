@@ -52,11 +52,9 @@ function MainPage() {
   const offset = (currentPage - 1) * 10;
   const totalPages = Math.ceil(posts.length / 10);
   const pageNumber = [];
-  for (let i = 1; i <= totalPages; i++) {
+  for (let i = 1; i <= totalPages; i += 1) {
     pageNumber.push(i);
   }
-
-  // 좋아요 기능
 
   return (
     <MainWrap>
@@ -94,6 +92,7 @@ function MainPage() {
                   onClick={() => {
                     setCurrentPage(pages);
                   }}
+                  active={currentPage === pages}
                 >
                   {pages}
                 </PageBtn>
@@ -149,6 +148,7 @@ const Header1stContent = styled.div`
     font-size: 20px;
     font-weight: 400;
     color: ${(props) => (props.active ? '#0186D1' : 'none')};
+    user-select: none;
     cursor: pointer;
   }
 `;
@@ -164,6 +164,7 @@ const Header2ndContent = styled.div`
     padding: 21px 0;
     font-weight: 500;
     font-size: 25px;
+    user-select: none;
   }
 `;
 
@@ -193,6 +194,7 @@ const PageBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 `;
 
 const PageBtn = styled.div`
