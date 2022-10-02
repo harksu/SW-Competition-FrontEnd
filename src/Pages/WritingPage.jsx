@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
@@ -87,9 +87,7 @@ function WritingPage() {
             checked={isInfoChecked}
             onChange={handleChecked}
           />
-          <Link to="/main">
-            <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
-          </Link>
+          <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
         </AgreeAndPostBox>
       </WritingBox>
       <NoneBox />

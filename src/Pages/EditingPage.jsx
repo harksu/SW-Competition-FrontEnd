@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
@@ -13,6 +13,7 @@ function EditPage() {
   const [title, setTitle] = useState('');
   const [tag, setTag] = useRecoilState(WritingAtom);
   const [contents, setContents] = useState('');
+  const navigate = useNavigate();
 
   const { boardId } = useParams();
 
@@ -24,6 +25,7 @@ function EditPage() {
           tag,
           title,
         });
+        navigate('/main');
       } catch (err) {
         console.log(err);
       }
