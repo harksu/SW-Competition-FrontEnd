@@ -9,7 +9,6 @@ import backgroundImage from '../assests/logo.svg';
 
 const cookies = new Cookies();
 export const setCookie = (name, value, option) =>
-  // eslint-disable-next-line implicit-arrow-linebreak
   cookies.set(name, value, { ...option });
 
 export const getCookie = (name) => cookies.get(name);
@@ -43,7 +42,6 @@ function LoginPage() {
           ...userInfo,
         })
         .then((response) => {
-          console.log(response.data.result.data.accessToken);
           setAuthToken(response.data.result.data.accessToken);
           setCookie('authToken', response.data.result.data.accessToken, {
             path: '/',
@@ -95,13 +93,14 @@ function LoginPage() {
               event={setUserInfo}
             />
           </InputFormBox>{' '}
+          <LoginButton login onClick={login}>
+            <ButtonText>로그인하기</ButtonText>
+          </LoginButton>
           <QuestionText onClick={goSignUP}>
             아직 회원이 아니신가요?
           </QuestionText>
-          <LoginButton onClick={login}>
-            <ButtonText>로그인하기</ButtonText>
-          </LoginButton>
         </InputContainer>
+        <LogoImage src={backgroundImage} alt="dd" />
       </Container>
       <EmptyDiv />
     </>
@@ -109,6 +108,7 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
 function InputForm({ text, isValid, placeText, data, event }) {
   return (
     <>
@@ -146,9 +146,16 @@ function InputForm({ text, isValid, placeText, data, event }) {
     </>
   );
 }
+export const LogoImage = styled.img`
+  width: 128px;
+  height: 130px;
+  position: absolute;
+  bottom: 12%;
+  right: 9%;
+`;
 
 const EmptyBlock = styled.div`
-  height: 31px; //입력값 없을 때 스타일 깨지는거 방지용
+  height: 20px; //입력값 없을 때 스타일 깨지는거 방지용
 `;
 const EmptyDiv = styled.div`
   height: 10px; // 이거 진짜 아닌 것 같은데
@@ -163,35 +170,27 @@ export const Container = styled.div`
   margin: 69px auto 55px auto;
   border-radius: 20px 20px 0px 0px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  position: relative;
 `;
 
-export const SignHeader = styled.div`
+export const SignHeader = styled.p`
+  color: black;
   display: flex;
   width: 100%;
-  height: 100px; // 14% -> 100px 변경
-  background-color: #b5b5b5;
-  color: ${({ theme }) => theme.colors.white};
   font-size: 35px;
   font-weight: 700;
   justify-content: center;
   align-items: center;
-  border-radius: 20px 20px 0px 0px;
+  margin-top: 51px;
 `;
 
 export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 26px auto 33px auto;
+  margin: 0px auto 0px auto;
   justify-content: space-between;
   align-items: center;
   width: 65%;
-  //height: 78%; //이거 나중에 내가 이해한게 맞는건지 여쭤보기
-  margin-bottom: 33px;
-  background-image: url(${backgroundImage});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  opacity: 0.7;
 `;
 
 export const Text = styled.p`
@@ -201,16 +200,16 @@ export const Text = styled.p`
 `;
 
 export const AlertText = styled(Text)`
-  font-size: 23px;
+  font-size: 18px;
+  line-height: 20px;
   color: ${({ theme }) => theme.colors.blue};
 `;
 
 const QuestionText = styled(AlertText)`
   color: #b5b5b5;
   font-weight: 800;
-  font-size: 22px;
-  margin-top: 40px;
-  margin-bottom: 12px;
+  margin-top: 25px;
+  margin-bottom: 82px;
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.blue};
@@ -243,24 +242,23 @@ export const LoginButton = styled.div`
   border-radius: 10px;
   justify-content: center;
   align-items: center;
-  background-color: #b5b5b5;
+  margin: 66px auto 0px auto;
+  &:hover {
+    background-color: ${(props) => (props.login ? '#012868' : '#b5b5b5')};
+  }
+  background-color: ${({ isChecked }) => (isChecked ? '#012868' : '#b5b5b5')};
   cursor: pointer;
-  margin-left: auto;
-  margin-right: auto;
 `;
 export const ButtonText = styled(Text)`
   color: #ffffff;
   font-weight: 400;
   font-size: 28px;
   line-height: 32px;
-  &:hover {
-    color: ${({ theme }) => theme.colors.blue};
-  }
   margin-left: 0px;
 `;
 
 export const InputFormBox = styled.div`
-  margin-top: ${(props) => (props.pw ? '70px' : '27px')};
+  margin-top: ${(props) => (props.pw ? '27px' : '47px')};
   width: 73%;
   // height: 28%;
   display: flex;

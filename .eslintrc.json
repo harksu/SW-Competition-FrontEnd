@@ -19,6 +19,8 @@
     "react/prop-types": "off",
     "no-console": "off",
     "no-alert": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "no-confusing-arrow":"off",
+    "implicit-arrow-linebreak":"off"
   }
 }

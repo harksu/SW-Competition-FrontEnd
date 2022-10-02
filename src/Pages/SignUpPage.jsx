@@ -11,6 +11,7 @@ import {
   AlertText,
   LoginButton,
   ButtonText,
+  LogoImage,
 } from './LoginPage';
 import backgroundImage from '../assests/logo.svg';
 
@@ -19,7 +20,7 @@ function SignUpPage() {
     toast.success('인증번호가 확인되었습니다', {
       duration: 4000,
       position: toast.POSITION.BOTTOM_CENTER,
-    }); // 이거말고는 어떻게 쓰는건질 모르겠..
+    });
   };
   const [sendData, setSendData] = useState({
     email: '',
@@ -82,8 +83,7 @@ function SignUpPage() {
           alert('이메일 인증에 성공했습니다');
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         setIsChecked(false);
         alert('인증번호를 다시 확인해주세요');
       });
@@ -116,14 +116,13 @@ function SignUpPage() {
         <SignHeader>회원가입</SignHeader>
         <InputContainer>
           <InputFormBox>
-            <UserInfoText>이름</UserInfoText>
+            <UserInfoText name>이름</UserInfoText>
             <UserInputBox
               placeholder="예) 김명지"
               value={sendData.name}
               onChange={(e) => {
                 const { value } = e.target;
                 setSendData({ ...sendData, name: e.target.value });
-                console.log(value.match(nameRegEx));
                 if (value.match(nameRegEx)) {
                   setRegExpress({ ...regExprees, nameRegExpress: true });
                 } else {
@@ -172,7 +171,7 @@ function SignUpPage() {
           ) : (
             <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
           )}
-          <LoginButton onClick={SignUp}>
+          <LoginButton onClick={SignUp} isChecked={isChecked}>
             <ButtonText>회원가입하기</ButtonText>
           </LoginButton>
         </InputContainer>
@@ -234,6 +233,7 @@ function UserInfoInputContainer({
           <AlertIdPwText>비밀번호가 올바르지 않습니다. </AlertIdPwText>
         )}
       </InputFormBox>
+      <SignLogoImage src={backgroundImage} alt="dd" />
     </UserInfoInputFormBox>
   );
 }
@@ -252,7 +252,12 @@ function EmailInfoInputContainer({
   return (
     <EmailInputFormBox>
       <EmailInputBox>
-        <UserInfoText>{email}</UserInfoText>
+        {type === 'email' ? (
+          <UserInfoText>{email}</UserInfoText>
+        ) : (
+          <UserInfoText email>{email}</UserInfoText>
+        )}
+
         {type === 'email' ? (
           <UserInputBox
             placeholder={exemail}
@@ -277,20 +282,22 @@ function EmailInfoInputContainer({
           />
         )}
       </EmailInputBox>
-      {type === 'email' ? (
-        <EmailButton onClick={getevent}>
-          <EmailButtonText>{alertText}</EmailButtonText>
-        </EmailButton>
-      ) : (
-        <EmailButton onClick={getevent}>
-          <EmailButtonText>{alertText}</EmailButtonText>
-        </EmailButton>
-      )}
+      <EmailButton onClick={getevent}>
+        <EmailButtonText>{alertText}</EmailButtonText>
+      </EmailButton>
     </EmailInputFormBox>
   );
 }
 
 export default React.memo(SignUpPage);
+const SignLogoImage = styled(LogoImage)`
+  width: 128px;
+  height: 130px;
+  position: absolute;
+  bottom: 4.5%;
+  right: 9%;
+`;
+
 const SignUpContainer = styled(Container)`
   margin: 42px auto 12px auto;
   height: 70%;
@@ -306,23 +313,17 @@ const AlertEmailText = styled(AlertText)`
 `;
 
 const AlertIdPwText = styled(AlertEmailText)`
-  width: 100%;
+  width: 150%;
   margin-bottom: 0px;
 `;
 
 const EmptyBlock = styled.div`
   height: 24px; //입력값 없을 때 스타일 깨지는거 방지용
   margin-top: 16px;
-  //margin-bottom: 30px;
 `;
 
 const InputContainer = styled.div`
   margin: 0px 95px 54px 65px;
-  background-image: url(${backgroundImage});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  opacity: 0.7;
 `;
 
 const InputFormBox = styled.div`
@@ -402,6 +403,7 @@ const UserInfoText = styled(Text)`
   font-size: 25px;
   line-height: 28px;
   font-weight: 400;
-  margin-top: 24px;
+  margin-top: ${(props) => (props.name ? '50px' : '0px')};
+  margin-top: ${(props) => (props.email ? '24px' : '0px')};
   margin-bottom: 10px;
 `;
