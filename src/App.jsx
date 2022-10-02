@@ -33,7 +33,7 @@ function App() {
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/edit/:boardId" element={<EditPage />} />
             <Route path="/writing" element={<WritingPage />} />
-            <Route path="/detail" element={<DetailPage />} />
+            <Route path="/detail/:boardId" element={<DetailPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             {/* 화면 보려고 로딩페이지에 임시로 라우터 넣었습니다 */}
             <Route path="/loading" element={<LoadingPage />} />
