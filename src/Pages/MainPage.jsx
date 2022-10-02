@@ -15,7 +15,7 @@ function MainPage() {
   };
 
   // 최신순, 좋아요순
-  const [sorting, setSorting] = useState('createdAt');
+  const [, setSorting] = useState('createdAt');
   const onClickNew = () => {
     setSorting('createAt');
   };
@@ -42,10 +42,7 @@ function MainPage() {
 
   useEffect(() => {
     postAPI();
-    console.log(posts);
   }, []);
-
-  console.log(sorting);
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
 import { ReactComponent as FullHeartBtn } from '../../assests/FullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
 
 function ContentList({ posts, offset }) {
-  // const navigate = useNavigate();
-  // const goDetail = (id) => {
-  //   navigate(`/detail/${id}`);
-  // };
-
+  // 순번을 새로운 값으로 객체마다 넣기
   const viewPosts = [...posts];
   for (let i = 1; i <= posts.length; i += 1) {
     viewPosts[i - 1].order = i;
   }
 
-  console.log(viewPosts);
+  // 제목 클릭 시 해당 /detail/${boardId} 값으로 이동
+  const navigate = useNavigate();
+  const [isClickDetail, setIsClickDetail] = useState(false);
+
+  const clickDetail = (order, id) => {
+    setIsClickDetail(!isClickDetail);
+    viewPosts[order].isClickDetail = !isClickDetail;
+    navigate(`/detail/${id}`);
+    console.log(viewPosts);
+  };
+
+  useEffect(() => {}, [isClickDetail]);
 
   return (
     <ListContainer>
@@ -25,9 +32,9 @@ function ContentList({ posts, offset }) {
         {viewPosts.slice(offset, offset + 10).map((data) => (
           <ContentContainer key={data.boardId}>
             <ContentNum>{data.order}</ContentNum>
-            <TitleBox>
+            <TitleBox onClick={() => clickDetail(data.order, data.boardId)}>
               <ContentTag>[{data.tag}]</ContentTag>
-              <ContentTitle>{data.title}</ContentTitle>
+              <ContentTitle>&nbsp;{data.title}</ContentTitle>
             </TitleBox>
             <ContentWriter>{data.writer_name}</ContentWriter>
             <ContentSympathy>
