@@ -1,60 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
-import { ReactComponent as FullHeartBtn } from '../../assests/Heart.svg';
+import { ReactComponent as FullHeartBtn } from '../../assests/FullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
 
 function ContentList({ posts, offset }) {
+  // 순번을 새로운 값으로 객체마다 넣기
+  const viewPosts = [...posts];
+  for (let i = 1; i <= posts.length; i += 1) {
+    viewPosts[i - 1].order = i;
+  }
+
+  // map중첩해결 - 제목 클릭 시 해당 /detail/${boardId} 값으로 이동
   const navigate = useNavigate();
-  const goDetail = (id) => {
+  const [isClickDetail, setIsClickDetail] = useState(false);
+
+  const clickDetail = (order, id) => {
+    setIsClickDetail(!isClickDetail);
+    viewPosts[order].isClickDetail = !isClickDetail;
     navigate(`/detail/${id}`);
   };
 
-  const postNumber = [];
-  for (let i = 1; i <= posts.length; i += 1) {
-    postNumber.push(i);
-  }
+  // map중첩해결 - 하트 클릭 시 해당 id 글에만 공감 담기
+  // const [isLike, setIsLike] = useState(false);
+
+  // 하트 클릭 시 false, true 서로 반대값으로 교환
+  // const clickLike = (order) => {
+  //   setIsLike(!viewPosts[order].isAlreadyPushedLikeByUser);
+  //   console.log(isLike);
+  // };
+
+  useEffect(() => {}, [isClickDetail]);
 
   return (
     <ListContainer>
       <Contents>
-        {posts
-          .slice(offset, offset + 10)
-          .reverse()
-          .map((data, i) => (
-            <ContentContainer
-              key={data.boardId}
-              onClick={() => {
-                console.log(`${data.boardId} 클릭!`);
-                goDetail(data.boardId);
-              }}
-            >
-              <ContentNum>{postNumber[i]}</ContentNum>
-              <TitleBox>
-                <ContentTag>
-                  {/* {data.tag === 'none' ? '' : `[${data.tag}]`} */}[
-                  {data.tag}]
-                </ContentTag>
-                <ContentTitle>&nbsp;{data.title}</ContentTitle>
-              </TitleBox>
-              <ContentWriter>{data.writer_name}</ContentWriter>
-              <ContentSympathy>
-                <SympathyContainer>
-                  {posts.isAlreadyPushedLikeByUser ? (
-                    <FullHeartBtnStyle />
-                  ) : (
-                    <HeartBtnStyle />
-                  )}
-                  {data.likesCount}
-                </SympathyContainer>
-              </ContentSympathy>
-              <ContentAnswer>
-                {data.isReplied ? <BlueCheckStyle /> : ''}
-              </ContentAnswer>
-            </ContentContainer>
-          ))}
+        {viewPosts.slice(offset, offset + 10).map((data) => (
+          <ContentContainer key={data.boardId}>
+            <ContentNum>{data.order}</ContentNum>
+            <TitleBox onClick={() => clickDetail(data.order, data.boardId)}>
+              <ContentTag>[{data.tag}]</ContentTag>
+              <ContentTitle>&nbsp;{data.title}</ContentTitle>
+            </TitleBox>
+            <ContentWriter>{data.writer_name}</ContentWriter>
+            <ContentSympathy>
+              <SympathyContainer>
+                {data.isAlreadyPushedLikeByUser ? (
+                  <FullHeartBtnStyle />
+                ) : (
+                  <HeartBtnStyle />
+                )}
+                {data.likesCount}
+              </SympathyContainer>
+            </ContentSympathy>
+            <ContentAnswer>
+              {data.isReplied ? <BlueCheckStyle /> : ''}
+            </ContentAnswer>
+          </ContentContainer>
+        ))}
       </Contents>
     </ListContainer>
   );
