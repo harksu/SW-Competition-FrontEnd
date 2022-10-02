@@ -56,7 +56,7 @@ function MainPage() {
   // 최신순, 좋아요순 변경 시 렌더링
   useEffect(() => {
     postAPI();
-  }, [sorting]);
+  }, [posts, sorting]);
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
