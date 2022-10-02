@@ -12,6 +12,7 @@ function MainPage() {
     navigate('/writing');
   };
 
+  // 글 목록 불러오기
   const [sorting, setSorting] = useState('createAt');
   const onClickNew = () => {
     setSorting('createAt');
@@ -20,11 +21,35 @@ function MainPage() {
     setSorting('best');
   };
 
-  // 글 목록 불러오기
-  // const loginToken = useRecoilValue(authToken);
   const [posts, setPosts] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+
+  // 페이지네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const offset = (currentPage - 1) * 10;
+  const [currentPageArray, setCurrentPageArray] = useState([]);
+  const [totalArray, setTotalArray] = useState([]);
+
+  const sliceArray = (total, limit) => {
+    const totalPageArray = Array(total)
+      .fill()
+      .map((_, i) => i);
+    return Array(Math.ceil(total / limit))
+      .fill()
+      .map(() => totalPageArray.splice(0, limit));
+  };
 
   const postAPI = async () => {
+    try {
+      const res = await instance.get('/api/boards/all?sort=id');
+      setPosts(res.data.result.data);
+    } catch (err) {
+      console.log('불러오기 실패!');
+    }
+    setTotalPages(posts.length);
+  };
+
+  const sortAPI = async () => {
     if (sorting === 'createAt') {
       try {
         const res = await instance.get('/api/boards/all?sort=id');
@@ -41,21 +66,34 @@ function MainPage() {
         console.log('불러오기 실패!');
       }
     }
+    setTotalPages(posts.length);
   };
 
+  // useEffect 무한렌더링 해결
   // 최신순, 좋아요순 변경 시 렌더링
   useEffect(() => {
     postAPI();
-  }, [posts, sorting]);
+  }, []);
 
-  // 페이지네이션
-  const [currentPage, setCurrentPage] = useState(1);
-  const offset = (currentPage - 1) * 10;
-  const totalPages = Math.ceil(posts.length / 10);
-  const pageNumber = [];
-  for (let i = 1; i <= totalPages; i += 1) {
-    pageNumber.push(i);
-  }
+  useEffect(() => {
+    sortAPI();
+  }, [sorting]);
+
+  useEffect(() => {
+    const slicedPageArray = sliceArray(totalPages, 5);
+
+    setTotalArray(slicedPageArray);
+    setCurrentPageArray(slicedPageArray[0]);
+
+    if (currentPage % 5 === 1) {
+      setCurrentPageArray(totalArray[Math.floor(currentPage / 5)]);
+    } else if (currentPage % 5 === 0) {
+      setCurrentPageArray(totalArray[Math.floor(currentPage / 5) - 1]);
+    }
+
+    console.log(currentPageArray);
+    console.log(totalArray);
+  }, [currentPage]);
 
   return (
     <MainWrap>
@@ -83,23 +121,32 @@ function MainPage() {
         </ListContainer>
         <WriteButton onClick={goWriting}>작성하기</WriteButton>
         <ListPagesButton>
-          <PageMovingBtn />
+          <MovingBtnWrap
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <MovingBtnStyle />
+          </MovingBtnWrap>
           <ScrollWidth>
             <PageBtnContainer>
-              {pageNumber.map((pages) => (
+              {/* {currentPageArray.map((i) => (
                 <PageBtn
-                  key={pages}
-                  onClick={() => {
-                    setCurrentPage(pages);
-                  }}
-                  active={currentPage === pages}
+                  key={i + 1}
+                  onClick={() => setCurrentPage(i + 1)}
+                  active={currentPage === i + 1}
                 >
-                  {pages}
+                  {i + 1}
                 </PageBtn>
-              ))}
+              ))} */}
+              <PageBtn />
             </PageBtnContainer>
           </ScrollWidth>
-          <PageMovingBtn rightbtn="true" />
+          <MovingBtnWrap
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            <MovingBtnStyle rightbtn="true" />
+          </MovingBtnWrap>
         </ListPagesButton>
       </MainContainer>
     </MainWrap>
@@ -194,7 +241,12 @@ const ListPagesButton = styled.div`
   border-radius: 5px;
 `;
 
-const PageMovingBtn = styled(pageMovingBtn)`
+const MovingBtnWrap = styled.button`
+  border: none;
+  background-color: transparent;
+`;
+
+const MovingBtnStyle = styled(pageMovingBtn)`
   transform: ${(props) => props.rightbtn && 'rotate(180deg)'};
   cursor: pointer;
 `;
@@ -202,9 +254,8 @@ const PageMovingBtn = styled(pageMovingBtn)`
 const ScrollWidth = styled.div`
   /* display: flex; */
   /* justify-content: flex-start; */
-  width: 165px;
-  height: 40px;
-  overflow: hidden;
+  /* width: 165px;
+  height: 40px; */
 `;
 
 const PageBtnContainer = styled.div`
