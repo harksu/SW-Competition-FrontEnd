@@ -1,39 +1,37 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { useParams } from 'react-router-dom';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
 
-function WritingPage() {
+function EditPage() {
   const [isInfoChecked, setIsInfoChecked] = useState(false);
 
   // 게시판 state 목록
   const [title, setTitle] = useState('');
-  const tag = useRecoilValue(WritingAtom);
+  const [tag, setTag] = useRecoilState(WritingAtom);
   const [contents, setContents] = useState('');
 
-  const navigate = useNavigate();
+  const { boardId } = useParams();
 
-  const handleSendPost = async () => {
+  const handleSendEditPost = async () => {
     if (isInfoChecked) {
       try {
-        await instance.post('/api/boards', {
+        await instance.put(`/api/boards/${boardId}`, {
           content: contents,
           tag,
           title,
         });
-        navigate('/main');
       } catch (err) {
         console.log(err);
       }
     } else {
       console.log('정보 동의가 체크되지 않았습니다.');
+      console.log('얘를 봐!', boardId);
     }
   };
-
-  console.log(isInfoChecked);
 
   const handleChecked = (e) => {
     if (e.target.checked) {
@@ -42,7 +40,6 @@ function WritingPage() {
     } else {
       setIsInfoChecked(false);
       console.log('체크안됨');
-      console.log(tag);
     }
   };
 
@@ -54,9 +51,21 @@ function WritingPage() {
     setTitle(e.target.value);
   };
 
+  const getPost = async () => {
+    await instance.get(`/api/boards/${boardId}`).then((res) => {
+      setTitle(res.data?.result?.data?.boards?.title);
+      setContents(res.data?.result?.data?.boards?.content);
+      setTag(res.data?.result?.data?.boards?.tag);
+    });
+  };
+
+  useEffect(() => {
+    getPost();
+  }, []);
+
   return (
     <WritingWrapper>
-      <Title>명지 의견 글 작성</Title>
+      <Title>명지 의견 글 수정</Title>
       <WritingBox>
         <SubTitleBox>
           <SubTitleText>제목</SubTitleText>
@@ -87,9 +96,8 @@ function WritingPage() {
             checked={isInfoChecked}
             onChange={handleChecked}
           />
-          <Link to="/main">
-            <WritingButton onClick={handleSendPost}>작성하기</WritingButton>
-          </Link>
+
+          <EditButton onClick={handleSendEditPost}>수정하기</EditButton>
         </AgreeAndPostBox>
       </WritingBox>
       <NoneBox />
@@ -221,7 +229,7 @@ const CheckButton = styled.input`
   cursor: pointer;
 `;
 
-const WritingButton = styled.button`
+const EditButton = styled.button`
   width: 130px;
   height: 40px;
 
@@ -231,4 +239,4 @@ const WritingButton = styled.button`
   margin: 10px 0 10px 38px;
 `;
 
-export default WritingPage;
+export default EditPage;

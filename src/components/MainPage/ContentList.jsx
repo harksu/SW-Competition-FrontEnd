@@ -33,8 +33,6 @@ function ContentList({ posts, offset }) {
   // };
 
   useEffect(() => {}, [isClickDetail]);
-  console.log(viewPosts);
-
   return (
     <ListContainer>
       <Contents>
