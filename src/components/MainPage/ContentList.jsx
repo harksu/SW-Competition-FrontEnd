@@ -13,7 +13,7 @@ function ContentList({ posts, offset }) {
     viewPosts[i - 1].order = i;
   }
 
-  // 제목 클릭 시 해당 /detail/${boardId} 값으로 이동
+  // map중첩해결 - 제목 클릭 시 해당 /detail/${boardId} 값으로 이동
   const navigate = useNavigate();
   const [isClickDetail, setIsClickDetail] = useState(false);
 
@@ -21,10 +21,19 @@ function ContentList({ posts, offset }) {
     setIsClickDetail(!isClickDetail);
     viewPosts[order].isClickDetail = !isClickDetail;
     navigate(`/detail/${id}`);
-    console.log(viewPosts);
   };
 
+  // map중첩해결 - 하트 클릭 시 해당 id 글에만 공감 담기
+  // const [isLike, setIsLike] = useState(false);
+
+  // 하트 클릭 시 false, true 서로 반대값으로 교환
+  // const clickLike = (order) => {
+  //   setIsLike(!viewPosts[order].isAlreadyPushedLikeByUser);
+  //   console.log(isLike);
+  // };
+
   useEffect(() => {}, [isClickDetail]);
+  console.log(viewPosts);
 
   return (
     <ListContainer>

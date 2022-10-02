@@ -14,8 +14,7 @@ function MainPage() {
     navigate('/writing');
   };
 
-  // 최신순, 좋아요순
-  const [, setSorting] = useState('createdAt');
+  const [sorting, setSorting] = useState('createAt');
   const onClickNew = () => {
     setSorting('createAt');
   };
@@ -28,21 +27,36 @@ function MainPage() {
   const [posts, setPosts] = useState([]);
 
   const postAPI = async () => {
-    try {
-      const res = await axios.get('/api/boards/all?sort=id', {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-        },
-      });
-      setPosts(res.data.result.data);
-    } catch (err) {
-      console.log('불러오기 실패!');
+    if (sorting === 'createAt') {
+      try {
+        const res = await axios.get('/api/boards/all?sort=id', {
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        });
+        setPosts(res.data.result.data);
+      } catch (err) {
+        console.log('불러오기 실패!');
+      }
+    }
+    if (sorting === 'best') {
+      try {
+        const res = await axios.get('/api/boards/all?sort=likesCount', {
+          headers: {
+            Authorization: `Bearer ${loginToken}`,
+          },
+        });
+        setPosts(res.data.result.data);
+      } catch (err) {
+        console.log('불러오기 실패!');
+      }
     }
   };
 
+  // 최신순, 좋아요순 변경 시 렌더링
   useEffect(() => {
     postAPI();
-  }, []);
+  }, [sorting]);
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,14 +73,13 @@ function MainPage() {
       <MainContainer>
         <ListContainer>
           <ListHeader>
-            <Header1stContent>
-              <div role="presentation" onClick={onClickNew}>
-                최신순&nbsp;
-              </div>
-              |
-              <div role="presentation" onClick={onClickBest}>
-                &nbsp;인기순
-              </div>
+            <Header1stContent active={sorting === 'best'}>
+              <button type="button" onClick={onClickNew}>
+                최신순
+              </button>
+              <button type="button" onClick={onClickBest}>
+                인기순
+              </button>
             </Header1stContent>
             <Header2ndContent>
               <p>순번</p>
@@ -141,12 +154,29 @@ const Header1stContent = styled.div`
   display: flex;
   margin: 56px 0 0 36px;
 
-  div {
+  button {
+    width: 65px;
+    height: 26px;
+    margin-bottom: 20px;
+    padding: 5px;
     font-size: 20px;
     font-weight: 400;
-    color: ${(props) => (props.active ? '#0186D1' : 'none')};
+    border: none;
+    background-color: transparent;
     user-select: none;
     cursor: pointer;
+
+    // 렌더링 default 값 => 최신순
+    &:first-child {
+      font-weight: ${(props) => (props.active ? '' : '600')};
+      color: ${(props) => (props.active ? 'none' : '#0186D1')};
+    }
+
+    // 인기순 클릭 시 => 인기순
+    &:last-child {
+      font-weight: ${(props) => (props.active ? '600' : '')};
+      color: ${(props) => (props.active ? '#0186D1' : 'none')};
+    }
   }
 `;
 
