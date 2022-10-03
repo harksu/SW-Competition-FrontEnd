@@ -9,8 +9,6 @@ function Pagination({ posts }) {
   const totalPages = Math.ceil(posts.length / 10);
   const [currentPage, setCurrentPage] = useState(1);
   const [offsetValue, setOffsetValue] = useRecoilState(PageOffset);
-  const [slicedPage, setSlicedPage] = useState([]);
-  const [totalArray, setTotalArray] = useState([]);
   const [currentPageArray, setCurrentPageArray] = useState([]);
 
   const sliceArray = (total, limit) => {
@@ -23,24 +21,21 @@ function Pagination({ posts }) {
   };
 
   useEffect(() => {
-    setSlicedPage(sliceArray(totalPages, 5));
-
     if (offsetValue < posts.length) {
       setOffsetValue((currentPage - 1) * 10);
     }
 
-    setTotalArray(slicedPage);
-    setCurrentPageArray(slicedPage[0]);
+    setCurrentPageArray(sliceArray(totalPages, 5)[0]);
 
-    if (currentPage % 5 === 1) {
-      setCurrentPageArray(totalArray[Math.floor(currentPage / 5)]);
+    if (currentPage % 5 === 1 || currentPage % 5 > 1) {
+      setCurrentPageArray(
+        sliceArray(totalPages, 5)[Math.floor(currentPage / 5)],
+      );
     } else if (currentPage % 5 === 0) {
-      setCurrentPageArray(totalArray[Math.floor(currentPage / 5) - 1]);
+      setCurrentPageArray(
+        sliceArray(totalPages, 5)[Math.floor(currentPage / 5) - 1],
+      );
     }
-    // console.log(currentPage);
-    // console.log(offsetValue);
-    // console.log(totalArray);
-    console.log(currentPageArray);
   }, [totalPages, currentPage]);
 
   return (
@@ -52,7 +47,7 @@ function Pagination({ posts }) {
         <MovingBtnStyle />
       </MovingBtnWrap>
       <PageBtnContainer>
-        {/* {currentPageArray.map((i) => (
+        {currentPageArray?.map((i) => (
           <PageBtn
             key={i + 1}
             onClick={() => setCurrentPage(i + 1)}
@@ -60,15 +55,13 @@ function Pagination({ posts }) {
           >
             {i + 1}
           </PageBtn>
-        ))} */}
-        <PageBtn />
+        ))}
       </PageBtnContainer>
-      <MovingBtnWrap>
-        <MovingBtnStyle
-          rightbtn="true"
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        />
+      <MovingBtnWrap
+        onClick={() => setCurrentPage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <MovingBtnStyle rightbtn="true" />
       </MovingBtnWrap>
     </ListPagesButton>
   );

@@ -144,8 +144,8 @@ const Header1stContent = styled.div`
   margin: 56px 0 0 36px;
 
   p {
-    margin-top: 2px;
-    font-size: 25px;
+    margin-top: 4px;
+    font-size: 22px;
   }
 
   button {
