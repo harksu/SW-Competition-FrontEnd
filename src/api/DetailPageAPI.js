@@ -3,6 +3,7 @@
 /* eslint-disable  */
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const user = {
   username: 'test2',
@@ -50,8 +51,9 @@ export async function registerReply({ boardId, answerText }) {
     await axios.post(`/api/boards/${boardId}/replies`, {
       content: answerText,
     });
+    toast('답변이 등록되었습니다.', { containerId: 'common' });
   } catch (e) {
-    toast(e.result.msg);
+    toast(e.result.msg, { containerId: 'common' });
   }
 }
 
@@ -61,16 +63,18 @@ export async function modifyReply({ boardId, answerText }) {
     await axios.put(`/api/boards/${boardId}/replies`, {
       content: answerText,
     });
+    toast('답변이 수정되었습니다.', { containerId: 'common' });
   } catch (e) {
-    toast(e);
+    toast(e, { containerId: 'common' });
   }
 }
 
-export async function deleteBoard(boardId) {
+export async function deleteBoard({ boardId, navigate }) {
   try {
-    await axios
-      .delete(`/api/boards/${boardId}`)
-      .then(toast('게시물이 삭제되었습니다.'));
+    await axios.delete(`/api/boards/${boardId}`).then(() => {
+      navigate('/main');
+      toast('게시물이 삭제되었습니다.', { containerId: 'common' });
+    });
   } catch (e) {
     console.log(e);
   }

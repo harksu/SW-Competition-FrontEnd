@@ -43,13 +43,24 @@ function App() {
           </Routes>
           <Footer />
         </AllWrap>
-        <ToastContainerStyled
+        <CommonToastContainerStyled
           limit={1}
           position="bottom-center"
+          enableMultiContainer={true}
+          containerId="common"
           closeButton={false}
           hideProgressBar
           transition={Slide}
           autoClose={4000}
+        />
+        <ConfirmToastContainerStyled
+          enableMultiContainer
+          containerId="confirm"
+          closeButton={false}
+          hideProgressBar
+          transition={Slide}
+          position="top-center"
+          autoClose={false}
         />
       </ThemeProvider>
     </QueryClientProvider>
@@ -60,7 +71,7 @@ const AllWrap = styled.div`
   position: relative;
   min-height: 100%;
 `;
-const ToastContainerStyled = styled(ToastContainer)`
+const CommonToastContainerStyled = styled(ToastContainer)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,6 +87,28 @@ const ToastContainerStyled = styled(ToastContainer)`
     background-color: rgba(1, 134, 209, 0.6);
     opacity: 0.9;
     color: black;
+  }
+`;
+const ConfirmToastContainerStyled = styled(ToastContainer)`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  .Toastify__toast {
+    width: 392px;
+    height: 200px;
+    border-radius: 20px;
+    border: 2px solid ${Theme.colors.blue};
+
+    background-color: white;
+    opacity: 0.9;
+    color: black;
+    box-shadow: none;
+  }
+  .Toastify__toast-body {
+    padding: 0;
+    margin: 0;
   }
 `;
 
