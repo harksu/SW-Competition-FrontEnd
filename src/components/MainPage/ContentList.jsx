@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { PageOffset } from '../../Atoms/PageOffset';
 
 import { ReactComponent as FullHeartBtn } from '../../assests/FullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
 
-function ContentList({ posts, offset }) {
+function ContentList({ posts }) {
+  const offset = useRecoilValue(PageOffset);
+
   // 순번을 새로운 값으로 객체마다 넣기
   const viewPosts = [...posts];
   for (let i = 1; i <= posts.length; i += 1) {
