@@ -98,17 +98,17 @@ const TitleBox = styled.div`
 
 const ContentTag = styled.div`
   font-weight: 700;
-  font-size: 25px;
+  font-size: 23px;
 `;
 
 const ContentTitle = styled.div`
-  font-size: 25px;
+  font-size: 23px;
 `;
 
 const ContentWriter = styled.div`
   padding: 20px 2px 0 10px;
   border-right: 2px solid #ededed;
-  font-size: 25px;
+  font-size: 23px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

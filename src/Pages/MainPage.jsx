@@ -83,6 +83,7 @@ function MainPage() {
               <button type="button" onClick={onClickNew}>
                 최신순
               </button>
+              <p>|</p>
               <button type="button" onClick={onClickBest}>
                 인기순
               </button>
@@ -141,6 +142,11 @@ const ListHeader = styled.div`
 const Header1stContent = styled.div`
   display: flex;
   margin: 56px 0 0 36px;
+
+  p {
+    margin-top: 2px;
+    font-size: 25px;
+  }
 
   button {
     width: 65px;
