@@ -17,10 +17,7 @@ import backgroundImage from '../assests/logo.svg';
 
 function SignUpPage() {
   const showToastMessage = () => {
-    toast.success('인증번호가 확인되었습니다', {
-      duration: 4000,
-      position: toast.POSITION.BOTTOM_CENTER,
-    });
+    toast('인증번호가 확인되었습니다', { containerId: 'common' });
   };
   const [sendData, setSendData] = useState({
     email: '',
