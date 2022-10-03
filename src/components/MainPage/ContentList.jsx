@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { PageOffset } from '../../Atoms/PageOffset';
 
-import { ReactComponent as HeartBtn } from '../../assests/HeartBtn.svg';
 import { ReactComponent as FullHeartBtn } from '../../assests/FullHeart.svg';
 import { ReactComponent as blueCheck } from '../../assests/blueCheck.svg';
 
-function ContentList({ posts, offset }) {
+function ContentList({ posts }) {
+  const offset = useRecoilValue(PageOffset);
+
   // 순번을 새로운 값으로 객체마다 넣기
   const viewPosts = [...posts];
   for (let i = 1; i <= posts.length; i += 1) {
@@ -23,15 +26,6 @@ function ContentList({ posts, offset }) {
     navigate(`/detail/${id}`);
   };
 
-  // map중첩해결 - 하트 클릭 시 해당 id 글에만 공감 담기
-  // const [isLike, setIsLike] = useState(false);
-
-  // 하트 클릭 시 false, true 서로 반대값으로 교환
-  // const clickLike = (order) => {
-  //   setIsLike(!viewPosts[order].isAlreadyPushedLikeByUser);
-  //   console.log(isLike);
-  // };
-
   useEffect(() => {}, [isClickDetail]);
 
   return (
@@ -47,11 +41,7 @@ function ContentList({ posts, offset }) {
             <ContentWriter>{data.writer_name}</ContentWriter>
             <ContentSympathy>
               <SympathyContainer>
-                {data.isAlreadyPushedLikeByUser ? (
-                  <FullHeartBtnStyle />
-                ) : (
-                  <HeartBtnStyle />
-                )}
+                <FullHeartBtnStyle />
                 {data.likesCount}
               </SympathyContainer>
             </ContentSympathy>
@@ -108,17 +98,17 @@ const TitleBox = styled.div`
 
 const ContentTag = styled.div`
   font-weight: 700;
-  font-size: 25px;
+  font-size: 23px;
 `;
 
 const ContentTitle = styled.div`
-  font-size: 25px;
+  font-size: 23px;
 `;
 
 const ContentWriter = styled.div`
   padding: 20px 2px 0 10px;
   border-right: 2px solid #ededed;
-  font-size: 25px;
+  font-size: 23px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -136,14 +126,8 @@ const SympathyContainer = styled.div`
   font-size: 20px;
 `;
 
-const HeartBtnStyle = styled(HeartBtn)`
-  margin-right: 14px;
-  cursor: pointer;
-`;
-
 const FullHeartBtnStyle = styled(FullHeartBtn)`
   margin-right: 14px;
-  cursor: pointer;
 `;
 
 const BlueCheckStyle = styled(blueCheck)``;
