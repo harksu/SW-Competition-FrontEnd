@@ -27,16 +27,7 @@ function Pagination({ posts }) {
 
     setCurrentPageArray(sliceArray(totalPages, 5)[0]);
 
-    // if (currentPage % 5 === 1) {
-    //   setCurrentPageArray(
-    //     sliceArray(totalPages, 5)[Math.floor(currentPage / 5)],
-    //   );
-    // } else if (currentPage % 5 === 0) {
-    //   setCurrentPageArray(
-    //     sliceArray(totalPages, 5)[Math.floor(currentPage / 5) - 1],
-    //   );
-    // }
-    if (currentPage % 5 === 1) {
+    if (currentPage % 5 === 1 || currentPage % 5 > 1) {
       setCurrentPageArray(
         sliceArray(totalPages, 5)[Math.floor(currentPage / 5)],
       );
