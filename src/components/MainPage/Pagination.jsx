@@ -36,7 +36,6 @@ function Pagination({ posts }) {
         sliceArray(totalPages, 5)[Math.floor(currentPage / 5) - 1],
       );
     }
-    console.log(currentPage);
   }, [totalPages, currentPage]);
 
   return (
