@@ -7992,13 +7992,6 @@
     "ajv" "^6.12.2"
     "ajv-keywords" "^3.4.1"
 
-<<<<<<< HEAD
-"select-hose@^2.0.0":
-  "integrity" "sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg=="
-  "resolved" "https://registry.npmjs.org/select-hose/-/select-hose-2.0.0.tgz"
-  "version" "2.0.0"
-
-=======
 "seamless-scroll-polyfill@^2.2.0":
   "integrity" "sha512-c4KHfltYY8oFRt987Kl9i4xRLylIpg1YHWsOyH1kj4SP+W+8PtOiKrLyv8L6xbHvwQpofOZ98AWpGPEJK++udQ=="
   "resolved" "https://registry.npmjs.org/seamless-scroll-polyfill/-/seamless-scroll-polyfill-2.2.0.tgz"
@@ -8009,7 +8002,6 @@
   "resolved" "https://registry.npmjs.org/select-hose/-/select-hose-2.0.0.tgz"
   "version" "2.0.0"
 
->>>>>>> origin
 "selfsigned@^2.0.1":
   "integrity" "sha512-GSL3aowiF7wa/WtSFwnUrludWFoNhftq8bUkH9pkzjpN2XSPOAYEgg6e0sS9s0rZwgJzJiQRPU18A6clnoW5wQ=="
   "resolved" "https://registry.npmjs.org/selfsigned/-/selfsigned-2.1.1.tgz"

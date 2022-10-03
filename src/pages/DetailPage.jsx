@@ -92,9 +92,11 @@ function DetailPage() {
   }
 
   /* 수정하기 버튼 handleClick 함수 */
-  function handleQuestionBtn() {
-    navigate(`/writing/${boardId}`);
+  function handleModifyQuestion() {
+    navigate(`/edit/${boardId}`);
   }
+
+  function handleDeleteQuestion() {}
 
   return (
     <Container>
@@ -142,9 +144,15 @@ function DetailPage() {
             )}
             <QuestionButtonSpace>
               {isMine && (
-                <QuestionButton onClick={handleQuestionBtn}>
-                  수정하기
-                </QuestionButton>
+                <ModifyDeleteBox>
+                  <ModifyButton onClick={handleModifyQuestion}>
+                    수정하기
+                  </ModifyButton>
+                  <ContourText>|</ContourText>
+                  <DeleteButton onClick={handleDeleteQuestion}>
+                    삭제하기
+                  </DeleteButton>
+                </ModifyDeleteBox>
               )}
             </QuestionButtonSpace>
             <AnswerText Answered={isAnswered}>
@@ -296,18 +304,21 @@ const QuestionButtonSpace = styled.div`
   align-items: center;
 `;
 
-const QuestionButton = styled.button`
+const ModifyDeleteBox = styled.div`
+  width: 25%;
+  display: flex;
+  justify-content: space-around;
+`;
+const ModifyButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #b5b5b5;
   font-weight: 400;
   font-size: 15px;
-  width: 15%;
-  height: 46%;
-  background-color: white;
-  border-radius: 5px;
 `;
+
+const ContourText = styled.div``;
+const DeleteButton = styled.div``;
 const AnswerText = styled.div`
   grid-column: 1/2;
   grid-row: -3/-2;

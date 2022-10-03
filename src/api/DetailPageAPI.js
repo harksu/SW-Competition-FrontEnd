@@ -65,3 +65,13 @@ export async function modifyReply({ boardId, answerText }) {
     toast(e);
   }
 }
+
+export async function deleteBoard(boardId) {
+  try {
+    await axios
+      .delete(`/api/boards/${boardId}`)
+      .then(toast('게시물이 삭제되었습니다.'));
+  } catch (e) {
+    console.log(e);
+  }
+}
