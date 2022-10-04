@@ -1,11 +1,19 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Header() {
+  const navigate = useNavigate();
   const [isLogin] = useState(false);
   const locationNow = useLocation();
   const [isShow, setIsShow] = useState(true);
+  function handleLoginBtn() {
+    navigate('/');
+  }
+  function handleSignunBtn() {
+    navigate('/signup');
+  }
   if (locationNow.pathname === '/loading') return null;
   useEffect(() => {
     if (locationNow.pathname === '/' || locationNow.pathname === '/signup') {
@@ -25,8 +33,10 @@ function Header() {
       <ItemBox>
         {isShow && (
           <UserSelect>
-            <SelectBtn isLogin={isLogin}>로그인</SelectBtn>
-            <SelectBtn>회원가입</SelectBtn>
+            <SelectBtn isLogin={isLogin} onClick={handleLoginBtn}>
+              로그인
+            </SelectBtn>
+            <SelectBtn onClick={handleSignunBtn}>회원가입</SelectBtn>
           </UserSelect>
         )}
       </ItemBox>
