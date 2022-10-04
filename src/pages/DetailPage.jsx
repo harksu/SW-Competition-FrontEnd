@@ -6,10 +6,13 @@
 /* eslint-disable indent */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
+/* eslint-disable quotes */
+/* eslint-disable no-useless-concat */
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import ConfirmToast from '../hooks/useConfirmToast';
 import LoadingPage from './LoadingPage';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
 import { ReactComponent as Heart } from '../assests/Heart.svg';
@@ -19,12 +22,15 @@ import useDisLike from '../hooks/useDisLike';
 import useLike from '../hooks/useLike';
 import useBoard from '../hooks/useBoard';
 import { useRegisterReply, useModifyReply } from '../hooks/useReply';
+import { deleteBoard } from '../api/DetailPageAPI';
 
 function DetailPage() {
+
   const { boardId } = useParams();
   console.log(boardId);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
 
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
@@ -95,7 +101,12 @@ function DetailPage() {
     navigate(`/edit/${boardId}`);
   }
 
-  function handleDeleteQuestion() {}
+  function handleDeleteQuestion() {
+    ConfirmToast({
+      text: '정말 삭제하시겠습니까?',
+      confirmCallback: () => deleteBoard({ boardId, navigate }),
+    });
+  }
 
   return (
     <Container>
@@ -164,7 +175,7 @@ function DetailPage() {
               <AnswereTextArea onChange={handleAnswer} />
             ) : (
               <AnswerBox Answered={isAnswered}>
-                {isAnswered ? (
+                {isAnswered && boardInform.reply ? (
                   <AnswerComp>{boardInform.reply.content}</AnswerComp>
                 ) : (
                   <WaitAnswer>
@@ -332,7 +343,7 @@ const AnswerContainer = styled.div`
   align-items: center;
 `;
 const AnsweredIconStyled = styled(AnsweredIcon)`
-  height: 28px;
+  height: 20px;
 `;
 const AnswereTextArea = styled.textarea`
   grid-column: 2/3;

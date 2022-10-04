@@ -21,21 +21,6 @@ function MainPage() {
   };
 
   const [posts, setPosts] = useState([]);
-  // const [maskingPosts, setMaskingPosts] = useState([]);
-
-  // const maskingName = (name) => {
-  //   if (name.length > 2) {
-  //     const userName = name.split('');
-  //     userName.forEach((n, i) => {
-  //       if (i === 0) return;
-  //       userName[i] = '*';
-  //     });
-  //     const joinName = userName.join();
-  //     return joinName.replace(/,/g, '');
-  //   }
-  //   const pattern = /.$/;
-  //   return name.replace(pattern, '*');
-  // };
 
   const postAPI = async () => {
     try {
@@ -144,8 +129,8 @@ const Header1stContent = styled.div`
   margin: 56px 0 0 36px;
 
   p {
-    margin-top: 2px;
-    font-size: 25px;
+    margin-top: 4px;
+    font-size: 22px;
   }
 
   button {

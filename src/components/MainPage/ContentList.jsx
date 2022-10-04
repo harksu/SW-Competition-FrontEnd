@@ -15,6 +15,12 @@ function ContentList({ posts }) {
   for (let i = 1; i <= posts.length; i += 1) {
     viewPosts[i - 1].order = i;
   }
+  for (let i = 1; i <= posts.length; i += 1) {
+    viewPosts[i - 1].makingUser = viewPosts[i - 1].writer_name.replace(
+      /(?<=.{1})./gi,
+      '*',
+    );
+  }
 
   // map중첩해결 - 제목 클릭 시 해당 /detail/${boardId} 값으로 이동
   const navigate = useNavigate();
@@ -23,7 +29,11 @@ function ContentList({ posts }) {
   const clickDetail = (order, id) => {
     setIsClickDetail(!isClickDetail);
     viewPosts[order].isClickDetail = !isClickDetail;
-    navigate(`/detail/${id}`);
+    navigate('/detail', {
+      state: {
+        contentId: id,
+      },
+    });
   };
 
   useEffect(() => {}, [isClickDetail]);
@@ -38,7 +48,7 @@ function ContentList({ posts }) {
               <ContentTag>[{data.tag}]</ContentTag>
               <ContentTitle>&nbsp;{data.title}</ContentTitle>
             </TitleBox>
-            <ContentWriter>{data.writer_name}</ContentWriter>
+            <ContentWriter>{data.makingUser}</ContentWriter>
             <ContentSympathy>
               <SympathyContainer>
                 <FullHeartBtnStyle />
@@ -106,7 +116,7 @@ const ContentTitle = styled.div`
 `;
 
 const ContentWriter = styled.div`
-  padding: 20px 2px 0 10px;
+  padding: 20px 10px 0 10px;
   border-right: 2px solid #ededed;
   font-size: 23px;
   overflow: hidden;
