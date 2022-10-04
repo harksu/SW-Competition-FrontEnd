@@ -21,11 +21,10 @@ import useBoard from '../hooks/useBoard';
 import { useRegisterReply, useModifyReply } from '../hooks/useReply';
 
 function DetailPage() {
-  const { boardid } = useParams();
-  console.log(boardid);
+  const { boardId } = useParams();
+  console.log(boardId);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const boardId = 67;
 
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
@@ -161,7 +160,7 @@ function DetailPage() {
                 {isAnswered && <AnsweredIconStyled />}
               </AnswerContainer>
             </AnswerText>
-            {answerWriting ? (
+            {answerWriting && boardInform ? (
               <AnswereTextArea onChange={handleAnswer} />
             ) : (
               <AnswerBox Answered={isAnswered}>

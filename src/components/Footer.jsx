@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
@@ -5,7 +6,13 @@ import { ReactComponent as GithubIcon } from '../assests/githubIcon.svg';
 
 function Footer() {
   const locationNow = useLocation();
-
+  function goGithub() {
+    window.open(
+      'https://github.com/harksu/SW-Competition-FrontEnd',
+      '_blanck',
+      'rel=noopener noreferrer',
+    );
+  }
   if (locationNow.pathname === '/loading') return null;
   return (
     <FooterWrapper>
@@ -13,7 +20,7 @@ function Footer() {
         <TeamName>소나기</TeamName>
       </Container>
       <Container>
-        <GithubLogo />
+        <GithubLogo onClick={goGithub} />
       </Container>
     </FooterWrapper>
   );
