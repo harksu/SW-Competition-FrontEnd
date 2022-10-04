@@ -8,7 +8,7 @@
 /* eslint-disable no-unused-vars */
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import LoadingPage from './LoadingPage';
 import { ReactComponent as Arrow } from '../assests/backArrow.svg';
@@ -25,7 +25,10 @@ function DetailPage() {
   console.log(boardid);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const boardId = 67;
+  const location = useLocation();
+  // const boardId = 67;
+
+  const boardId = location.state.contentId;
 
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
