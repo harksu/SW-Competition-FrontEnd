@@ -10,7 +10,7 @@
 /* eslint-disable no-useless-concat */
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import ConfirmToast from '../hooks/useConfirmToast';
 import LoadingPage from './LoadingPage';
@@ -25,9 +25,11 @@ import { useRegisterReply, useModifyReply } from '../hooks/useReply';
 import { deleteBoard } from '../api/DetailPageAPI';
 
 function DetailPage() {
-  const { boardId } = useParams();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const boardId = location.state.contentId;
 
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
