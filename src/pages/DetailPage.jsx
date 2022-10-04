@@ -26,7 +26,6 @@ import { deleteBoard } from '../api/DetailPageAPI';
 
 function DetailPage() {
   const { boardId } = useParams();
-  console.log(boardId);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -49,7 +48,6 @@ function DetailPage() {
   /* 학생회인지 알기 위한 state */
 
   const { board, boardLoading } = useBoard(boardId);
-  console.log(board);
   const boardInform = !boardLoading && board.data.result.data;
   useEffect(() => {
     if (boardInform) {
@@ -87,7 +85,6 @@ function DetailPage() {
     if (answerWriting) {
       if (!isAnswered) register.mutate({ boardId, answerText });
       else {
-        console.log(answerText);
         modify.mutate({ boardId, answerText });
         queryClient.invalidateQueries(['Board', boardId]);
       }
@@ -128,7 +125,11 @@ function DetailPage() {
             )}
             <BoardInfo>
               <UserDate>
-                {boardInform && <User>{boardInform.boards.writerName}</User>}
+                {boardInform && (
+                  <User>
+                    {boardInform.boards.writerName.replace(/(?<=.{1})./gi, '*')}
+                  </User>
+                )}
                 {boardInform && (
                   <Date>
                     {boardInform.boards.createdAt[0]}.
