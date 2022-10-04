@@ -26,12 +26,6 @@ function ContentList({ posts }) {
   const navigate = useNavigate();
   const [isClickDetail, setIsClickDetail] = useState(false);
 
-  // const clickDetail = (order, id) => {
-  //   setIsClickDetail(!isClickDetail);
-  //   viewPosts[order].isClickDetail = !isClickDetail;
-  //   navigate(`/detail/${id}`);
-  // };
-
   const clickDetail = (order, id) => {
     setIsClickDetail(!isClickDetail);
     viewPosts[order].isClickDetail = !isClickDetail;
@@ -43,8 +37,6 @@ function ContentList({ posts }) {
   };
 
   useEffect(() => {}, [isClickDetail]);
-
-  console.log(viewPosts);
 
   return (
     <ListContainer>
