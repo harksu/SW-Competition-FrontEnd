@@ -29,11 +29,7 @@ function ContentList({ posts }) {
   const clickDetail = (order, id) => {
     setIsClickDetail(!isClickDetail);
     viewPosts[order].isClickDetail = !isClickDetail;
-    navigate('/detail', {
-      state: {
-        contentId: id,
-      },
-    });
+    navigate(`/detail/${id}`);
   };
 
   useEffect(() => {}, [isClickDetail]);

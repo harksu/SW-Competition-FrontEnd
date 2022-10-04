@@ -2,7 +2,6 @@
 /* eslint-disable operator-linebreak  */
 /* eslint-disable  */
 import { toast } from 'react-toastify';
-
 import instance from '../lib/Request';
 
 export async function testGetBoardInfo({ queryKey }) {
@@ -57,11 +56,9 @@ export async function modifyReply({ boardId, answerText }) {
 
 export async function deleteBoard({ boardId, navigate }) {
   try {
-
     await instance
       .delete(`/api/boards/${boardId}`)
       .then(toast('게시물이 삭제되었습니다.'));
-
   } catch (e) {
     console.log(e);
   }

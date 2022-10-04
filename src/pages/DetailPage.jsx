@@ -10,7 +10,7 @@
 /* eslint-disable no-useless-concat */
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ConfirmToast from '../hooks/useConfirmToast';
 import LoadingPage from './LoadingPage';
@@ -25,12 +25,10 @@ import { useRegisterReply, useModifyReply } from '../hooks/useReply';
 import { deleteBoard } from '../api/DetailPageAPI';
 
 function DetailPage() {
-
   const { boardId } = useParams();
   console.log(boardId);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
 
   const [isAnswered, setIsAnswered] = useState(false);
   /* 답변이 작성되었는지 알기 위한 state */
@@ -51,6 +49,7 @@ function DetailPage() {
   /* 학생회인지 알기 위한 state */
 
   const { board, boardLoading } = useBoard(boardId);
+  console.log(board);
   const boardInform = !boardLoading && board.data.result.data;
   useEffect(() => {
     if (boardInform) {
@@ -80,6 +79,9 @@ function DetailPage() {
   const modify = useModifyReply(boardId);
   const register = useRegisterReply(boardId);
   /* 학생회 답변하기 버튼 handleClick 함수 */
+  function goBack() {
+    navigate(-1);
+  }
 
   function handleAnswerBtn() {
     if (answerWriting) {
@@ -114,7 +116,7 @@ function DetailPage() {
         <LoadingPage />
       ) : (
         <Container>
-          <BacktoList>
+          <BacktoList onClick={goBack}>
             <ArrowStyled />
             <BackText>목록으로 돌아가기</BackText>
           </BacktoList>
