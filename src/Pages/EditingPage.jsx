@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import WritingDropdownMenu from '../Components/WritingDropdownMenu';
 import instance from '../lib/Request';
 import { WritingAtom } from '../Atoms/WritingAtom';
@@ -17,6 +18,13 @@ function EditPage() {
 
   const { boardId } = useParams();
 
+  const showToastMessage = () => {
+    toast('글이 수정되었습니다.', { containerId: 'common' });
+  };
+  const showToastErrorMessage = () => {
+    toast('정보 제공 항목에 동의해주세요.', { containerId: 'common' });
+  };
+
   const handleSendEditPost = async () => {
     if (isInfoChecked) {
       try {
@@ -25,13 +33,13 @@ function EditPage() {
           tag,
           title,
         });
+        showToastMessage();
         navigate('/main');
       } catch (err) {
         console.log(err);
       }
     } else {
-      console.log('정보 동의가 체크되지 않았습니다.');
-      console.log('얘를 봐!', boardId);
+      showToastErrorMessage();
     }
   };
 
