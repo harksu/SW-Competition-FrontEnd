@@ -164,7 +164,7 @@ function SignUpPage() {
             <AlertEmailText>인증번호가 올바르지 않습니다 </AlertEmailText>
           )}
           <LoginButton onClick={SignUp} isChecked={isChecked}>
-            <ButtonText>회원가입하기</ButtonText>
+            <ButtonText>회원가입</ButtonText>
           </LoginButton>
         </InputContainer>
       </SignUpContainer>
@@ -282,18 +282,22 @@ function EmailInfoInputContainer({
 }
 
 export default React.memo(SignUpPage);
+
 const SignLogoImage = styled(LogoImage)`
   width: 128px;
   height: 130px;
   position: absolute;
   bottom: 4.5%;
   right: 9%;
+  -webkit-user-drag: none;
+  user-select: none;
 `;
 
 const SignUpContainer = styled(Container)`
   margin: 42px auto 12px auto;
   height: 70%;
 `;
+
 const AlertEmailText = styled(AlertText)`
   line-height: 24px;
   font-weight: 700;
@@ -302,11 +306,13 @@ const AlertEmailText = styled(AlertText)`
   margin-bottom: 30px;
   font-style: normal;
   color: #0186d1;
+  user-select: none;
 `;
 
 const AlertIdPwText = styled(AlertEmailText)`
   width: 150%;
   margin-bottom: 0px;
+  user-select: none;
 `;
 
 const EmptyBlock = styled.div`
@@ -323,7 +329,9 @@ const InputFormBox = styled.div`
   flex-direction: column;
   width: 37%;
   justify-content: space-between;
+  margin-bottom: 20px;
 `;
+
 const EmailInputBox = styled(InputFormBox)`
   width: 500px;
 `;
@@ -334,6 +342,7 @@ const UserInfoInputFormBox = styled.div`
   width: 100%;
   justify-content: space-between;
 `;
+
 const EmailInputFormBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -374,11 +383,12 @@ const EmailButton = styled.div`
   cursor: pointer;
   background-color: #0186d1;
   display: flex;
-  margin-bottom: 5px;
+  margin-bottom: 27px;
   align-self: flex-end;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  user-select: none;
 `;
 
 const EmailButtonText = styled.p`
@@ -395,4 +405,5 @@ const UserInfoText = styled(Text)`
   margin-top: ${(props) => (props.name ? '50px' : '0px')};
   margin-top: ${(props) => (props.email ? '24px' : '0px')};
   margin-bottom: 10px;
+  user-select: none;
 `;
