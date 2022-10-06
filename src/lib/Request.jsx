@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getCookie } from '../Pages/LoginPage';
 
 const instance = axios.create({
-  baseURL: 'http://13.125.85.216:8080',
+  baseURL: process.env.REACT_APP_API_URL,
   headers: { Authorization: `Bearer ${getCookie('authToken')}` },
 });
 
