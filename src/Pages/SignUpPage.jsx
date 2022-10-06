@@ -35,11 +35,6 @@ function SignUpPage() {
     emailRegExpress: false,
   });
 
-  const option = {
-    getAuthUrl: 'http://13.125.85.216:8080/api/sign-up/email?',
-    getCheckUrl: 'http://13.125.85.216:8080/api/sign-up/email/check?',
-    signUpUrl: 'http://13.125.85.216:8080/api/sign-up',
-  };
   const nameRegEx = /^[가-힣]{2,8}$/;
   const pwRegEx = /^(?=.*[a-z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
   // eslint-disable-next-line prefer-regex-literals
@@ -55,7 +50,7 @@ function SignUpPage() {
     if (regExprees.emailRegExpress) {
       axios({
         method: 'post',
-        url: option.getAuthUrl,
+        url: `${process.env.REACT_APP_API_URL}api/sign-up/email?`,
         params: {
           email: emailvalue,
         },
@@ -69,7 +64,7 @@ function SignUpPage() {
     const checkvalue = sendData.emailAuthKey;
     axios({
       method: 'post',
-      url: option.getCheckUrl,
+      url: `${process.env.REACT_APP_API_URL}api/sign-up/email/check?`,
       params: {
         code: checkvalue,
       },
@@ -92,7 +87,7 @@ function SignUpPage() {
     if (isChecked && isValid) {
       axios({
         method: 'post',
-        url: option.signUpUrl,
+        url: `${process.env.REACT_APP_API_URL}api/sign-up`,
         data: {
           ...sendData,
         },
@@ -326,8 +321,7 @@ const InputContainer = styled.div`
 const InputFormBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 37%; //이것도 .. 회의 끝나고 물어보기(300px -> 37%뭘 선택할 건지 )
-  //height: 98px;
+  width: 37%;
   justify-content: space-between;
 `;
 const EmailInputBox = styled(InputFormBox)`
@@ -338,7 +332,6 @@ const UserInfoInputFormBox = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  //height: 98px;
   justify-content: space-between;
 `;
 const EmailInputFormBox = styled.div`
@@ -346,13 +339,12 @@ const EmailInputFormBox = styled.div`
   flex-direction: row;
   align-items: center;
   width: 100%;
-  //height: 98px;
   justify-content: space-between;
   align-items: center;
 `;
 
 const EmptyDiv = styled.div`
-  height: 30px; // 이거 진짜 아닌 것 같은데
+  height: 30px;
 `;
 
 const UserInputBox = styled(InputBox)`
