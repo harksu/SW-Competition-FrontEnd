@@ -99,6 +99,8 @@ const MainTitle = styled.p`
   font-size: 50px;
   font-weight: 700;
   margin: 85px 0 37px 53px;
+
+  user-select: none;
 `;
 
 const MainContainer = styled.div`
@@ -168,6 +170,7 @@ const Header2ndContent = styled.div`
 
   p {
     padding: 21px 0;
+    margin-top: 3px;
     font-weight: 500;
     font-size: 25px;
     user-select: none;
@@ -177,12 +180,15 @@ const Header2ndContent = styled.div`
 const WriteButton = styled.button`
   width: 152px;
   height: 48px;
+
   margin: 0 50px 0 1274px;
   border: 1px solid #b5b5b5;
   border-radius: 5px;
+
   background-color: transparent;
   font-weight: 400;
   font-size: 20px;
+  user-select: none;
   cursor: pointer;
 `;
 
