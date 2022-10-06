@@ -73,7 +73,7 @@ const ListPagesButton = styled.div`
   width: 350px;
   height: 40px;
   border: 1px solid #adadad;
-  border-radius: 5px;
+  border-radius: 6px;
 `;
 
 const MovingBtnWrap = styled.button`
