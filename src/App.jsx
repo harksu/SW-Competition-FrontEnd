@@ -20,7 +20,7 @@ import EditPage from './Pages/EditingPage';
 import NotFound from './Pages/NotFound';
 
 function App() {
-  axios.defaults.baseURL = 'http://13.125.85.216:8080';
+  axios.defaults.baseURL = process.env.REACT_APP_API_URL;
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
