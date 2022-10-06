@@ -22,7 +22,7 @@ function EditPage() {
     toast('글이 수정되었습니다.', { containerId: 'common' });
   };
   const showToastErrorMessage = () => {
-    toast('정보 동의가 체크되지 않았습니다.', { containerId: 'common' });
+    toast('정보 제공 항목에 동의해주세요.', { containerId: 'common' });
   };
 
   const handleSendEditPost = async () => {
