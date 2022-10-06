@@ -78,11 +78,11 @@ const CommonToastContainerStyled = styled(ToastContainer)`
   flex-direction: column;
   text-align: center;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 20px;
 
   .Toastify__toast {
     width: 392px;
-    height: 100px;
+    height: 140px;
     border-radius: 20px;
     background-color: rgba(1, 134, 209, 0.6);
     opacity: 0.9;
@@ -94,10 +94,10 @@ const ConfirmToastContainerStyled = styled(ToastContainer)`
   flex-direction: column;
   text-align: center;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 20px;
   .Toastify__toast {
     width: 392px;
-    height: 200px;
+    height: 140px;
     border-radius: 20px;
     border: 2px solid ${Theme.colors.blue};
 
