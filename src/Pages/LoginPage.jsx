@@ -23,9 +23,6 @@ function LoginPage() {
     username: '',
   });
   const setAuthToken = useSetRecoilState(authToken);
-  const option = {
-    loginUrl: 'http://13.125.85.216:8080/api/sign-in?',
-  };
   const navigate = useNavigate();
   const goMain = () => {
     navigate('/main');
@@ -38,7 +35,7 @@ function LoginPage() {
     const { username, password } = userInfo;
     if (username && password) {
       axios
-        .post(option.loginUrl, {
+        .post(`${process.env.REACT_APP_API_URL}api/sign-in`, {
           ...userInfo,
         })
         .then((response) => {
@@ -49,7 +46,7 @@ function LoginPage() {
           setIdValid(true);
           setPwValid(true);
           window.alert(`${userInfo.username}님 환영합니다!`);
-          goMain();
+          if (getCookie('authToken')) goMain();
         })
         .catch((error) => {
           if (
@@ -155,17 +152,17 @@ export const LogoImage = styled.img`
 `;
 
 const EmptyBlock = styled.div`
-  height: 20px; //입력값 없을 때 스타일 깨지는거 방지용
+  height: 20px;
 `;
 const EmptyDiv = styled.div`
-  height: 10px; // 이거 진짜 아닌 것 같은데
+  height: 10px;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 58%; //피그마 기준 계산값입니다 58% -> 840px 수정? 이거 확실하게 수정 한번 해야 될 듯
-  height: 720px; //피그마 기준 계산값입니다 70% -> 720px 수정 +++ 오버레이 수정
+  width: 58%;
+  height: 720px;
   background-color: ${({ theme }) => theme.colors.white};
   margin: 69px auto 55px auto;
   border-radius: 20px 20px 0px 0px;
