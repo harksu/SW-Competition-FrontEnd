@@ -149,6 +149,7 @@ export const LogoImage = styled.img`
   position: absolute;
   bottom: 12%;
   right: 9%;
+  -webkit-user-drag: none;
 `;
 
 const EmptyBlock = styled.div`
@@ -179,6 +180,7 @@ export const SignHeader = styled.p`
   justify-content: center;
   align-items: center;
   margin-top: 51px;
+  user-select: none;
 `;
 
 export const InputContainer = styled.div`
@@ -188,6 +190,7 @@ export const InputContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 65%;
+  user-select: none;
 `;
 
 export const Text = styled.p`
@@ -207,6 +210,8 @@ const QuestionText = styled(AlertText)`
   font-weight: 800;
   margin-top: 25px;
   margin-bottom: 82px;
+  user-select: none;
+
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.blue};
@@ -240,6 +245,8 @@ export const LoginButton = styled.div`
   justify-content: center;
   align-items: center;
   margin: 66px auto 0px auto;
+  user-select: none;
+
   &:hover {
     background-color: ${(props) => (props.login ? '#012868' : '#b5b5b5')};
   }
@@ -252,6 +259,7 @@ export const ButtonText = styled(Text)`
   font-size: 28px;
   line-height: 32px;
   margin-left: 0px;
+  user-select: none;
 `;
 
 export const InputFormBox = styled.div`
