@@ -213,11 +213,10 @@ const QuestionText = styled(AlertText)`
   }
 `;
 export const InputBox = styled.input`
-  border: 0 solid black;
+  border: 2px solid #bcccf6;
   width: 100%;
   height: 62px;
   border-radius: 10px;
-
   ::placeholder {
     font-size: 23px;
     font-weight: 700;
@@ -228,8 +227,8 @@ export const InputBox = styled.input`
   color: #b5b5b5;
   padding-left: 19px;
   box-sizing: border-box;
-  margin-bottom: 19px;
-  margin-top: 14px;
+
+  margin: 14px 0 19px 0;
 `;
 export const LoginButton = styled.div`
   display: flex;
