@@ -89,9 +89,9 @@ function LoginPage() {
               data={userInfo}
               event={setUserInfo}
             />
-          </InputFormBox>
+          </InputFormBox>{' '}
           <LoginButton login onClick={login}>
-            <ButtonText>로그인</ButtonText>
+            <ButtonText>로그인하기</ButtonText>
           </LoginButton>
           <QuestionText onClick={goSignUP}>
             아직 회원이 아니신가요?
@@ -143,21 +143,17 @@ function InputForm({ text, isValid, placeText, data, event }) {
     </>
   );
 }
-
 export const LogoImage = styled.img`
   width: 128px;
   height: 130px;
   position: absolute;
   bottom: 12%;
   right: 9%;
-  -webkit-user-drag: none;
-  user-select: none;
 `;
 
 const EmptyBlock = styled.div`
   height: 20px;
 `;
-
 const EmptyDiv = styled.div`
   height: 10px;
 `;
@@ -175,17 +171,14 @@ export const Container = styled.div`
 `;
 
 export const SignHeader = styled.p`
-  width: 100%;
-  font-size: 40px;
-  font-weight: 700;
-
+  color: black;
   display: flex;
+  width: 100%;
+  font-size: 35px;
+  font-weight: 700;
   justify-content: center;
   align-items: center;
-  margin: 51px 0 25px 0;
   margin-top: 51px;
-  color: black;
-  user-select: none;
 `;
 
 export const InputContainer = styled.div`
@@ -195,7 +188,6 @@ export const InputContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 65%;
-  user-select: none;
 `;
 
 export const Text = styled.p`
@@ -213,22 +205,19 @@ export const AlertText = styled(Text)`
 const QuestionText = styled(AlertText)`
   color: #b5b5b5;
   font-weight: 800;
-  margin: 25px 5px 82px 0;
-
-  user-select: none;
-
+  margin-top: 25px;
+  margin-bottom: 82px;
   cursor: pointer;
   &:hover {
     color: ${({ theme }) => theme.colors.blue};
   }
 `;
-
 export const InputBox = styled.input`
   border: 0 solid black;
   width: 100%;
   height: 62px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+
   ::placeholder {
     font-size: 23px;
     font-weight: 700;
@@ -242,33 +231,27 @@ export const InputBox = styled.input`
   margin-bottom: 19px;
   margin-top: 14px;
 `;
-
 export const LoginButton = styled.div`
   display: flex;
   width: 43%;
   height: 60px;
-  padding: 8px 0 8px 0;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+
   border-radius: 10px;
   justify-content: center;
   align-items: center;
   margin: 66px auto 0px auto;
-  user-select: none;
-
   &:hover {
     background-color: ${(props) => (props.login ? '#012868' : '#b5b5b5')};
   }
   background-color: ${({ isChecked }) => (isChecked ? '#012868' : '#b5b5b5')};
   cursor: pointer;
 `;
-
 export const ButtonText = styled(Text)`
   color: #ffffff;
   font-weight: 400;
   font-size: 28px;
   line-height: 32px;
   margin-left: 0px;
-  user-select: none;
 `;
 
 export const InputFormBox = styled.div`
