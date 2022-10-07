@@ -360,9 +360,10 @@ const UserInputBox = styled(InputBox)`
   border: 0 solid black;
   width: 100%;
   height: 60px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+
   background-color: white;
   border-radius: 10px;
+  border: 2px solid #bcccf6;
   ::placeholder {
     font-size: 23px;
     font-weight: 400;
@@ -370,7 +371,7 @@ const UserInputBox = styled(InputBox)`
   }
   font-size: 23px;
   font-weight: 400;
-  color: #b5b5b5;
+  color: black;
   padding-left: 19px;
   box-sizing: border-box;
   margin-top: 0px;
