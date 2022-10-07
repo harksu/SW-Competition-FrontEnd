@@ -357,7 +357,6 @@ const EmptyDiv = styled.div`
 `;
 
 const UserInputBox = styled(InputBox)`
-  border: 0 solid black;
   width: 100%;
   height: 60px;
 
